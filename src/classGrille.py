@@ -13,7 +13,7 @@ class Grille:
         self.nbColonneLargeur = nbColonneLargeur
         self.nbColonneHauteur = nbColonneHauteur
         self.tailleFenetreLargeur = tailleFenetreLargeur
-        self.taille_fenetre_hauteur = tailleFenetreHauteur
+        self.tailleFenetreHauteur = tailleFenetreHauteur
         self.marge = marge
 
         # Calcul des tailles des tuiles
