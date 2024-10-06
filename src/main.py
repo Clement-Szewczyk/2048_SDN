@@ -1,28 +1,30 @@
-#%%
-
+from ecran import Ecran
 import pygame
-import time
-from classGrille import Grille
-from classTuile import Tuile
 
-# Initialiser Pygame
-pygame.init()
 
-# Création de la grille
-grille = Grille()
-grille.creerGrille(nbColonneLargeur=4, nbColonneHauteur=4, tailleFenetreLargeur=400, tailleFenetreHauteur=400)
+def main():
+    ecran = Ecran(800, 600, "Jeu")
+    ecran.afficher()
+    ecran.ajouterGrille(4,4,5)
+    ecran.ajouterTuile(2)
+    ecran.ajouterTuile(4)
+    ecran.ajouterTuile(2)
+    ecran.ajouterTuile(4)
+    ecran.ajouterTuile(2)
+    ecran.ajouterTuile(4)
+    ecran.ajouterTuile(2)
+    ecran.ajouterTuile(4)
 
-# Affichage initial de la grille
-grille.afficherGrille()
-
-# Création et positionnement aléatoire d'une tuile sur un bord
-tuile = Tuile()
-tuile.creerTuile(grille)
-
-# Affichage de la tuile sur la grille
-tuile.afficherTuile(grille.fenetre, grille)
-
-# Attendre avant de quitter pour voir la fenêtre
-time.sleep(5)
-pygame.quit()
-# %%
+    
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                ecran.eteindre()
+                return
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    ecran.eteindre()
+                    return
+            
+if __name__ == "__main__":
+    main()

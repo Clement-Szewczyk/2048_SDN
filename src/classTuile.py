@@ -3,6 +3,7 @@
 import pygame
 import random
 import time
+
 from classGrille import Grille  
 
 
@@ -23,7 +24,7 @@ COULEURS_TUILES = {
 }
 
 class Tuile:
-    def __init__(self, valeur=2):
+    def __init__(self, valeur):
         self.valeur = valeur
         self.couleur = self.miseAJourCouleurTuile()
         self.x = None
@@ -70,3 +71,4 @@ class Tuile:
             text_rect = text.get_rect(center=(x + (grille.tailleTuileLargeur - 2 * grille.marge) / 2, y + (grille.tailleTuileHauteur - 2 * grille.marge) / 2))
             fenetre.blit(text, text_rect)
             pygame.display.flip()  # Rafraîchir l'affichage après avoir affiché la tuile
+
