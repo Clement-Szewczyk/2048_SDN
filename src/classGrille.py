@@ -22,7 +22,7 @@ class Grille:
 
         # Initialisation de Pygame et création de la fenêtre
         #pygame.init()
-        #self.fenetre = pygame.display.set_mode((self.tailleFenetreLargeur, self.tailleFetreHauteur))
+        #self.fenetre = pygame.display.set_mode((self.tailleFenetreLargeur, self.tailleFenetreHauteur))
         #pygame.display.set_caption("Jeu 2048")
 
     def afficherGrille(self, fenetre):
