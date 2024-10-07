@@ -8,14 +8,16 @@ pygame.init()
 screen = pygame.display.set_mode((700, 400))
 pygame.display.set_caption("Authentification")
 
-# Définir les couleurs
+# Définir les couleurs plus modernes
 WHITE = (255, 255, 255)
-LIGHT_GRAY = (230, 230, 230)
-DARK_GRAY = (100, 100, 100)
-BLUE = (0, 102, 204)
-LIGHT_BLUE = (0, 153, 255)
-RED = (255, 0, 0)
+LIGHT_GRAY = (245, 245, 245)
+DARK_GRAY = (80, 80, 80)
+BLUE = (70, 130, 180)
+LIGHT_BLUE = (100, 149, 237)
+HOVER_BLUE = (135, 206, 250)
+RED = (220, 20, 60)
 BLACK = (0, 0, 0)
+SHADOW = (192, 192, 192)
 
 # Fonction pour afficher du texte
 def draw_text(text, font, color, surface, x, y):
@@ -33,9 +35,11 @@ class Button:
         self.active = False
 
     def draw(self, surface):
-        color = LIGHT_BLUE if self.active else BLUE
-        pygame.draw.rect(surface, color, self.rect, border_radius=10)
-        draw_text(self.text, self.font, WHITE, surface, self.rect.x + 10, self.rect.y + 5)
+        color = HOVER_BLUE if self.active else BLUE
+        shadow_offset = 5  # Ajoute une ombre
+        pygame.draw.rect(surface, SHADOW, (self.rect.x + shadow_offset, self.rect.y + shadow_offset, self.rect.width, self.rect.height), border_radius=15)
+        pygame.draw.rect(surface, color, self.rect, border_radius=15)
+        draw_text(self.text, self.font, WHITE, surface, self.rect.x + 20, self.rect.y + 10)
 
     def is_hovered(self, pos):
         return self.rect.collidepoint(pos)
@@ -66,8 +70,9 @@ class InputBox:
                     self.text += event.unicode
 
     def draw(self, surface):
+        pygame.draw.rect(surface, SHADOW, (self.rect.x + 3, self.rect.y + 3, self.rect.width, self.rect.height), border_radius=10)
         pygame.draw.rect(surface, self.color, self.rect, border_radius=10)
-        draw_text(self.text if self.text else self.placeholder, self.font, BLACK if self.text else DARK_GRAY, surface, self.rect.x + 5, self.rect.y + 5)
+        draw_text(self.text if self.text else self.placeholder, self.font, BLACK if self.text else DARK_GRAY, surface, self.rect.x + 10, self.rect.y + 10)
 
 # Boucle principale
 def main():
@@ -88,9 +93,9 @@ def main():
     signup_mode = False  # Commence par la page de connexion
     message = ""  # Pour afficher les messages d'erreur ou de succès
 
-    # Création des boutons avec des dimensions élargies
-    signup_button = Button(150, 250, 200, 50, "S'inscrire")  # Largeur : 200, Hauteur : 50
-    login_button = Button(370, 250, 200, 50, "Se connecter")   # Largeur : 200, Hauteur : 50
+    # Création des boutons avec des dimensions élargies et coins arrondis
+    signup_button = Button(150, 250, 200, 50, "S'inscrire")
+    login_button = Button(370, 250, 200, 50, "Se connecter")
 
     while running:
         for event in pygame.event.get():
@@ -121,17 +126,14 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     if signup_mode:
-                        # Vérification des champs
                         if not input_nom.text or not input_prenom.text or not input_email.text or not input_password.text:
                             message = "Veuillez saisir tous les champs requis."
                         else:
-                            # Appel de la fonction signup directement sur le bouton "S'inscrire"
                             if signup(input_nom.text, input_prenom.text, input_email.text, input_password.text):
                                 message = "Inscription réussie!"
                             else:
                                 message = "L'adresse email est déjà utilisée."
                     else:
-                        # Vérification des champs de connexion
                         if not input_login_email.text or not input_login_password.text:
                             message = "Veuillez saisir votre email et mot de passe."
                         else:
@@ -143,9 +145,8 @@ def main():
                             input_login_email.text = ""
                             input_login_password.text = ""
 
-        # Dessiner l'écran avec un arrière-plan dynamique
+        # Dessiner l'écran avec un fond blanc
         screen.fill(WHITE)
-        pygame.draw.rect(screen, LIGHT_GRAY, (0, 0, 700, 400), border_radius=10)
 
         # Afficher le formulaire
         if signup_mode:
