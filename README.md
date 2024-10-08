@@ -1,15 +1,16 @@
 # 2048_SDN
 
-Projet L3 Conception de logiciel qui a pour but de réaliser un 2048 en python. 
+Projet L3 Conception de logiciel qui a pour but de réaliser un 2048 en python.
 
 # Composition du groupe
 
 - Chahinez Mezouar
 - Stievenard Emma
-- Szewczyk Cément 
+- Szewczyk Cément
 
-# Le nom de SGBD 
-mysql 
+# Le nom de SGBD
+
+mysql
 
 # Étapes pour Exécuter un Fichier de Base de Données dans MySQL
 
@@ -28,15 +29,16 @@ mysql
 
 # Les commandes a faire
 
-pip install mysql-connector-python 
+pip install mysql-connector-python
 (Ce module permet de se connecter à une base de données MySQL depuis un script Python)
 
-pip install bcrypt 
+pip install bcrypt
 (e module est utilisé pour le hachage des mots de passe)
 
-# Le port utilisé pour la bdd 
+# Le port utilisé pour la bdd
+
 3305
 
-
-
+# TEST
+# utilisation de projet 
 
