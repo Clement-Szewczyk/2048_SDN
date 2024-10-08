@@ -25,3 +25,18 @@ mysql
 - Ouvrez l'invite de commande (CMD) de mysql .
 
 3 - Lancer le jeu
+
+# Les commandes a faire
+
+pip install mysql-connector-python 
+(Ce module permet de se connecter à une base de données MySQL depuis un script Python)
+
+pip install bcrypt 
+(e module est utilisé pour le hachage des mots de passe)
+
+# Le port utilisé pour la bdd 
+3305
+
+
+
+
