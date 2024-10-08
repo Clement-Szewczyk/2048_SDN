@@ -53,6 +53,7 @@ class InputBox:
         self.placeholder = placeholder
         self.font = pygame.font.Font(None, 28)
         self.active = False
+        self.show_password = False  # Indique si le mot de passe est visible
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -69,10 +70,20 @@ class InputBox:
                 else:
                     self.text += event.unicode
 
+    def toggle_password_visibility(self):
+        self.show_password = not self.show_password
+
     def draw(self, surface):
         pygame.draw.rect(surface, SHADOW, (self.rect.x + 3, self.rect.y + 3, self.rect.width, self.rect.height), border_radius=10)
         pygame.draw.rect(surface, self.color, self.rect, border_radius=10)
-        draw_text(self.text if self.text else self.placeholder, self.font, BLACK if self.text else DARK_GRAY, surface, self.rect.x + 10, self.rect.y + 10)
+
+        # Affichage du texte
+        if self.show_password:
+            display_text = self.text  # Affiche le mot de passe en clair
+        else:
+            display_text = '*' * len(self.text) if self.placeholder == "Mot de passe" else self.text  # Affiche des astérisques pour le mot de passe
+
+        draw_text(display_text if self.text or self.placeholder == "Mot de passe" else self.placeholder, self.font, BLACK if self.text else DARK_GRAY, surface, self.rect.x + 10, self.rect.y + 10)
 
 # Boucle principale
 def main():
@@ -96,6 +107,7 @@ def main():
     # Création des boutons avec des dimensions élargies et coins arrondis
     signup_button = Button(150, 250, 200, 50, "S'inscrire")
     login_button = Button(370, 250, 200, 50, "Se connecter")
+    toggle_password_button = Button(460, 200, 40, 40, "👁️")  # Bouton pour afficher/cacher le mot de passe
 
     while running:
         for event in pygame.event.get():
@@ -121,29 +133,34 @@ def main():
                 elif login_button.is_hovered(pos):
                     signup_mode = False  # Passer à la connexion
                     message = ""  # Réinitialiser le message
-
-            # Valider les entrées
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
+                elif toggle_password_button.is_hovered(pos):
                     if signup_mode:
-                        if not input_nom.text or not input_prenom.text or not input_email.text or not input_password.text:
-                            message = "Veuillez saisir tous les champs requis."
-                        else:
-                            if signup(input_nom.text, input_prenom.text, input_email.text, input_password.text):
-                                message = "Inscription réussie!"
-                            else:
-                                message = "L'adresse email est déjà utilisée."
+                        input_password.toggle_password_visibility()  # Basculer la visibilité du mot de passe d'inscription
                     else:
-                        if not input_login_email.text or not input_login_password.text:
-                            message = "Veuillez saisir votre email et mot de passe."
+                        input_login_password.toggle_password_visibility()  # Basculer la visibilité du mot de passe de connexion
+
+                # Validation des entrées uniquement après le clic sur le bouton "Se connecter"
+                if login_button.is_hovered(pos) and not signup_mode:
+                    if not input_login_email.text or not input_login_password.text:
+                        message = "Veuillez saisir votre email et mot de passe."
+                    else:
+                        user = login(input_login_email.text, input_login_password.text)
+                        if user:
+                            message = f"Bienvenue, {user[1]} {user[2]}!"
                         else:
-                            user = login(input_login_email.text, input_login_password.text)
-                            if user:
-                                message = f"Bienvenue, {user[1]} {user[2]}!"
-                            else:
-                                message = "Nom d'utilisateur ou mot de passe incorrect."
-                            input_login_email.text = ""
-                            input_login_password.text = ""
+                            message = "Nom d'utilisateur ou mot de passe incorrect."
+                        input_login_email.text = ""
+                        input_login_password.text = ""
+
+                # Validation des entrées uniquement après le clic sur le bouton "S'inscrire"
+                if signup_button.is_hovered(pos) and signup_mode:
+                    if not input_nom.text or not input_prenom.text or not input_email.text or not input_password.text:
+                        message = "Veuillez saisir tous les champs requis."
+                    else:
+                        if signup(input_nom.text, input_prenom.text, input_email.text, input_password.text):
+                            message = "Inscription réussie!"
+                        else:
+                            message = "L'adresse email est déjà utilisée."
 
         # Dessiner l'écran avec un fond blanc
         screen.fill(WHITE)
@@ -159,19 +176,22 @@ def main():
             input_email.draw(screen)
             draw_text("Mot de passe:", font, BLACK, screen, 50, 200)
             input_password.draw(screen)
+            toggle_password_button.rect.topleft = (input_password.rect.x + input_password.rect.width + 10, input_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
         else:
             draw_text("Mode Connexion", font, DARK_GRAY, screen, 20, 20)
             draw_text("Email:", font, BLACK, screen, 50, 50)
             input_login_email.draw(screen)
             draw_text("Mot de passe:", font, BLACK, screen, 50, 100)
             input_login_password.draw(screen)
+            toggle_password_button.rect.topleft = (input_login_password.rect.x + input_login_password.rect.width + 10, input_login_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
 
         # Dessiner les boutons
         signup_button.draw(screen)
         login_button.draw(screen)
+        toggle_password_button.draw(screen)
 
-        # Afficher le message d'erreur ou de succès
-        draw_text(message, font, RED if "erreur" in message.lower() else DARK_GRAY, screen, 20, 350)
+        # Afficher le message
+        draw_text(message, font, RED, screen, 20, 300)
 
         pygame.display.flip()
 
