@@ -22,6 +22,6 @@ mysql
 
 2 - Exécuter un Fichier de Base de Données :
 
-- Ouvrez l'invite de commande (CMD) de Windows.
+- Ouvrez l'invite de commande (CMD) de mysql .
 
 3 - Lancer le jeu
