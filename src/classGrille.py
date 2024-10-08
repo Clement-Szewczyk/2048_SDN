@@ -1,5 +1,3 @@
-#%%
-
 import pygame
 import time
 
@@ -38,7 +36,3 @@ class Grille:
 
         # Rafraîchir l'affichage pour voir la grille
         pygame.display.flip()
-
-   
-        
-# %%

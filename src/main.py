@@ -1,19 +1,17 @@
-from ecran import Ecran
+from classEcran import Ecran
+from classJeu import Jeu
 import pygame
 
 
 def main():
     ecran = Ecran(800, 600, "Jeu")
-    ecran.afficher()
-    ecran.ajouterGrille(4,4,5)
-    ecran.ajouterTuile(2)
-    ecran.ajouterTuile(4)
-    ecran.ajouterTuile(2)
-    ecran.ajouterTuile(4)
-    ecran.ajouterTuile(2)
-    ecran.ajouterTuile(4)
-    ecran.ajouterTuile(2)
-    ecran.ajouterTuile(4)
+    #ecran.afficher()
+    jeu = Jeu(ecran)
+    jeu.ajouterGrille(4, 4, 5, 400)
+    jeu.ajouterTuile(2)
+    
+    ecran.choixVue(jeu)
+    ecran.MettreAJour()
 
     
     while True:

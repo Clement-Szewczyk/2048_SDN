@@ -10,6 +10,7 @@ db = mysql.connector.connect(
     password="root",  # Remplace par ton mot de passe MySQL
     database="jeu2048",
     port=3305
+    #port=3306
 )
 
 cursor = db.cursor()
