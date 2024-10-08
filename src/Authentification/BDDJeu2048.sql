@@ -20,6 +20,25 @@
 -- Create the database if it does not exist
 CREATE DATABASE IF NOT EXISTS `jeu2048` CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE `jeu2048`;
+
+
+
+
+-- Table structure for table `utilisateur`
+--
+
+DROP TABLE IF EXISTS `utilisateur`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `utilisateur` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) NOT NULL,
+  `prenom` varchar(255) NOT NULL,
+  `adresseMail` varchar(255) NOT NULL,
+  `motDePasse` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `adresseMail` (`adresseMail`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 --
 -- Table structure for table `profil`
 --
@@ -39,21 +58,7 @@ CREATE TABLE `profil` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `utilisateur`
---
 
-DROP TABLE IF EXISTS `utilisateur`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `utilisateur` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(255) NOT NULL,
-  `prenom` varchar(255) NOT NULL,
-  `adresseMail` varchar(255) NOT NULL,
-  `motDePasse` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `adresseMail` (`adresseMail`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
