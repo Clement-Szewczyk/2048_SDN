@@ -70,5 +70,6 @@ class Tuile:
             text = font.render(str(self.valeur), True, (0, 0, 0))  # Couleur du texte (noir)
             text_rect = text.get_rect(center=(x + (grille.tailleTuileLargeur - 2 * grille.marge) / 2, y + (grille.tailleTuileHauteur - 2 * grille.marge) / 2))
             fenetre.blit(text, text_rect)
-            pygame.display.flip()  # Rafraîchir l'affichage après avoir affiché la tuile
+
+    
 

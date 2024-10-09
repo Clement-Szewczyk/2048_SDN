@@ -9,10 +9,13 @@ def main():
     jeu = Jeu(ecran)
     jeu.ajouterGrille(4, 4, 5, 400)
     jeu.ajouterTuile(2)
-    
-    ecran.choixVue(jeu)
-    ecran.MettreAJour()
+    jeu.ajouterTuile(4)
+    jeu.afficherJeu()
+    ecran.mettreAJour()
 
+    # Pour Cacher le jeu
+    #jeu.cacherJeu()
+    #ecran.mettreAJour()
     
     while True:
         for event in pygame.event.get():
@@ -23,6 +26,7 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     ecran.eteindre()
                     return
+                
             
 if __name__ == "__main__":
     main()

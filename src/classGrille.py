@@ -33,6 +33,3 @@ class Grille:
                 y = i * self.tailleTuileHauteur + self.marge
                 # Dessiner chaque case (rectangle blanc)
                 pygame.draw.rect(fenetre, BLANC, (x, y, self.tailleTuileLargeur - 2 * self.marge, self.tailleTuileHauteur - 2 * self.marge))
-
-        # Rafraîchir l'affichage pour voir la grille
-        pygame.display.flip()

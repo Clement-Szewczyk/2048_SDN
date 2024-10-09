@@ -13,15 +13,21 @@ class Ecran:
         self.fenetre.fill((187, 173, 160))
         pygame.font.init()
         pygame.display.set_caption(self.titre)
-    
-    def afficher(self):
-        pygame.display.flip()
 
-    def choixVue(self, vue):
-        self.vue = vue
-
-    def MettreAJour(self):
+    """
+    Fonction mettreAJour
+        Elle permet de mettre à jour l'écran
+    Paramètres:
+    - aucun
+    """
+    def mettreAJour(self):
         pygame.display.flip()
     
+    """
+    Fonction eteindre
+        Elle permet d'éteindre l'écran
+    Paramètres:
+    - aucun
+    """
     def eteindre(self):
         pygame.quit()
