@@ -1,5 +1,6 @@
 import pygame
 from backend import signup, login
+from classJeu import Jeu  # Importer la classe Jeu
 
 # Initialisation de Pygame
 pygame.init()
@@ -103,6 +104,7 @@ def main():
     # État de l'application
     signup_mode = False  # Commence par la page de connexion
     message = ""  # Pour afficher les messages d'erreur ou de succès
+    jeu = None  # Variable pour l'instance de Jeu
 
     # Création des boutons avec des dimensions élargies et coins arrondis
     signup_button = Button(150, 250, 200, 50, "S'inscrire")
@@ -147,6 +149,8 @@ def main():
                         user = login(input_login_email.text, input_login_password.text)
                         if user:
                             message = f"Bienvenue, {user[1]} {user[2]}!"
+                            jeu = Jeu(screen)  # Créer une instance de Jeu après connexion réussie
+                            jeu.ajouterGrille(4, 4, 10, 200)  # Exemple d'ajout de grille
                         else:
                             message = "Nom d'utilisateur ou mot de passe incorrect."
                         input_login_email.text = ""
@@ -165,34 +169,37 @@ def main():
         # Dessiner l'écran avec un fond blanc
         screen.fill(WHITE)
 
-        # Afficher le formulaire
-        if signup_mode:
-            draw_text("Mode Inscription", font, DARK_GRAY, screen, 20, 20)
-            draw_text("Nom:", font, BLACK, screen, 50, 50)
-            input_nom.draw(screen)
-            draw_text("Prénom:", font, BLACK, screen, 50, 100)
-            input_prenom.draw(screen)
-            draw_text("Email:", font, BLACK, screen, 50, 150)
-            input_email.draw(screen)
-            draw_text("Mot de passe:", font, BLACK, screen, 50, 200)
-            input_password.draw(screen)
-            toggle_password_button.rect.topleft = (input_password.rect.x + input_password.rect.width + 10, input_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
-        else:
-            draw_text("Mode Connexion", font, DARK_GRAY, screen, 20, 20)
-            draw_text("Email:", font, BLACK, screen, 50, 50)
-            input_login_email.draw(screen)
-            draw_text("Mot de passe:", font, BLACK, screen, 50, 100)
-            input_login_password.draw(screen)
-            toggle_password_button.rect.topleft = (input_login_password.rect.x + input_login_password.rect.width + 10, input_login_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
+        # Afficher le jeu ou le formulaire selon l'état
+        if jeu:  # Si une instance de Jeu a été créée
+            jeu.afficherJeu()  # Afficher le jeu
+        else:  # Sinon, afficher le formulaire d'authentification
+            if signup_mode:
+                draw_text("Mode Inscription", font, DARK_GRAY, screen, 20, 20)
+                draw_text("Nom:", font, BLACK, screen, 50, 50)
+                input_nom.draw(screen)
+                draw_text("Prénom:", font, BLACK, screen, 50, 100)
+                input_prenom.draw(screen)
+                draw_text("Email:", font, BLACK, screen, 50, 150)
+                input_email.draw(screen)
+                draw_text("Mot de passe:", font, BLACK, screen, 50, 200)
+                input_password.draw(screen)
+                toggle_password_button.rect.topleft = (input_password.rect.x + input_password.rect.width + 10, input_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
+            else:
+                draw_text("Mode Connexion", font, DARK_GRAY, screen, 20, 20)
+                draw_text("Email:", font, BLACK, screen, 50, 50)
+                input_login_email.draw(screen)
+                draw_text("Mot de passe:", font, BLACK, screen, 50, 100)
+                input_login_password.draw(screen)
+                toggle_password_button.rect.topleft = (input_login_password.rect.x + input_login_password.rect.width + 10, input_login_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
 
-        # Dessiner les boutons
-        signup_button.draw(screen)
-        login_button.draw(screen)
-        toggle_password_button.draw(screen)
+            # Afficher les boutons
+            signup_button.draw(screen)
+            login_button.draw(screen)
 
-        # Afficher le message
-        draw_text(message, font, RED, screen, 20, 300)
+            # Afficher le message
+            draw_text(message, font, RED, screen, 50, 300)
 
+        # Actualiser l'écran
         pygame.display.flip()
 
     pygame.quit()
