@@ -1,6 +1,7 @@
+# frontend.py
+
 import pygame
 from backend import signup, login
-from classJeu import Jeu  # Importer la classe Jeu
 
 # Initialisation de Pygame
 pygame.init()
@@ -9,7 +10,7 @@ pygame.init()
 screen = pygame.display.set_mode((700, 400))
 pygame.display.set_caption("Authentification")
 
-# Définir les couleurs plus modernes
+# Définir les couleurs modernes
 WHITE = (255, 255, 255)
 LIGHT_GRAY = (245, 245, 245)
 DARK_GRAY = (80, 80, 80)
@@ -59,17 +60,16 @@ class InputBox:
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos):
-                self.active = not self.active
+                self.active = True
             else:
                 self.active = False
             self.color = LIGHT_BLUE if self.active else LIGHT_GRAY
 
-        if event.type == pygame.KEYDOWN:
-            if self.active:
-                if event.key == pygame.K_BACKSPACE:
-                    self.text = self.text[:-1]
-                else:
-                    self.text += event.unicode
+        if event.type == pygame.KEYDOWN and self.active:
+            if event.key == pygame.K_BACKSPACE:
+                self.text = self.text[:-1]
+            else:
+                self.text += event.unicode
 
     def toggle_password_visibility(self):
         self.show_password = not self.show_password
@@ -79,11 +79,7 @@ class InputBox:
         pygame.draw.rect(surface, self.color, self.rect, border_radius=10)
 
         # Affichage du texte
-        if self.show_password:
-            display_text = self.text  # Affiche le mot de passe en clair
-        else:
-            display_text = '*' * len(self.text) if self.placeholder == "Mot de passe" else self.text  # Affiche des astérisques pour le mot de passe
-
+        display_text = self.text if self.show_password else '*' * len(self.text) if self.placeholder == "Mot de passe" else self.text
         draw_text(display_text if self.text or self.placeholder == "Mot de passe" else self.placeholder, self.font, BLACK if self.text else DARK_GRAY, surface, self.rect.x + 10, self.rect.y + 10)
 
 # Boucle principale
@@ -104,9 +100,8 @@ def main():
     # État de l'application
     signup_mode = False  # Commence par la page de connexion
     message = ""  # Pour afficher les messages d'erreur ou de succès
-    jeu = None  # Variable pour l'instance de Jeu
 
-    # Création des boutons avec des dimensions élargies et coins arrondis
+    # Création des boutons
     signup_button = Button(150, 250, 200, 50, "S'inscrire")
     login_button = Button(370, 250, 200, 50, "Se connecter")
     toggle_password_button = Button(460, 200, 40, 40, "👁️")  # Bouton pour afficher/cacher le mot de passe
@@ -149,8 +144,8 @@ def main():
                         user = login(input_login_email.text, input_login_password.text)
                         if user:
                             message = f"Bienvenue, {user[1]} {user[2]}!"
-                            jeu = Jeu(screen)  # Créer une instance de Jeu après connexion réussie
-                            jeu.ajouterGrille(4, 4, 10, 200)  # Exemple d'ajout de grille
+                            running = False  # Fermer la fenêtre d'authentification
+                            return True  # Indique que l'authentification a réussi
                         else:
                             message = "Nom d'utilisateur ou mot de passe incorrect."
                         input_login_email.text = ""
@@ -169,40 +164,35 @@ def main():
         # Dessiner l'écran avec un fond blanc
         screen.fill(WHITE)
 
-        # Afficher le jeu ou le formulaire selon l'état
-        if jeu:  # Si une instance de Jeu a été créée
-            jeu.afficherJeu()  # Afficher le jeu
-        else:  # Sinon, afficher le formulaire d'authentification
-            if signup_mode:
-                draw_text("Mode Inscription", font, DARK_GRAY, screen, 20, 20)
-                draw_text("Nom:", font, BLACK, screen, 50, 50)
-                input_nom.draw(screen)
-                draw_text("Prénom:", font, BLACK, screen, 50, 100)
-                input_prenom.draw(screen)
-                draw_text("Email:", font, BLACK, screen, 50, 150)
-                input_email.draw(screen)
-                draw_text("Mot de passe:", font, BLACK, screen, 50, 200)
-                input_password.draw(screen)
-                toggle_password_button.rect.topleft = (input_password.rect.x + input_password.rect.width + 10, input_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
-            else:
-                draw_text("Mode Connexion", font, DARK_GRAY, screen, 20, 20)
-                draw_text("Email:", font, BLACK, screen, 50, 50)
-                input_login_email.draw(screen)
-                draw_text("Mot de passe:", font, BLACK, screen, 50, 100)
-                input_login_password.draw(screen)
-                toggle_password_button.rect.topleft = (input_login_password.rect.x + input_login_password.rect.width + 10, input_login_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
+        # Afficher le formulaire
+        if signup_mode:
+            draw_text("Mode Inscription", font, DARK_GRAY, screen, 20, 20)
+            draw_text("Nom:", font, BLACK, screen, 50, 50)
+            input_nom.draw(screen)
+            draw_text("Prénom:", font, BLACK, screen, 50, 100)
+            input_prenom.draw(screen)
+            draw_text("Email:", font, BLACK, screen, 50, 150)
+            input_email.draw(screen)
+            draw_text("Mot de passe:", font, BLACK, screen, 50, 200)
+            input_password.draw(screen)
+            toggle_password_button.rect.topleft = (input_password.rect.x + input_password.rect.width + 10, input_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
+        else:
+            draw_text("Mode Connexion", font, DARK_GRAY, screen, 20, 20)
+            draw_text("Email:", font, BLACK, screen, 50, 50)
+            input_login_email.draw(screen)
+            draw_text("Mot de passe:", font, BLACK, screen, 50, 100)
+            input_login_password.draw(screen)
+            toggle_password_button.rect.topleft = (input_login_password.rect.x + input_login_password.rect.width + 10, input_login_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
 
-            # Afficher les boutons
-            signup_button.draw(screen)
-            login_button.draw(screen)
+        # Dessiner les boutons
+        signup_button.draw(screen)
+        login_button.draw(screen)
+        toggle_password_button.draw(screen)
 
-            # Afficher le message
-            draw_text(message, font, RED, screen, 50, 300)
+        # Afficher le message d'information
+        draw_text(message, font, RED, screen, 20, 300)
 
-        # Actualiser l'écran
         pygame.display.flip()
 
-    pygame.quit()
-
-if __name__ == "__main__":
-    main()
+    pygame.quit()  # Quitter Pygame
+    return False  # Indique que l'authentification a échoué
