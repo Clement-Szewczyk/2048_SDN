@@ -15,6 +15,17 @@ class Ecran:
         pygame.display.set_caption(self.titre)
 
     """
+    Fonction Clear
+        Elle permet d'enlver ce qui est afficher à l'écran
+    Paramètres : 
+
+    """
+    def clear(self):
+        #clear l'écran
+        self.fenetre.fill((187, 173, 160))
+
+
+    """
     Fonction mettreAJour
         Elle permet de mettre à jour l'écran
     Paramètres:

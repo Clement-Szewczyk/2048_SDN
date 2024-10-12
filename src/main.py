@@ -14,6 +14,8 @@ def main():
     user = frontend.main()  # Vérifie si l'authentification a réussi
 
     if user:  # Si l'authentification a réussi
+        ecran.clear()
+        ecran.mettreAJour()
         # Initialiser et afficher le jeu
         jeu = Jeu(ecran)
         jeu.ajouterGrille(4, 4, 5, 400)  # Initialiser la grille du jeu
