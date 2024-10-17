@@ -1,3 +1,5 @@
+#%%
+
 import pygame
 from classEcran import Ecran
 from classJeu import Jeu
@@ -47,3 +49,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# %%

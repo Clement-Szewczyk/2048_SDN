@@ -1,3 +1,5 @@
+#%%
+
 import pygame
 
 # Initialiser Pygame
@@ -52,3 +54,5 @@ while running:
 
 # Quitter Pygame
 pygame.quit()
+
+# %%
