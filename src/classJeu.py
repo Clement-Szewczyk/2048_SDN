@@ -3,6 +3,7 @@ from classTuile import Tuile
 
 class Jeu:
     def __init__(self, Ecran):
+        self.Ecran = Ecran
         self.fenetre = Ecran.fenetre
         self.largeur = Ecran.largeur
         self.grille = None
@@ -57,3 +58,26 @@ class Jeu:
     def cacherJeu(self):
         self.fenetre.fill((187, 173, 160))
     
+    def TriTuile(self, direction):
+        #Tri des tuiles en fonction de la direction
+        if direction == "haut":
+            self.tuile.sort(key=lambda tuile: tuile.y)
+        elif direction == "bas":
+            self.tuile.sort(key=lambda tuile: tuile.y, reverse=True)
+        elif direction == "gauche":
+            self.tuile.sort(key=lambda tuile: tuile.x)
+        elif direction == "droite":
+            self.tuile.sort(key=lambda tuile: tuile.x, reverse=True)
+
+    def deplacerTuile(self, direction):
+        #deplacer toute les tuile dans la direction.
+        self.TriTuile(direction)
+        for tuile in self.tuile:
+            tuile.deplacerTuile(direction, self.fenetre, self.grille)
+        self.afficherJeu()
+        self.Ecran.mettreAJour()
+
+        
+        
+        
+

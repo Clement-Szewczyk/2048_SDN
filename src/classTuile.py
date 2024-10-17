@@ -73,3 +73,34 @@ class Tuile:
 
     
 
+    def deplacerTuile(self, direction, fenetre, grille):
+        # Déplacer la tuile dans la direction donnée
+        if direction == "haut":
+            while self.y > 0 and grille.grille[self.y - 1][self.x] == 0:
+                # Mettre à jour la grille logique
+                grille.grille[self.y][self.x] = 0
+                grille.grille[self.y - 1][self.x] = self.valeur
+                # Mettre à jour la position de la tuile
+                self.y -= 1
+            # Afficher la tuile à sa nouvelle position
+            self.afficherTuile(fenetre, grille)
+        elif direction == "bas":
+            while self.y < grille.nbColonneHauteur - 1 and grille.grille[self.y + 1][self.x] == 0:
+                grille.grille[self.y][self.x] = 0
+                grille.grille[self.y + 1][self.x] = self.valeur
+                self.y += 1
+            self.afficherTuile(fenetre, grille)
+        elif direction == "gauche":
+            while self.x > 0 and grille.grille[self.y][self.x - 1] == 0:
+                grille.grille[self.y][self.x] = 0
+                grille.grille[self.y][self.x - 1] = self.valeur
+                self.x -= 1
+            self.afficherTuile(fenetre, grille)
+        elif direction == "droite":
+            while self.x < grille.nbColonneLargeur - 1 and grille.grille[self.y][self.x + 1] == 0:
+                grille.grille[self.y][self.x] = 0
+                grille.grille[self.y][self.x + 1] = self.valeur
+                self.x += 1
+            self.afficherTuile(fenetre, grille)
+
+        print(f"Tuile de valeur {self.valeur} déplacée en ({self.x}, {self.y})")

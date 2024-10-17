@@ -34,6 +34,14 @@ def main():
                     if event.key == pygame.K_ESCAPE:
                         ecran.eteindre()  # Éteindre l'écran si la touche Échap est pressée
                         return
+                    if event.key == pygame.K_UP:
+                        jeu.deplacerTuile("haut")
+                    if event.key == pygame.K_DOWN:
+                        jeu.deplacerTuile("bas")
+                    if event.key == pygame.K_LEFT:
+                        jeu.deplacerTuile("gauche")
+                    if event.key == pygame.K_RIGHT:
+                        jeu.deplacerTuile("droite")
     
     pygame.quit()  # Quitter Pygame à la fin
 
