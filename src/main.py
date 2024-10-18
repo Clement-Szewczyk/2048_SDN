@@ -20,6 +20,7 @@ def main():
         ecran.mettreAJour()
         # Initialiser et afficher le jeu
         jeu = Jeu(ecran)
+        jeu.ajouterBandeau(50)  # Initialiser le bandeau du jeu
         jeu.ajouterGrille(4, 4, 5, 400)  # Initialiser la grille du jeu
         jeu.ajouterTuile(2)  # Ajouter une tuile de valeur 2
         jeu.ajouterTuile(4)  # Ajouter une tuile de valeur 4

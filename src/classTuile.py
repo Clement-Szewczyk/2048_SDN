@@ -59,11 +59,11 @@ class Tuile:
         # Retourne la couleur de la tuile en fonction de sa valeur
         return COULEURS_TUILES.get(self.valeur, (0, 0, 0))  # Noir par défaut pour les valeurs non définies
 
-    def afficherTuile(self, fenetre, grille):
+    def afficherTuile(self, fenetre, grille, ofsety):
         # Dessine la tuile à sa position sur la grille
         if self.x is not None and self.y is not None:
             x = self.x * grille.tailleTuileLargeur + grille.marge
-            y = self.y * grille.tailleTuileHauteur + grille.marge
+            y = self.y * grille.tailleTuileHauteur + grille.marge + ofsety
             pygame.draw.rect(fenetre, self.couleur, (x, y, grille.tailleTuileLargeur - 2 * grille.marge, grille.tailleTuileHauteur - 2 * grille.marge))
             # Afficher la valeur de la tuile
             font = pygame.font.Font(None, 40)
@@ -73,7 +73,7 @@ class Tuile:
 
     
 
-    def deplacerTuile(self, direction, fenetre, grille):
+    def deplacerTuile(self, direction, fenetre, grille, ofsety):
         # Déplacer la tuile dans la direction donnée
         if direction == "haut":
             while self.y > 0 and grille.grille[self.y - 1][self.x] == 0:
@@ -83,24 +83,24 @@ class Tuile:
                 # Mettre à jour la position de la tuile
                 self.y -= 1
             # Afficher la tuile à sa nouvelle position
-            self.afficherTuile(fenetre, grille)
+            self.afficherTuile(fenetre, grille, ofsety)
         elif direction == "bas":
             while self.y < grille.nbColonneHauteur - 1 and grille.grille[self.y + 1][self.x] == 0:
                 grille.grille[self.y][self.x] = 0
                 grille.grille[self.y + 1][self.x] = self.valeur
                 self.y += 1
-            self.afficherTuile(fenetre, grille)
+            self.afficherTuile(fenetre, grille, ofsety)
         elif direction == "gauche":
             while self.x > 0 and grille.grille[self.y][self.x - 1] == 0:
                 grille.grille[self.y][self.x] = 0
                 grille.grille[self.y][self.x - 1] = self.valeur
                 self.x -= 1
-            self.afficherTuile(fenetre, grille)
+            self.afficherTuile(fenetre, grille, ofsety)
         elif direction == "droite":
             while self.x < grille.nbColonneLargeur - 1 and grille.grille[self.y][self.x + 1] == 0:
                 grille.grille[self.y][self.x] = 0
                 grille.grille[self.y][self.x + 1] = self.valeur
                 self.x += 1
-            self.afficherTuile(fenetre, grille)
+            self.afficherTuile(fenetre, grille, ofsety)
 
         print(f"Tuile de valeur {self.valeur} déplacée en ({self.x}, {self.y})")

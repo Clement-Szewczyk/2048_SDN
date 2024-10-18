@@ -1,5 +1,6 @@
 from classGrille import Grille
 from classTuile import Tuile
+from classBandeau import Bandeau
 
 class Jeu:
     def __init__(self, Ecran):
@@ -7,6 +8,7 @@ class Jeu:
         self.fenetre = Ecran.fenetre
         self.largeur = Ecran.largeur
         self.grille = None
+        self.bandeau = None
         self.tuile = []
 
   
@@ -21,7 +23,7 @@ class Jeu:
     """
     def ajouterGrille(self, nbColonneLargeur, nbColonneHauteur, marge, hauteur):
             self.grille = Grille()
-            self.grille.creerGrille(nbColonneLargeur, nbColonneHauteur, self.largeur, hauteur, marge)
+            self.grille.creerGrille(nbColonneLargeur, nbColonneHauteur, self.largeur, hauteur, marge, self.bandeau.hauteurBandeau)
             #self.grille.afficherGrille(self.fenetre)
 
     """
@@ -36,6 +38,9 @@ class Jeu:
         self.tuile.append(tuile)
         #tuile.afficherTuile(self.fenetre, self.grille)
     
+    def ajouterBandeau(self, hauteur_bandeau):
+        self.bandeau = Bandeau(self.largeur, hauteur_bandeau)
+
 
     """
     Fonction afficherJeu
@@ -44,9 +49,10 @@ class Jeu:
     - aucun
     """
     def afficherJeu(self):
+        self.bandeau.afficherBandeau(self.fenetre, 0, 0)
         self.grille.afficherGrille(self.fenetre)
         for tuile in self.tuile:
-            tuile.afficherTuile(self.fenetre, self.grille)
+            tuile.afficherTuile(self.fenetre, self.grille, self.bandeau.hauteurBandeau)
     
 
     """
@@ -73,7 +79,7 @@ class Jeu:
         #deplacer toute les tuile dans la direction.
         self.TriTuile(direction)
         for tuile in self.tuile:
-            tuile.deplacerTuile(direction, self.fenetre, self.grille)
+            tuile.deplacerTuile(direction, self.fenetre, self.grille, self.bandeau.hauteurBandeau)
         self.afficherJeu()
         self.Ecran.mettreAJour()
 

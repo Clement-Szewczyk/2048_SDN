@@ -7,17 +7,17 @@ GRIS = (187, 173, 160)
 BLEU = (70, 130, 180)
 
 class Bandeau:
-    def __init__(self, largeur_fenetre, hauteur_bandeau=50):
+    def __init__(self, largeur_fenetre, hauteurBandeau=50):
         self.largeur_fenetre = largeur_fenetre
-        self.hauteur_bandeau = hauteur_bandeau
+        self.hauteurBandeau = hauteurBandeau
         self.font = pygame.font.Font(None, 36)
 
         # Définition du bouton de redémarrage
         self.bouton_redemarrer_rect = pygame.Rect(self.largeur_fenetre - 150, 10, 140, 30)
 
-    def afficher_bandeau(self, fenetre, score_actuel, score_maximal):
+    def afficherBandeau(self, fenetre, score_actuel, score_maximal):
         # Dessiner le bandeau
-        pygame.draw.rect(fenetre, GRIS, (0, 0, self.largeur_fenetre, self.hauteur_bandeau))
+        pygame.draw.rect(fenetre, GRIS, (0, 0, self.largeur_fenetre, self.hauteurBandeau))
 
         # Afficher le texte du score actuel
         texte_score_actuel = self.font.render(f"Score actuel: {score_actuel}", True, NOIR)
@@ -32,6 +32,6 @@ class Bandeau:
         texte_bouton = self.font.render("Redémarrer", True, BLANC)
         fenetre.blit(texte_bouton, (self.bouton_redemarrer_rect.x + 10, self.bouton_redemarrer_rect.y + 5))
 
-    def verifier_click(self, position_souris):
+    def verifierlick(self, position_souris):
         # Vérifier si le clic est sur le bouton de redémarrage
         return self.bouton_redemarrer_rect.collidepoint(position_souris)
