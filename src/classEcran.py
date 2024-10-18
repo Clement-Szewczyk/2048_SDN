@@ -1,8 +1,5 @@
 import pygame
 
-
-
-
 class Ecran:
     
     def __init__(self, largeur, hauteur, titre):
