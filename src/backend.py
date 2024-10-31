@@ -41,12 +41,18 @@ def login(adresseMail, motDePasse):
 
     if user and bcrypt.checkpw(motDePasse.encode('utf-8'), user[4].encode('utf-8')):  # Vérifier le mot de passe
         print(f"Connexion réussie pour : {user[1]} {user[2]}, Email : {user[3]}")  # Afficher l'information
-        return user[0]  # Retourner l'ID de l'utilisateur (supposé être à l'index 0)
+        return user[0]  # Retourner l'ID de l'utilisateur 
     
     print("Nom d'utilisateur ou mot de passe incorrect.")  # Afficher l'erreur
     return None  # Échec de l'authentification
 
 
+def existe_utilisateur(utilisateur_id):
+    """Vérifie si un utilisateur existe dans la table profil."""
+    cursor.execute("SELECT EXISTS(SELECT 1 FROM profil WHERE utilisateurId=%s)", (utilisateur_id,))
+    existe = cursor.fetchone()[0]  # Récupère le résultat de la requête
+
+    return bool(existe)  # Retourne True si l'utilisateur existe, sinon False
 
 def inserer_score(utilisateur_id, meilleur_score):
     """Insère un score dans la table profil pour un utilisateur donné."""
@@ -62,10 +68,11 @@ def inserer_score(utilisateur_id, meilleur_score):
 
 def afficher_score(utilisateur_id):
     """Renvoie le meilleur score d'un utilisateur donné."""
-    cursor.execute("SELECT meilleurScore FROM profil WHERE utilisateurId=%s ORDER BY meilleurScore DESC LIMIT 1", (utilisateur_id,))
+    cursor.execute("SELECT meilleurScore FROM profil WHERE utilisateurId=%s", (utilisateur_id,))
     meilleur_score = cursor.fetchone()  # Récupérer le meilleur score
 
     if meilleur_score:
+        print("meilleur_score[0] ",meilleur_score[0] )
         return meilleur_score[0]  # Retourne seulement le meilleur score
     else:
         print(f"Aucun score trouvé pour l'utilisateur ID {utilisateur_id}.")

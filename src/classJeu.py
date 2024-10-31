@@ -1,7 +1,7 @@
 from classGrille import Grille
 from classTuile import Tuile
 from classBandeau import Bandeau
-from backend import afficher_score,inserer_score
+from backend import afficher_score,inserer_score,update_score,existe_utilisateur
 import random
 
 class Jeu:
@@ -15,9 +15,13 @@ class Jeu:
         self.id = id_user
         self.score = 0
         self.score_maximal = afficher_score(id_user)
+        print("score max ", self.score_maximal)
+   
+
+
         
 
-  
+    
     """
     Fonction ajouterGrille 
         Elle permet de créer une grille de jeu
@@ -105,7 +109,10 @@ class Jeu:
               self.score = score 
              if self.score_maximal < score:
                 self.score_maximal = score 
-                inserer_score(self.id,self.score_maximal) 
+                if existe_utilisateur(self.id):
+                   update_score(self.id,self.score)
+                else: 
+                    inserer_score(self.id,self.score)
         self.ajouterTuile()
         self.afficherJeu()
         self.Ecran.mettreAJour()

@@ -145,7 +145,7 @@ def main():
                         if user:
                           #  message = f"Bienvenue, {user[1]} {user[2]}!"
                             running = False  # Fermer la fenêtre d'authentification
-                            return True  # Indique que l'authentification a réussi
+                            return user  # Indique que l'authentification a réussi
                         else:
                             message = "Nom d'utilisateur ou mot de passe incorrect."
                         input_login_email.text = ""

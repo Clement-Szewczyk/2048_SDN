@@ -16,7 +16,6 @@ def main():
     user = frontend.main()  # Vérifie si l'authentification a réussi
     #user = True
 
-
     if user:  # Si l'authentification a réussi
         ecran.clear()
         ecran.mettreAJour()
