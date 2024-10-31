@@ -13,8 +13,8 @@ def main():
     ecran = Ecran(800, 600, "Jeu")
 
     # Appel de la fonction main du fichier frontend pour l'authentification
-    #user = frontend.main()  # Vérifie si l'authentification a réussi
-    user = True
+    user = frontend.main()  # Vérifie si l'authentification a réussi
+    #user = True
 
     if user:  # Si l'authentification a réussi
         ecran.clear()
