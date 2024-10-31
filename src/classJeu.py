@@ -82,7 +82,6 @@ class Jeu:
             tuile.deplacerTuile(direction, self.fenetre, self.grille, self.bandeau.hauteurBandeau)
         self.afficherJeu()
         self.Ecran.mettreAJour()
-# rajouter methode gagnant verifier si score de user est >= 2048
         
         
         
