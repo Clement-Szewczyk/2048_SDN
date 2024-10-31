@@ -1,6 +1,7 @@
 from classGrille import Grille
 from classTuile import Tuile
 from classBandeau import Bandeau
+import random
 
 class Jeu:
     def __init__(self, Ecran):
@@ -32,9 +33,19 @@ class Jeu:
     Paramètres:
     - valeur: valeur de la tuile
     """
-    def ajouterTuile(self, valeur):
+    def ajouterTuile(self):
+        
+        valeur = 2 if random.random() < 0.9 else 4
         tuile = Tuile(valeur)
         tuile.creerTuile(self.grille)
+        self.tuile.append(tuile)
+        #tuile.afficherTuile(self.fenetre, self.grille)
+
+    def ajouterTuilePos(self, x, y, valeur):
+        tuile = Tuile(valeur)
+        tuile.x = x
+        tuile.y = y
+        tuile.creerTuilePos(self.grille, x, y)
         self.tuile.append(tuile)
         #tuile.afficherTuile(self.fenetre, self.grille)
     
@@ -65,6 +76,8 @@ class Jeu:
         self.fenetre.fill((187, 173, 160))
     
     def TriTuile(self, direction):
+        print("TRI !!!!!")
+        self.infotuile()
         #Tri des tuiles en fonction de la direction
         if direction == "haut":
             self.tuile.sort(key=lambda tuile: tuile.y)
@@ -79,10 +92,32 @@ class Jeu:
         #deplacer toute les tuile dans la direction.
         self.TriTuile(direction)
         for tuile in self.tuile:
-            tuile.deplacerTuile(direction, self.fenetre, self.grille, self.bandeau.hauteurBandeau)
+            
+            tuile.deplacerTuile(direction, self.fenetre, self.grille, self.bandeau.hauteurBandeau, self)
+        self.ajouterTuile()
         self.afficherJeu()
         self.Ecran.mettreAJour()
+<<<<<<< HEAD
+=======
+        print("Fin deplacement")
+>>>>>>> 5edafcfdb51cf83c7941330c651ddd2665febc4f
         
+
+    def getTuile(self, x, y):
+        #Récupérer la tuile en fonction de ses coordonnées
+        for tuile in self.tuile:
+            if tuile.x == x and tuile.y == y:
+                return tuile
+        return None
+
+    def supprimeTuile(self, tuile):
+        #Supprimer une tuile
+        tuile.supprimerTuile( self.grille)
+        self.tuile.remove(tuile)
+
+    def infotuile(self):
+        for tuile in self.tuile:
+            print(tuile)
         
         
 

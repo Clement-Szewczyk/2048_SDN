@@ -13,7 +13,8 @@ def main():
     ecran = Ecran(800, 600, "Jeu")
 
     # Appel de la fonction main du fichier frontend pour l'authentification
-    user = frontend.main()  # Vérifie si l'authentification a réussi
+    #user = frontend.main()  # Vérifie si l'authentification a réussi
+    user = True
 
     if user:  # Si l'authentification a réussi
         ecran.clear()
@@ -22,8 +23,8 @@ def main():
         jeu = Jeu(ecran)
         jeu.ajouterBandeau(50)  # Initialiser le bandeau du jeu
         jeu.ajouterGrille(4, 4, 5, 400)  # Initialiser la grille du jeu
-        jeu.ajouterTuile(2)  # Ajouter une tuile de valeur 2
-        jeu.ajouterTuile(4)  # Ajouter une tuile de valeur 4
+        jeu.ajouterTuile()  # Ajouter une tuile de valeur 2
+        jeu.ajouterTuile()  # Ajouter une tuile de valeur 4
         jeu.afficherJeu()  # Afficher l'état du jeu
         ecran.mettreAJour()  # Mettre à jour l'affichage de l'écran
 
@@ -45,6 +46,8 @@ def main():
                         jeu.deplacerTuile("gauche")
                     if event.key == pygame.K_RIGHT:
                         jeu.deplacerTuile("droite")
+                    
+   
     
     pygame.quit()  # Quitter Pygame à la fin
 

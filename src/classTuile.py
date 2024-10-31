@@ -24,36 +24,48 @@ COULEURS_TUILES = {
 }
 
 class Tuile:
+
+    id = 1
+
     def __init__(self, valeur):
         self.valeur = valeur
         self.couleur = self.miseAJourCouleurTuile()
         self.x = None
         self.y = None
+        self.id = Tuile.id
+        Tuile.id += 1
+
+    def __str__(self):
+        return f"Tuile {self.id} de valeur {self.valeur} en ({self.x}, {self.y})"
+    
 
     def deplacerTuile(self, nouvelle_x, nouvelle_y):
         self.x = nouvelle_x
         self.y = nouvelle_y
 
     def creerTuile(self, grille):
-        # Choisir aléatoirement un des bords (haut, bas, gauche, droite)
-        bord = random.choice(["haut", "bas", "gauche", "droite"])
-        
-        if bord == "haut":  # Si on place sur le bord supérieur
-            self.x = random.randint(0, grille.nbColonneLargeur - 1)
-            self.y = 0
-        elif bord == "bas":  # Si on place sur le bord inférieur
-            self.x = random.randint(0, grille.nbColonneLargeur - 1)
-            self.y = grille.nbColonneHauteur - 1
-        elif bord == "gauche":  # Si on place sur le bord gauche
-            self.x = 0
-            self.y = random.randint(0, grille.nbColonneHauteur - 1)
-        elif bord == "droite":  # Si on place sur le bord droit
-            self.x = grille.nbColonneLargeur - 1
-            self.y = random.randint(0, grille.nbColonneHauteur - 1)
 
-        # Mettre la valeur de la tuile dans la grille logique
-        grille.grille[self.y][self.x] = self.valeur
-        print(f"Tuile de valeur {self.valeur} placée en ({self.x}, {self.y}) sur le bord {bord}")
+        # Choisir aléatoirement une case vide
+        casesVides = []
+        for i in range(grille.nbColonneHauteur):
+            for j in range(grille.nbColonneLargeur):
+                if grille.grille[i][j] == 0:
+                    casesVides.append((i, j))
+        if casesVides:
+            self.y, self.x = random.choice(casesVides)
+            grille.grille[self.y][self.x] = self.valeur
+           
+    def creerTuilePos(self, grille, x, y):
+        if grille.grille[y][x] == 0:
+            self.x = x
+            self.y = y
+            grille.grille[y][x] = self.valeur
+            
+        else:
+            print(f"Erreur: La case ({x}, {y}) n'est pas vide.")
+    
+    
+
 
     def miseAJourCouleurTuile(self):
         # Retourne la couleur de la tuile en fonction de sa valeur
@@ -71,36 +83,98 @@ class Tuile:
             text_rect = text.get_rect(center=(x + (grille.tailleTuileLargeur - 2 * grille.marge) / 2, y + (grille.tailleTuileHauteur - 2 * grille.marge) / 2))
             fenetre.blit(text, text_rect)
 
-    
+    def supprimerTuile(self, grille):
+        # Supprime la tuile de la grille
+        if self.x is not None and self.y is not None:
+            grille.grille[self.y][self.x] = 0
+            self.x = None
+            self.y = None
 
-    def deplacerTuile(self, direction, fenetre, grille, ofsety):
-        # Déplacer la tuile dans la direction donnée
+
+    def fusionnerTuile(self, tuile, grille, jeu, pos):
+
+        valeur = self.valeur * 2
+        jeu.supprimeTuile(self)
+        jeu.supprimeTuile(tuile)
+        jeu.ajouterTuilePos(pos[0], pos[1], valeur)
+
+        return 0
+
+        
+
+    def deplacerTuile(self, direction, fenetre, grille, ofsety, jeu):
+        print("Je déplace la tuile ", self.id )
+        
+        if self.x is None or self.y is None:
+            print("Erreur: La position de la tuile n'est pas définie.")
+            return
+        
+
+
+       
         if direction == "haut":
-            while self.y > 0 and grille.grille[self.y - 1][self.x] == 0:
-                # Mettre à jour la grille logique
-                grille.grille[self.y][self.x] = 0
-                grille.grille[self.y - 1][self.x] = self.valeur
-                # Mettre à jour la position de la tuile
-                self.y -= 1
-            # Afficher la tuile à sa nouvelle position
-            self.afficherTuile(fenetre, grille, ofsety)
+            
+            while self.y > 0:
+                if grille.grille[self.y - 1][self.x] == 0:
+                    grille.grille[self.y][self.x] = 0
+                    grille.grille[self.y - 1][self.x] = self.valeur
+                    self.y -= 1
+                elif grille.grille[self.y - 1][self.x] == self.valeur:
+                    tuile2 = jeu.getTuile(self.x, self.y - 1)
+                    self.fusionnerTuile(tuile2, grille, jeu, (self.x-1, self.y))
+                    break
+                else:
+                    print("Je ne peux pas aller plus haut")
+                    break
+                
+            
+             
         elif direction == "bas":
-            while self.y < grille.nbColonneHauteur - 1 and grille.grille[self.y + 1][self.x] == 0:
-                grille.grille[self.y][self.x] = 0
-                grille.grille[self.y + 1][self.x] = self.valeur
-                self.y += 1
-            self.afficherTuile(fenetre, grille, ofsety)
+            
+            while self.y < grille.nbColonneHauteur - 1:
+                if grille.grille[self.y + 1][self.x] == 0:
+                    grille.grille[self.y][self.x] = 0
+                    grille.grille[self.y + 1][self.x] = self.valeur
+                    self.y += 1
+                elif grille.grille[self.y + 1][self.x] == self.valeur:
+                    tuile = jeu.getTuile(self.x, self.y + 1)
+                    self.fusionnerTuile(tuile, grille, jeu, (self.x, self.y+1))
+                    break
+                else:
+                    print("Je ne peux pas aller plus bas") 
+                    break
+            
+             
         elif direction == "gauche":
-            while self.x > 0 and grille.grille[self.y][self.x - 1] == 0:
-                grille.grille[self.y][self.x] = 0
-                grille.grille[self.y][self.x - 1] = self.valeur
-                self.x -= 1
-            self.afficherTuile(fenetre, grille, ofsety)
+           
+            while self.x > 0:
+                if grille.grille[self.y][self.x - 1] == 0:
+                    grille.grille[self.y][self.x] = 0
+                    grille.grille[self.y][self.x - 1] = self.valeur
+                    self.x -= 1
+                elif grille.grille[self.y][self.x - 1] == self.valeur:
+                    tuile = jeu.getTuile(self.x - 1, self.y)
+                    self.fusionnerTuile(tuile, grille, jeu, (self.x-1, self.y))
+                    break
+                else: 
+                    print("Je ne peux pas aller plus à gauche")
+                    break
+                    
+            
         elif direction == "droite":
-            while self.x < grille.nbColonneLargeur - 1 and grille.grille[self.y][self.x + 1] == 0:
-                grille.grille[self.y][self.x] = 0
-                grille.grille[self.y][self.x + 1] = self.valeur
-                self.x += 1
-            self.afficherTuile(fenetre, grille, ofsety)
 
-        print(f"Tuile de valeur {self.valeur} déplacée en ({self.x}, {self.y})")
+            while self.x < grille.nbColonneLargeur - 1:
+                if grille.grille[self.y][self.x + 1] == 0:
+                    grille.grille[self.y][self.x] = 0
+                    grille.grille[self.y][self.x + 1] = self.valeur
+                    self.x += 1
+                elif grille.grille[self.y][self.x + 1] == self.valeur:
+                    tuile = jeu.getTuile(self.x + 1, self.y)
+                    self.fusionnerTuile(tuile, grille, jeu, (self.x+1, self.y))
+                    break
+                else:
+                    print("Je ne peux pas aller plus à droite")
+                    break
+            
+        else:
+            print("Direction non reconnue")
