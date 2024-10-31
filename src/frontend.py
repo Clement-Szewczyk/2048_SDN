@@ -143,7 +143,7 @@ def main():
                     else:
                         user = login(input_login_email.text, input_login_password.text)
                         if user:
-                            message = f"Bienvenue, {user[1]} {user[2]}!"
+                          #  message = f"Bienvenue, {user[1]} {user[2]}!"
                             running = False  # Fermer la fenêtre d'authentification
                             return True  # Indique que l'authentification a réussi
                         else:

@@ -98,18 +98,21 @@ class Tuile:
         jeu.supprimeTuile(tuile)
         jeu.ajouterTuilePos(pos[0], pos[1], valeur)
 
-        return 0
+        return valeur
 
         
 
     def deplacerTuile(self, direction, fenetre, grille, ofsety, jeu):
+        valeur_resultat = None
         print("Je déplace la tuile ", self.id )
         
         if self.x is None or self.y is None:
             print("Erreur: La position de la tuile n'est pas définie.")
-            return
+            return None
         
 
+
+        
 
        
         if direction == "haut":
@@ -121,7 +124,7 @@ class Tuile:
                     self.y -= 1
                 elif grille.grille[self.y - 1][self.x] == self.valeur:
                     tuile2 = jeu.getTuile(self.x, self.y - 1)
-                    self.fusionnerTuile(tuile2, grille, jeu, (self.x-1, self.y))
+                    valeur_resultat =  self.fusionnerTuile(tuile2, grille, jeu, (self.x-1, self.y))
                     break
                 else:
                     print("Je ne peux pas aller plus haut")
@@ -138,7 +141,7 @@ class Tuile:
                     self.y += 1
                 elif grille.grille[self.y + 1][self.x] == self.valeur:
                     tuile = jeu.getTuile(self.x, self.y + 1)
-                    self.fusionnerTuile(tuile, grille, jeu, (self.x, self.y+1))
+                    valeur_resultat = self.fusionnerTuile(tuile, grille, jeu, (self.x, self.y+1))
                     break
                 else:
                     print("Je ne peux pas aller plus bas") 
@@ -154,7 +157,7 @@ class Tuile:
                     self.x -= 1
                 elif grille.grille[self.y][self.x - 1] == self.valeur:
                     tuile = jeu.getTuile(self.x - 1, self.y)
-                    self.fusionnerTuile(tuile, grille, jeu, (self.x-1, self.y))
+                    valeur_resultat =self.fusionnerTuile(tuile, grille, jeu, (self.x-1, self.y))
                     break
                 else: 
                     print("Je ne peux pas aller plus à gauche")
@@ -170,7 +173,7 @@ class Tuile:
                     self.x += 1
                 elif grille.grille[self.y][self.x + 1] == self.valeur:
                     tuile = jeu.getTuile(self.x + 1, self.y)
-                    self.fusionnerTuile(tuile, grille, jeu, (self.x+1, self.y))
+                    valeur_resultat = self.fusionnerTuile(tuile, grille, jeu, (self.x+1, self.y))
                     break
                 else:
                     print("Je ne peux pas aller plus à droite")
@@ -178,3 +181,5 @@ class Tuile:
             
         else:
             print("Direction non reconnue")
+
+        return valeur_resultat

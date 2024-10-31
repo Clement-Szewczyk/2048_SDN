@@ -16,11 +16,12 @@ def main():
     user = frontend.main()  # Vérifie si l'authentification a réussi
     #user = True
 
+
     if user:  # Si l'authentification a réussi
         ecran.clear()
         ecran.mettreAJour()
         # Initialiser et afficher le jeu
-        jeu = Jeu(ecran)
+        jeu = Jeu(ecran,user)
         jeu.ajouterBandeau(50)  # Initialiser le bandeau du jeu
         jeu.ajouterGrille(4, 4, 5, 400)  # Initialiser la grille du jeu
         jeu.ajouterTuile()  # Ajouter une tuile de valeur 2

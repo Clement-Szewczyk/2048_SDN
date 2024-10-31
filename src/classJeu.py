@@ -1,16 +1,21 @@
 from classGrille import Grille
 from classTuile import Tuile
 from classBandeau import Bandeau
+from backend import afficher_score,inserer_score
 import random
 
 class Jeu:
-    def __init__(self, Ecran):
+    def __init__(self, Ecran,id_user):
         self.Ecran = Ecran
         self.fenetre = Ecran.fenetre
         self.largeur = Ecran.largeur
         self.grille = None
         self.bandeau = None
         self.tuile = []
+        self.id = id_user
+        self.score = 0
+        self.score_maximal = afficher_score(id_user)
+        
 
   
     """
@@ -60,7 +65,7 @@ class Jeu:
     - aucun
     """
     def afficherJeu(self):
-        self.bandeau.afficherBandeau(self.fenetre, 0, 0)
+        self.bandeau.afficherBandeau(self.fenetre, self.score, self.score_maximal)
         self.grille.afficherGrille(self.fenetre)
         for tuile in self.tuile:
             tuile.afficherTuile(self.fenetre, self.grille, self.bandeau.hauteurBandeau)
@@ -90,10 +95,17 @@ class Jeu:
 
     def deplacerTuile(self, direction):
         #deplacer toute les tuile dans la direction.
+        score = 0
         self.TriTuile(direction)
         for tuile in self.tuile:
             
-            tuile.deplacerTuile(direction, self.fenetre, self.grille, self.bandeau.hauteurBandeau, self)
+         score= tuile.deplacerTuile(direction, self.fenetre, self.grille, self.bandeau.hauteurBandeau, self)
+         if score is not None:
+             if self.score < score:
+              self.score = score 
+             if self.score_maximal < score:
+                self.score_maximal = score 
+                inserer_score(self.id,self.score_maximal) 
         self.ajouterTuile()
         self.afficherJeu()
         self.Ecran.mettreAJour()
