@@ -97,7 +97,10 @@ class Jeu:
         self.ajouterTuile()
         self.afficherJeu()
         self.Ecran.mettreAJour()
+<<<<<<< HEAD
+=======
         print("Fin deplacement")
+>>>>>>> 5edafcfdb51cf83c7941330c651ddd2665febc4f
         
 
     def getTuile(self, x, y):
