@@ -11,129 +11,157 @@ class Jeu:
         self.largeur = Ecran.largeur
         self.grille = None
         self.bandeau = None
-        self.tuile = []
+        print("largeur", self.Ecran.largeur)
+        print("hauteur", self.Ecran.hauteur)
+        self.tuile = { }
+        self.movVel = 20
         self.id = id_user
         self.score = 0
         self.score_maximal = afficher_score(id_user)
         print("score max ", self.score_maximal)
-   
 
 
+    def dessiner(self):
+        self.fenetre.fill((205, 192, 180))
+
+        for tile in self.tuile.values():
+            tile.draw(self.fenetre)
+
+        self.grille.draw_grid(self.Ecran)
         
-
-    
-    """
-    Fonction ajouterGrille 
-        Elle permet de créer une grille de jeu
-    Paramètres:
-    - nbColonneLargeur: nombre de colonnes en largeur
-    - nbColonneHauteur: nombre de colonnes en hauteur
-    - marge: marge entre les cases de la grille
-    - hauteur: hauteur de la grille
-    """
-    def ajouterGrille(self, nbColonneLargeur, nbColonneHauteur, marge, hauteur):
-            self.grille = Grille()
-            self.grille.creerGrille(nbColonneLargeur, nbColonneHauteur, self.largeur, hauteur, marge, self.bandeau.hauteurBandeau)
-            #self.grille.afficherGrille(self.fenetre)
-
-    """
-    Fonction ajouterTuile
-        Elle permet de créer une tuile
-    Paramètres:
-    - valeur: valeur de la tuile
-    """
-    def ajouterTuile(self):
-        
-        valeur = 2 if random.random() < 0.9 else 4
-        tuile = Tuile(valeur)
-        tuile.creerTuile(self.grille)
-        self.tuile.append(tuile)
-        #tuile.afficherTuile(self.fenetre, self.grille)
-
-    def ajouterTuilePos(self, x, y, valeur):
-        tuile = Tuile(valeur)
-        tuile.x = x
-        tuile.y = y
-        tuile.creerTuilePos(self.grille, x, y)
-        self.tuile.append(tuile)
-        #tuile.afficherTuile(self.fenetre, self.grille)
-    
-    def ajouterBandeau(self, hauteur_bandeau):
-        self.bandeau = Bandeau(self.largeur, hauteur_bandeau)
-
-
-    """
-    Fonction afficherJeu
-        Elle permet d'afficher le jeu
-    Paramètres:
-    - aucun
-    """
-    def afficherJeu(self):
-        self.bandeau.afficherBandeau(self.fenetre, self.score, self.score_maximal)
-        self.grille.afficherGrille(self.fenetre)
-        for tuile in self.tuile:
-            tuile.afficherTuile(self.fenetre, self.grille, self.bandeau.hauteurBandeau)
-    
-
-    """
-    Fonction cacherJeu
-        Elle permet de cacher le jeu
-    Paramètres:
-    - aucun
-    """
-    def cacherJeu(self):
-        self.fenetre.fill((187, 173, 160))
-    
-    def TriTuile(self, direction):
-        print("TRI !!!!!")
-        self.infotuile()
-        #Tri des tuiles en fonction de la direction
-        if direction == "haut":
-            self.tuile.sort(key=lambda tuile: tuile.y)
-        elif direction == "bas":
-            self.tuile.sort(key=lambda tuile: tuile.y, reverse=True)
-        elif direction == "gauche":
-            self.tuile.sort(key=lambda tuile: tuile.x)
-        elif direction == "droite":
-            self.tuile.sort(key=lambda tuile: tuile.x, reverse=True)
-
-    def deplacerTuile(self, direction):
-        #deplacer toute les tuile dans la direction.
-        score = 0
-        self.TriTuile(direction)
-        for tuile in self.tuile:
-            
-         score= tuile.deplacerTuile(direction, self.fenetre, self.grille, self.bandeau.hauteurBandeau, self)
-         if score is not None:
-             if self.score < score:
-              self.score = score 
-             if self.score_maximal < score:
-                self.score_maximal = score 
-                if existe_utilisateur(self.id):
-                   update_score(self.id,self.score)
-                else: 
-                    inserer_score(self.id,self.score)
-        self.ajouterTuile()
-        self.afficherJeu()
+        #self.tuile = {"00" : Tuile(2, 0, 0, self.grille),"02" : Tuile(2, 0, 2, self.grille) }
         self.Ecran.mettreAJour()
         
+    def positionRandom(self, tiles):
+        row = None
+        col = None
+        while True: 
+            row = random.randrange(0, self.grille.ligne)
+            col = random.randrange(0, self.grille.col)
+
+            if f"{row}{col}" not in tiles:
+                break
+        return row, col
         
 
-    def getTuile(self, x, y):
-        #Récupérer la tuile en fonction de ses coordonnées
-        for tuile in self.tuile:
-            if tuile.x == x and tuile.y == y:
-                return tuile
-        return None
+    def genererTuile(self):
+        print("tuile")
+        tiles = {}
+        for _ in range(2):
+            row, col = self.positionRandom(tiles)
+            tiles[f"{row}{col}"] = Tuile(2, row, col, self.grille)
+        return tiles
+    
 
-    def supprimeTuile(self, tuile):
-        #Supprimer une tuile
-        tuile.supprimerTuile( self.grille)
-        self.tuile.remove(tuile)
-
-    def infotuile(self):
-        for tuile in self.tuile:
-            print(tuile)
-        
+    def updateTiles(self, sorted_tiles):
+        self.tuile.clear() 
+        for tile in sorted_tiles:
+            self.tuile[f"{tile.row}{tile.col}"] = tile
+        self.dessiner()
         
 
+
+    def endMove(self):
+        if (len(self.tuile) == 16):
+            print("Game Over")
+            return "Game Over"
+        row, col = self.positionRandom(self.tuile)
+
+        print("row", row)
+        print("col", col)
+        self.tuile[f"{row}{col}"] = Tuile(2, row, col, self.grille)
+        return "COntinue"
+
+           
+
+
+    def move_tiles(self, clock, direction):
+        updated = True
+        blocks = set()
+
+        for tile in self.tuile.values():
+            print(tile)
+
+
+        if direction == "left":
+            sort_func = lambda x: x.col
+            reverse = False
+            delta = (-self.movVel, 0)
+            boundary_check = lambda tile: tile.col == 0
+            get_next_tile = lambda tile: self.tuile.get(f"{tile.row}{tile.col - 1}")
+            merge_check = lambda tile, next_tile: tile.x > next_tile.x + self.movVel
+            move_check = (
+                lambda tile, next_tile: tile.x > next_tile.x + self.grille.rectLargeur + self.movVel
+            )
+            ceil = True
+        elif direction == "right":
+            sort_func = lambda x: x.col
+            reverse = True
+            delta = (self.movVel, 0)
+            boundary_check = lambda tile: tile.col == self.grille.col - 1
+            get_next_tile = lambda tile: self.tuile.get(f"{tile.row}{tile.col + 1}")
+            merge_check = lambda tile, next_tile: tile.x < next_tile.x - self.movVel
+            move_check = (
+                lambda tile, next_tile: tile.x < next_tile.x - self.grille.rectLargeur - self.movVel
+            )
+            ceil = True
+        elif direction == "up":
+            sort_func = lambda x: x.row
+            reverse = False
+            delta = (0, -self.movVel)
+            boundary_check = lambda tile: tile.row == 0
+            get_next_tile = lambda tile: self.tuile.get(f"{tile.row - 1}{tile.col}")
+            merge_check = lambda tile, next_tile: tile.y > next_tile.y + self.movVel
+            move_check = (
+                lambda tile, next_tile: tile.y > next_tile.y + self.grille.rectHauteur + self.movVel
+            )
+            ceil = True
+        elif direction == "down":
+            sort_func = lambda x: x.row
+            reverse = True
+            delta = (0, self.movVel)
+            boundary_check = lambda tile: tile.row == self.grille.ligne - 1
+            get_next_tile = lambda tile: self.tuile.get(f"{tile.row + 1}{tile.col}")
+            merge_check = lambda tile, next_tile: tile.y < next_tile.y - self.movVel
+            move_check = (
+                lambda tile, next_tile: tile.y < next_tile.y - self.grille.rectHauteur - self.movVel
+            )
+            ceil = True
+        else:
+            pass
+
+
+        while updated:
+            clock.tick(60)
+            updated = False
+            sorted_tiles = sorted(self.tuile.values(), key=sort_func, reverse=reverse)
+
+            for i, tile in enumerate(sorted_tiles):
+                if boundary_check(tile):
+                    continue
+                next_tile = get_next_tile(tile) 
+                if not next_tile:
+                    tile.move(delta)
+                    updated = True
+                elif (
+                    tile.value == next_tile.value
+                    and next_tile not in blocks
+                    and tile not in blocks):
+                    if merge_check(tile, next_tile):
+                        tile.move(delta)
+                    else:
+                        next_tile.value *= 2
+                        sorted_tiles.pop(i)
+                        blocks.add(next_tile)
+                elif move_check(tile, next_tile):
+                    tile.move(delta)
+                else:
+                    continue
+                
+                tile.set_pos(ceil)
+                updated = True
+            
+            self.updateTiles(sorted_tiles)
+        self.endMove()
+
+        
