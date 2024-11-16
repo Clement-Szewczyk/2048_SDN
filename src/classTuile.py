@@ -11,7 +11,7 @@ class Tuile:
     
     pygame.font.init()
 
-    FONT = pygame.font.SysFont("comicsans", 40)
+    FONT = pygame.font.SysFont("comicsans", 60, bold=True)
     FONT_COLOR = (0, 0, 0)
     COLORS = [
         (237, 229, 218),

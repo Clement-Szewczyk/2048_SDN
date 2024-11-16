@@ -20,8 +20,6 @@ class Jeu:
         self.largeur = Ecran.largeur
         self.grille = None
         self.bandeau = None
-        print("largeur", self.Ecran.largeur)
-        print("hauteur", self.Ecran.hauteur)
         self.tuile = { }
         self.movVel = 20
         self.id = id_user
@@ -74,7 +72,7 @@ class Jeu:
     Description : Cette fonction génère une tuile
     """
     def genererTuile(self):
-        print("tuile")
+        
         tuiles = {}
         for _ in range(2):
             ligne, col = self.positionRandom(tuiles)
@@ -107,7 +105,7 @@ class Jeu:
             return "Game Over"
         
         ligne, col = self.positionRandom(self.tuile)
-        self.tuile[f"{ligne}{col}"] = Tuile(2, ligne, col, self.grille)
+        self.tuile[f"{ligne}{col}"] = Tuile(random.choice([2, 4]), ligne, col, self.grille)
         return "Continue"
 
            
@@ -124,8 +122,6 @@ class Jeu:
         updated = True
         blocks = set()
 
-        for tile in self.tuile.values():
-            print(tile)
 
 
         if direction == "left":
@@ -142,12 +138,12 @@ class Jeu:
         elif direction == "right":
             sort_func = lambda x: x.col
             reverse = True
-            delta = (+self.movVel, 0)
+            delta = (self.movVel, 0)
             boundary_check = lambda tile: tile.col == self.grille.col - 1
             get_next_tile = lambda tile: self.tuile.get(f"{tile.ligne}{tile.col + 1}")
             merge_check = lambda tile, next_tile: tile.x < next_tile.x - self.movVel
             move_check = (
-                lambda tile, next_tile: tile.x < next_tile.x - self.grille.rectLargeur - self.movVel
+                lambda tile, next_tile: tile.x + self.grille.rectLargeur + self.movVel < next_tile.x 
             )
             ceil = False
         elif direction == "up":
@@ -169,7 +165,7 @@ class Jeu:
             get_next_tile = lambda tile: self.tuile.get(f"{tile.ligne + 1}{tile.col}")
             merge_check = lambda tile, next_tile: tile.y < next_tile.y - self.movVel
             move_check = (
-                lambda tile, next_tile: tile.y < next_tile.y - self.grille.rectHauteur - self.movVel
+                lambda tile, next_tile: tile.y + self.grille.rectHauteur + self.movVel < next_tile.y  
             )
             ceil = False
 
@@ -178,7 +174,10 @@ class Jeu:
         while updated:
             clock.tick(60)
             updated = False
+
             sorted_tiles = sorted(self.tuile.values(), key=sort_func, reverse=reverse)
+           
+
 
             for i, tile in enumerate(sorted_tiles):
                 if boundary_check(tile):
@@ -194,6 +193,7 @@ class Jeu:
                     if merge_check(tile, next_tile):
                         tile.move(delta)
                     else:
+                        print("FUSION")
                         next_tile.value *= 2
                         sorted_tiles.pop(i)
                         blocks.add(next_tile)
@@ -206,6 +206,6 @@ class Jeu:
                 updated = True
             
             self.MajTuile(sorted_tiles)
-        self.endMove()
+        return self.endMove()
 
         

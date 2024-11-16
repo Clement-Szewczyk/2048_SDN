@@ -12,7 +12,7 @@ def main():
     pygame.init()
     
     # Créer une instance de l'écran
-    ecran = Ecran(800, 600, "2048 SDN")
+    ecran = Ecran(800, 800, "2048 SDN")
     
     # Appel de la fonction main du fichier frontend pour l'authentification
     #user = frontend.main()  # Vérifie si l'authentification a réussi
