@@ -14,13 +14,13 @@ class Jeu:
 
     Description : Cette fonction initialise les attributs de la classe Jeu
     """
-    def __init__(self, Ecran,id_user):
+    def __init__(self, Ecran,id_user, bandeau):
         self.Ecran = Ecran
         self.fenetre = Ecran.fenetre
         self.largeur = Ecran.largeur
         self.grille = None
-        self.bandeau = None
-        self.tuile = { }
+        self.bandeau = bandeau 
+        self.tuile = {  }
         self.movVel = 20
         self.id = id_user
         self.score = 0
@@ -37,12 +37,14 @@ class Jeu:
     def dessiner(self):
         self.fenetre.fill((205, 192, 180))
 
+        # Dessiner le bandeau
+        self.bandeau.afficherBandeau(self.fenetre, self.score, self.score_maximal)
+
         for tile in self.tuile.values():
             tile.draw(self.fenetre)
 
         self.grille.draw_grid(self.Ecran)
         
-        #self.tuile = {"00" : Tuile(2, 0, 0, self.grille),"02" : Tuile(2, 0, 2, self.grille) }
         self.Ecran.mettreAJour()
 
 

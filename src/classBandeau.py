@@ -10,7 +10,7 @@ class Bandeau:
     def __init__(self, largeur_fenetre, hauteurBandeau=50):
         self.largeur_fenetre = largeur_fenetre
         self.hauteurBandeau = hauteurBandeau
-        self.font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font(None, 20)
 
         # Définition du bouton de redémarrage
         self.bouton_redemarrer_rect = pygame.Rect(self.largeur_fenetre - 150, 10, 140, 30)

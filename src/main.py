@@ -4,7 +4,8 @@ import pygame
 from classEcran import Ecran
 from classGrille import Grille
 from classJeu import Jeu
-#import frontend  # Importer le module frontend
+from classBandeau import Bandeau
+import frontend  # Importer le module frontend
 
 def main():
     FPS = 60
@@ -12,14 +13,15 @@ def main():
     pygame.init()
     
     # Créer une instance de l'écran
-    ecran = Ecran(800, 800, "2048 SDN")
-    
+    ecran = Ecran(400, 450, "2048 SDN")
+    # Créer une instance du bandeau
+    bandeau = Bandeau(ecran.largeur)  
     # Appel de la fonction main du fichier frontend pour l'authentification
-    #user = frontend.main()  # Vérifie si l'authentification a réussi
-    user = True
+    user = frontend.main()  # Vérifie si l'authentification a réussi
+    #user = True
 
     if user:  # Si l'authentification a réussi
-        jeu = Jeu(ecran,user)
+        jeu = Jeu(ecran,user, bandeau)
         clock = pygame.time.Clock()  
         jeu.grille = Grille(4, 4, ecran)
         jeu.dessiner()
@@ -49,7 +51,8 @@ def main():
                     if event.key == pygame.K_DOWN:
                         jeu.mouvement(clock, "down")
                     
-               
+             # Dessiner le bandeau
+            bandeau.afficherBandeau(ecran.fenetre, jeu.score, jeu.score_maximal)
             jeu.dessiner()
 
             

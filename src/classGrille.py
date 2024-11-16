@@ -17,11 +17,12 @@ class Grille:
         self.col = col
         self.rectHauteur = None
         self.rectLargeur = None
-
+        self.largeur = 400
+        self.hauteur = 400
         self.contourCouleur = (187, 173, 160)
-        self.contourEppaiseur = 10
-        self.rectHauteur = ecran.hauteur // self.ligne
-        self.rectLargeur = ecran.largeur // self.col
+        self.contourEppaiseur = 5
+        self.rectHauteur = self.hauteur / self.ligne
+        self.rectLargeur = self.largeur / self.col
         
     
     """
@@ -31,16 +32,13 @@ class Grille:
 
     Description : Cette fonction dessine la grille
     """
-    def draw_grid(self, ecran):        
+    def draw_grid(self, ecran, offsetY=50):        
         for ligne in range(1, self.ligne):
-            
-            y = ligne * self.rectHauteur
-            pygame.draw.line(ecran.fenetre, self.contourCouleur, (0,y), (ecran.largeur, y), self.contourEppaiseur)
+            y = ligne * self.rectHauteur + offsetY
+            pygame.draw.line(ecran.fenetre, self.contourCouleur, (0, y), (self.largeur, y), self.contourEppaiseur)
         
         for col in range(1, self.col):
-            
             x = col * self.rectLargeur
-            pygame.draw.line(ecran.fenetre, self.contourCouleur, (x,0), (x, ecran.hauteur), self.contourEppaiseur)
+            pygame.draw.line(ecran.fenetre, self.contourCouleur, (x, 0 + offsetY), (x, self.hauteur + offsetY), self.contourEppaiseur)
         
-        pygame.draw.rect(ecran.fenetre, self.contourCouleur, (0, 0, ecran.largeur, ecran.hauteur), self.contourEppaiseur)
-
+        pygame.draw.rect(ecran.fenetre, self.contourCouleur, (0, 0 + offsetY, self.largeur, self.hauteur), self.contourEppaiseur)

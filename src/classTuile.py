@@ -11,7 +11,7 @@ class Tuile:
     
     pygame.font.init()
 
-    FONT = pygame.font.SysFont("comicsans", 60, bold=True)
+    FONT = pygame.font.SysFont("comicsans", 30, bold=True)
     FONT_COLOR = (0, 0, 0)
     COLORS = [
         (237, 229, 218),
@@ -23,6 +23,10 @@ class Tuile:
         (237, 208, 115),
         (237, 204, 99),
         (236, 202, 80),
+        (236, 199, 65),
+        (236, 196, 47),
+        (236, 193, 40),
+        (236, 190, 30),
     ]
 
     """
@@ -43,6 +47,7 @@ class Tuile:
         self.RECT_HEIGHT = grille.rectHauteur
         self.x = col * self.RECT_WIDTH
         self.y = ligne * self.RECT_HEIGHT
+
 
     """
     Fonction __str__ : Retourne une chaîne de caractères
@@ -72,17 +77,16 @@ class Tuile:
 
     Description : Cette fonction dessine la tuile
     """
-    def draw(self, window):
+    def draw(self, window, offsetY=50):
         color = self.get_color()
-        pygame.draw.rect(window, color, (self.x, self.y, self.RECT_WIDTH, self.RECT_HEIGHT))
+        pygame.draw.rect(window, color, (self.x, self.y + offsetY, self.RECT_WIDTH, self.RECT_HEIGHT))
 
         text = self.FONT.render(str(self.value), 1, self.FONT_COLOR)
-        #text = str(self.value)
         window.blit(
             text,
             (
-                self.x + (self.RECT_WIDTH / 2 - text.get_width() /2), 
-                self.y + (self.RECT_HEIGHT / 2 - text.get_width() /2)
+                self.x + (self.RECT_WIDTH / 2 - text.get_width() / 2), 
+                self.y + offsetY + (self.RECT_HEIGHT / 2 - text.get_height() / 2)
             ),
         )
         
