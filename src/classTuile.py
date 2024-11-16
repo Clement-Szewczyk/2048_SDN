@@ -25,23 +25,53 @@ class Tuile:
         (236, 202, 80),
     ]
 
-    def __init__ (self, value, row, col, grille):
+    """
+    Fonction __init__ : Constructeur de la classe Tuile
+    Paramètres :
+    - value : Valeur de la tuile
+    - ligne : Ligne de la tuile
+    - col : Colonne de la tuile
+    - grille : Instance de la classe Grille
+
+    Description : Cette fonction initialise les attributs de la classe Tuile
+    """
+    def __init__ (self, value, ligne, col, grille):
         self.value = value
-        self.row = row
+        self.ligne = ligne
         self.col = col
         self.RECT_WIDTH = grille.rectLargeur
         self.RECT_HEIGHT = grille.rectHauteur
         self.x = col * self.RECT_WIDTH
-        self.y = row * self.RECT_HEIGHT
+        self.y = ligne * self.RECT_HEIGHT
 
+    """
+    Fonction __str__ : Retourne une chaîne de caractères
+    Paramètres : Aucun
+
+    Description : Cette fonction retourne une chaîne de caractères
+    """
     def __str__(self):
-        return f"Tuile: {self.value} at ({self.row}, {self.col})"
+        return f"Tuile: {self.value} at ({self.ligne}, {self.col})"
 
+    """
+    Fonction get_color : Retourne la couleur de la tuile
+    Paramètres : Aucun
+
+    Description : Cette fonction retourne la couleur de la tuile
+    """
     def get_color(self):
         color_index = int(math.log2(self.value)) -1
         color = self.COLORS[color_index]
         return color
 
+
+    """
+    Fonction draw : Dessine la tuile
+    Paramètres :
+    - window : Instance de la classe Ecran
+
+    Description : Cette fonction dessine la tuile
+    """
     def draw(self, window):
         color = self.get_color()
         pygame.draw.rect(window, color, (self.x, self.y, self.RECT_WIDTH, self.RECT_HEIGHT))
@@ -56,16 +86,28 @@ class Tuile:
             ),
         )
         
-
+    """
+    Fonction set_pos : Définit la position de la tuile
+    Paramètres :
+    - ceil : Arrondir à l'entier supérieur
+    
+    Description : Cette fonction définit la position de la tuile
+    """
     def set_pos(self, ceil=False):
         if ceil: 
-            self.row = math.ceil(self.y / self.RECT_HEIGHT)
+            self.ligne = math.ceil(self.y / self.RECT_HEIGHT)
             self.col = math.ceil(self.x / self.RECT_WIDTH)
         else:
-            self.row = math.floor(self.y / self.RECT_HEIGHT)
+            self.ligne = math.floor(self.y / self.RECT_HEIGHT)
             self.col = math.floor(self.x / self.RECT_WIDTH)
 
+    """
+    Fonction move : Déplace la tuile
+    Paramètres :
+    - delta : Déplacement
 
+    Description : Cette fonction déplace la tuile
+    """
     def move(self, delta):
         self.x += delta[0]
         self.y += delta[1]

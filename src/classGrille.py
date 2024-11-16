@@ -1,11 +1,17 @@
 import pygame
 import time
 
-# Couleurs et autres constantes pour la grille
-BLANC = (255, 255, 255)
-GRIS = (187, 173, 160)
-
 class Grille:
+
+    """
+    Fonction __init__ : Constructeur de la classe Grille
+    Paramètres :
+    - ligne : Nombre de lignes
+    - col : Nombre de colonnes
+    - ecran : Instance de la classe Ecran
+
+    Description : Cette fonction initialise les attributs de la classe Grille
+    """
     def __init__(self, ligne, col, ecran):
         self.ligne = ligne
         self.col = col
@@ -18,12 +24,17 @@ class Grille:
         self.rectLargeur = ecran.largeur // self.col
         
     
-    def draw_grid(self, ecran):
-        ##ecran.fenetre.fill((205, 192, 180))
-        
-        for row in range(1, self.ligne):
+    """
+    Fonction draw_grid : Dessine la grille
+    Paramètres :
+    - ecran : Instance de la classe Ecran
+
+    Description : Cette fonction dessine la grille
+    """
+    def draw_grid(self, ecran):        
+        for ligne in range(1, self.ligne):
             
-            y = row * self.rectHauteur
+            y = ligne * self.rectHauteur
             pygame.draw.line(ecran.fenetre, self.contourCouleur, (0,y), (ecran.largeur, y), self.contourEppaiseur)
         
         for col in range(1, self.col):

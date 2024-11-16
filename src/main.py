@@ -41,13 +41,13 @@ def main():
                         ecran.eteindre()  # Éteindre l'écran si la touche Échap est pressée
                         return
                     if event.key == pygame.K_LEFT:
-                        jeu.move_tiles(clock, "left")
+                        jeu.mouvement(clock, "left")
                     if event.key == pygame.K_RIGHT:
-                        jeu.move_tiles(clock, "right")
+                        jeu.mouvement(clock, "right")
                     if event.key == pygame.K_UP:
-                        jeu.move_tiles(clock, "up")
+                        jeu.mouvement(clock, "up")
                     if event.key == pygame.K_DOWN:
-                        jeu.move_tiles(clock, "down")
+                        jeu.mouvement(clock, "down")
                     
                
             jeu.dessiner()

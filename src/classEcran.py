@@ -4,7 +4,15 @@ from classGrille import Grille
 
 class Ecran:
     
+    """
+    Fonction __init__ : Constructeur de la classe Ecran
+    Paramètres :
+    - largeur : Largeur de l'écran
+    - hauteur : Hauteur de l'écran
+    - titre : Titre de l'écran
 
+    Description : Cette fonction initialise les attributs de la classe Ecran
+    """
     def __init__(self, largeur, hauteur, titre):
         self.largeur = largeur
         self.hauteur = hauteur
@@ -15,26 +23,30 @@ class Ecran:
         pygame.display.set_caption(self.titre)
 
     
+
     
+    """
+    Fonction afficherGrille
+        Elle permet d'afficher la grille
+    Paramètres:
+    - grille : Instance de la classe Grille
+    - ecran : Instance de la classe
+
+    Description : Cette fonction affiche la grille
+    """
     def afficherGrille(grille, ecran):
         grille.draw_grid(ecran)
 
 
-        
-
-
-    """
-    Fonction Clear
-        Elle permet d'enlver ce qui est afficher à l'écran
-    Paramètres : 
-
-    """
+    
 
     """
     Fonction mettreAJour
         Elle permet de mettre à jour l'écran
     Paramètres:
     - aucun
+
+    Description : Cette fonction met à jour l'écran
     """
     def mettreAJour(self):
         pygame.display.update()
@@ -44,6 +56,8 @@ class Ecran:
         Elle permet d'éteindre l'écran
     Paramètres:
     - aucun
+
+    Description : Cette fonction éteint l'écran
     """
     def eteindre(self):
         pygame.quit()
