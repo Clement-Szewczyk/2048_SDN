@@ -6,16 +6,27 @@ from backend import afficher_score,inserer_score,update_score,existe_utilisateur
 import random
 
 class Jeu:
-    def __init__(self, Ecran,id_user):
+
+    """
+    Fonction __init__ : Constructeur de la classe Jeu
+    Paramètres :
+    - Ecran : Instance de la classe Ecran
+    - id_user : Identifiant de l'utilisateur
+
+    Description : Cette fonction initialise les attributs de la classe Jeu
+    """
+    def __init__(self, Ecran,id_user, bandeau):
         self.Ecran = Ecran
         self.fenetre = Ecran.fenetre
         self.largeur = Ecran.largeur
         self.grille = None
-        self.bandeau = None
-        self.tuile = []
+        self.bandeau = bandeau 
+        self.tuile = {  }
+        self.movVel = 20
         self.id = id_user
         self.score = 0
         self.score_maximal = afficher_score(id_user)
+<<<<<<< HEAD
         self.font = pygame.font.Font(None, 50)  # Police pour le message de victoire
         self.victoire_affichee = False  # Variable pour vérifier si la victoire a déjà été affichée
         self.temps_debut_victoire = None  # Pour garder la trace du début du temps d'affichage
@@ -65,14 +76,18 @@ class Jeu:
     
     def ajouterBandeau(self, hauteur_bandeau):
         self.bandeau = Bandeau(self.largeur, hauteur_bandeau)
+=======
+        print("score max ", self.score_maximal)
+>>>>>>> 99c106882513831b3385d1c2e25c4af03365c670
 
 
     """
-    Fonction afficherJeu
-        Elle permet d'afficher le jeu
-    Paramètres:
-    - aucun
+    Fonction dessiner : Dessine la grille de jeu
+    Paramètres : Aucun
+
+    Description : Cette fonction dessine la grille de jeu
     """
+<<<<<<< HEAD
    
 # Fonction afficher_message_victoire permet de definir la façon d'afficher le message 
     def afficher_message_victoire(self):
@@ -129,73 +144,192 @@ class Jeu:
         print("elf.dialog_active",self.dialog_active)
         if self.dialog_active:
             self.handle_events()
+=======
+    def dessiner(self):
+        self.fenetre.fill((205, 192, 180))
 
-    """
-    Fonction cacherJeu
-        Elle permet de cacher le jeu
-    Paramètres:
-    - aucun
-    """
-    def cacherJeu(self):
-        self.fenetre.fill((187, 173, 160))
-    
-    def TriTuile(self, direction):
-        print("TRI !!!!!")
-        self.infotuile()
-        #Tri des tuiles en fonction de la direction
-        if direction == "haut":
-            self.tuile.sort(key=lambda tuile: tuile.y)
-        elif direction == "bas":
-            self.tuile.sort(key=lambda tuile: tuile.y, reverse=True)
-        elif direction == "gauche":
-            self.tuile.sort(key=lambda tuile: tuile.x)
-        elif direction == "droite":
-            self.tuile.sort(key=lambda tuile: tuile.x, reverse=True)
+        # Dessiner le bandeau
+        self.bandeau.afficherBandeau(self.fenetre, self.score, self.score_maximal)
+>>>>>>> 99c106882513831b3385d1c2e25c4af03365c670
 
-    def deplacerTuile(self, direction):
-        #deplacer toute les tuile dans la direction.
-        score = 0
-        self.TriTuile(direction)
-        for tuile in self.tuile:
-            
-         score= tuile.deplacerTuile(direction, self.fenetre, self.grille, self.bandeau.hauteurBandeau, self)
-         if score is not None:
-             if self.score < score:
-              self.score = score 
-             if self.score_maximal < score:
-                self.score_maximal = score 
-                if existe_utilisateur(self.id):
-                   update_score(self.id,self.score)
-                else: 
-                    inserer_score(self.id,self.score)
-        self.ajouterTuile()
-        self.afficherJeu()
+        for tile in self.tuile.values():
+            tile.draw(self.fenetre)
+
+        self.grille.draw_grid(self.Ecran)
+        
         self.Ecran.mettreAJour()
-        
+
+
+    """
+    Fonction positionRandom : Génère une position aléatoire pour une tuile
+    Paramètres :
+    - tuiles : Dictionnaire des tuiles
+
+    Description : Cette fonction génère une position aléatoire pour une tuile
+    """ 
+    def positionRandom(self, tuiles):
+        ligne = None
+        col = None
+        while True: 
+            ligne = random.randrange(0, self.grille.ligne)
+            col = random.randrange(0, self.grille.col)
+
+            if f"{ligne}{col}" not in tuiles:
+                break
+        return ligne, col
         
 
-    def getTuile(self, x, y):
-        #Récupérer la tuile en fonction de ses coordonnées
-        for tuile in self.tuile:
-            if tuile.x == x and tuile.y == y:
-                return tuile
-        return None
+    """
+    Fonction genererTuile : Génère une tuile
+    Paramètres : Aucun
 
-    def supprimeTuile(self, tuile):
-        #Supprimer une tuile
-        tuile.supprimerTuile( self.grille)
-        self.tuile.remove(tuile)
-
-    def infotuile(self):
-        for tuile in self.tuile:
-            print(tuile)
+    Description : Cette fonction génère une tuile
+    """
+    def genererTuile(self):
         
+        tuiles = {}
+        for _ in range(2):
+            ligne, col = self.positionRandom(tuiles)
+            tuiles[f"{ligne}{col}"] = Tuile(2, ligne, col, self.grille)
+        return tuiles
+    
+    """
+    Fonction MajTuile : Met à jour les tuiles
+    Paramètres :
+    - tuilleTrie : Liste des tuiles
+
+    Description : Cette fonction met à jour les tuiles
+    """
+    def MajTuile(self, tuilleTrie):
+        self.tuile.clear() 
+        for tuile in tuilleTrie:
+            self.tuile[f"{tuile.ligne}{tuile.col}"] = tuile
+        self.dessiner()
         
 #La fonction gagnat 
     def gagnat(self):
         if self.score == 2048 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
             self.afficher_message_victoire()
 
+<<<<<<< HEAD
     
 
     
+=======
+    """
+    Fonction endMove : Vérifie si le jeu est terminé
+    Paramètres : Aucun
+
+    Description : Cette fonction vérifie si le jeu est terminé
+    """
+    def endMove(self):
+        if (len(self.tuile) == 16):
+            print("Game Over")
+            return "Game Over"
+        
+        ligne, col = self.positionRandom(self.tuile)
+        self.tuile[f"{ligne}{col}"] = Tuile(random.choice([2, 4]), ligne, col, self.grille)
+        return "Continue"
+
+           
+
+    """
+    Fonction mouvement : Gère le mouvement des tuiles
+    Paramètres :
+    - clock : Horloge
+    - direction : Direction du mouvement
+
+    Description : Cette fonction gère le mouvement des tuiles
+    """
+    def mouvement(self, clock, direction):
+        updated = True
+        blocks = set()
+
+
+
+        if direction == "left":
+            sort_func = lambda x: x.col
+            reverse = False
+            delta = (-self.movVel, 0)
+            boundary_check = lambda tile: tile.col == 0
+            get_next_tile = lambda tile: self.tuile.get(f"{tile.ligne}{tile.col - 1}")
+            merge_check = lambda tile, next_tile: tile.x > next_tile.x + self.movVel
+            move_check = (
+                lambda tile, next_tile: tile.x > next_tile.x + self.grille.rectLargeur + self.movVel
+            )
+            ceil = True
+        elif direction == "right":
+            sort_func = lambda x: x.col
+            reverse = True
+            delta = (self.movVel, 0)
+            boundary_check = lambda tile: tile.col == self.grille.col - 1
+            get_next_tile = lambda tile: self.tuile.get(f"{tile.ligne}{tile.col + 1}")
+            merge_check = lambda tile, next_tile: tile.x < next_tile.x - self.movVel
+            move_check = (
+                lambda tile, next_tile: tile.x + self.grille.rectLargeur + self.movVel < next_tile.x 
+            )
+            ceil = False
+        elif direction == "up":
+            sort_func = lambda x: x.ligne
+            reverse = False
+            delta = (0, -self.movVel)
+            boundary_check = lambda tile: tile.ligne == 0
+            get_next_tile = lambda tile: self.tuile.get(f"{tile.ligne - 1}{tile.col}")
+            merge_check = lambda tile, next_tile: tile.y > next_tile.y + self.movVel
+            move_check = (
+                lambda tile, next_tile: tile.y > next_tile.y + self.grille.rectHauteur + self.movVel
+            )
+            ceil = True
+        elif direction == "down":
+            sort_func = lambda x: x.ligne
+            reverse = True
+            delta = (0, +self.movVel)
+            boundary_check = lambda tile: tile.ligne == self.grille.ligne - 1
+            get_next_tile = lambda tile: self.tuile.get(f"{tile.ligne + 1}{tile.col}")
+            merge_check = lambda tile, next_tile: tile.y < next_tile.y - self.movVel
+            move_check = (
+                lambda tile, next_tile: tile.y + self.grille.rectHauteur + self.movVel < next_tile.y  
+            )
+            ceil = False
+
+
+
+        while updated:
+            clock.tick(60)
+            updated = False
+
+            sorted_tiles = sorted(self.tuile.values(), key=sort_func, reverse=reverse)
+           
+
+
+            for i, tile in enumerate(sorted_tiles):
+                if boundary_check(tile):
+                    continue
+                next_tile = get_next_tile(tile) 
+                if not next_tile:
+                    tile.move(delta)
+        
+                elif (
+                    tile.value == next_tile.value
+                    and next_tile not in blocks
+                    and tile not in blocks):
+                    if merge_check(tile, next_tile):
+                        tile.move(delta)
+                    else:
+                        print("FUSION")
+                        next_tile.value *= 2
+                        sorted_tiles.pop(i)
+                        blocks.add(next_tile)
+                elif move_check(tile, next_tile):
+                    tile.move(delta)
+                else:
+                    continue
+                
+                tile.set_pos(ceil)
+                updated = True
+            
+            self.MajTuile(sorted_tiles)
+        return self.endMove()
+
+        
+>>>>>>> 99c106882513831b3385d1c2e25c4af03365c670
