@@ -243,7 +243,7 @@ class Jeu:
     def mouvement(self, clock, direction):
         updated = True
         blocks = set()
-
+        score = 0
 
 
         if direction == "left":
@@ -317,6 +317,16 @@ class Jeu:
                     else:
                         print("FUSION")
                         next_tile.value *= 2
+                        score = next_tile.value
+                        if score is not None:
+                         if self.score < score:
+                          self.score = score 
+                         if self.score_maximal < score:
+                          self.score_maximal = score 
+                          if existe_utilisateur(self.id):
+                           update_score(self.id,self.score)
+                          else: 
+                             inserer_score(self.id,self.score)
                         sorted_tiles.pop(i)
                         blocks.add(next_tile)
                 elif move_check(tile, next_tile):
