@@ -21,11 +21,11 @@ class Bandeau:
 
         # Afficher le texte du score actuel
         texte_score_actuel = self.font.render(f"Score actuel: {score_actuel}", True, NOIR)
-        fenetre.blit(texte_score_actuel, (20, 10))
+        fenetre.blit(texte_score_actuel, (10, 10))
 
         # Afficher le texte du score maximal
         texte_score_maximal = self.font.render(f"Score maximal: {score_maximal}", True, NOIR)
-        fenetre.blit(texte_score_maximal, (self.largeur_fenetre // 2 - 100, 10))
+        fenetre.blit(texte_score_maximal, (self.largeur_fenetre // 2 - 190, 30))
 
         # Afficher le bouton de redémarrage
         pygame.draw.rect(fenetre, BLEU, self.bouton_redemarrer_rect)
