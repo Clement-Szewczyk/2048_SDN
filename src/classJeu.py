@@ -243,7 +243,7 @@ class Jeu:
     def mouvement(self, clock, direction):
         updated = True
         blocks = set()
-        score = 0
+        delta_score = 0  # Score gagné dans ce mouvement
 
 
         if direction == "left":
@@ -317,17 +317,7 @@ class Jeu:
                     else:
                         print("FUSION")
                         next_tile.value *= 2
-                        score = next_tile.value
-                        #self.gagnat() 
-                        if score is not None:
-                         if self.score < score:
-                          self.score += score 
-                         if self.score_maximal < score:
-                          self.score_maximal = score 
-                          if existe_utilisateur(self.id):
-                           update_score(self.id,self.score)
-                          else: 
-                             inserer_score(self.id,self.score)
+                        delta_score += next_tile.value
                         sorted_tiles.pop(i)
                         blocks.add(next_tile)
                 elif move_check(tile, next_tile):
@@ -339,6 +329,17 @@ class Jeu:
                 updated = True
             
             self.MajTuile(sorted_tiles)
+        
+        # Mise à jour du score global après le mouvement
+        self.score += delta_score
+        if self.score > self.score_maximal:
+          self.score_maximal = self.score
+
+        # Mise à jour dans la base de données
+        if existe_utilisateur(self.id):
+         update_score(self.id, self.score)
+        else:
+          inserer_score(self.id, self.score)
         return self.endMove()
 
         
