@@ -7,10 +7,10 @@ import bcrypt
 db = mysql.connector.connect(
     host="localhost",
     user="root",  # Remplace par ton utilisateur MySQL
-    password="",  # Remplace par ton mot de passe MySQL
+    password="root",  # Remplace par ton mot de passe MySQL
     database="jeu2048",
-    #port=3305
-    port=3306
+    port=3305
+    #port=3306
 )
 
 cursor = db.cursor()

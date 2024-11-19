@@ -26,7 +26,6 @@ class Jeu:
         self.id = id_user
         self.score = 0
         self.score_maximal = afficher_score(id_user)
-<<<<<<< HEAD
         self.font = pygame.font.Font(None, 50)  # Police pour le message de victoire
         self.victoire_affichee = False  # Variable pour vérifier si la victoire a déjà été affichée
         self.temps_debut_victoire = None  # Pour garder la trace du début du temps d'affichage
@@ -76,9 +75,9 @@ class Jeu:
     
     def ajouterBandeau(self, hauteur_bandeau):
         self.bandeau = Bandeau(self.largeur, hauteur_bandeau)
-=======
+
         print("score max ", self.score_maximal)
->>>>>>> 99c106882513831b3385d1c2e25c4af03365c670
+
 
 
     """
@@ -87,7 +86,7 @@ class Jeu:
 
     Description : Cette fonction dessine la grille de jeu
     """
-<<<<<<< HEAD
+
    
 # Fonction afficher_message_victoire permet de definir la façon d'afficher le message 
     def afficher_message_victoire(self):
@@ -144,13 +143,13 @@ class Jeu:
         print("elf.dialog_active",self.dialog_active)
         if self.dialog_active:
             self.handle_events()
-=======
+
     def dessiner(self):
         self.fenetre.fill((205, 192, 180))
 
         # Dessiner le bandeau
         self.bandeau.afficherBandeau(self.fenetre, self.score, self.score_maximal)
->>>>>>> 99c106882513831b3385d1c2e25c4af03365c670
+
 
         for tile in self.tuile.values():
             tile.draw(self.fenetre)
@@ -211,11 +210,11 @@ class Jeu:
         if self.score == 2048 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
             self.afficher_message_victoire()
 
-<<<<<<< HEAD
+
     
 
     
-=======
+
     """
     Fonction endMove : Vérifie si le jeu est terminé
     Paramètres : Aucun
@@ -332,4 +331,4 @@ class Jeu:
         return self.endMove()
 
         
->>>>>>> 99c106882513831b3385d1c2e25c4af03365c670
+
