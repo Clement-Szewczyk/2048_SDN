@@ -136,8 +136,7 @@ class Jeu:
         for tuile in self.tuile:
             tuile.afficherTuile(self.fenetre, self.grille, self.bandeau.hauteurBandeau)
 
-        # Vérifier si le joueur a gagné
-        self.gagnat()
+        
 
         # Gérer les événements de la fenêtre de message
         print("elf.dialog_active",self.dialog_active)
@@ -207,7 +206,8 @@ class Jeu:
         
 #La fonction gagnat 
     def gagnat(self):
-        if self.score == 2048 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
+        print("score dans gagnant ",self.score)
+        if self.score == 8 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
             self.afficher_message_victoire()
 
 
@@ -318,9 +318,10 @@ class Jeu:
                         print("FUSION")
                         next_tile.value *= 2
                         score = next_tile.value
+                        #self.gagnat() 
                         if score is not None:
                          if self.score < score:
-                          self.score = score 
+                          self.score += score 
                          if self.score_maximal < score:
                           self.score_maximal = score 
                           if existe_utilisateur(self.id):
