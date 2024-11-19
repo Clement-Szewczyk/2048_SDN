@@ -7,14 +7,14 @@ from backend import signup, login
 pygame.init()
 
 # Configuration de l'écran
-screen = pygame.display.set_mode((700, 400))
+screen = pygame.display.set_mode((400, 450))
 pygame.display.set_caption("Authentification")
 
 # Définir les couleurs modernes
 WHITE = (255, 255, 255)
 LIGHT_GRAY = (245, 245, 245)
 DARK_GRAY = (80, 80, 80)
-BLUE = (70, 130, 180)
+BLUE = (93, 139, 193)
 LIGHT_BLUE = (100, 149, 237)
 HOVER_BLUE = (135, 206, 250)
 RED = (220, 20, 60)
@@ -33,7 +33,7 @@ class Button:
     def __init__(self, x, y, width, height, text):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
-        self.font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font(None, 30)
         self.active = False
 
     def draw(self, surface):
@@ -85,26 +85,26 @@ class InputBox:
 # Boucle principale
 def main():
     running = True
-    font = pygame.font.Font(None, 36)
+    font = pygame.font.Font(None, 28)
 
     # Champs d'entrée pour l'inscription
-    input_nom = InputBox(250, 50, 200, 40, "Nom")
-    input_prenom = InputBox(250, 100, 200, 40, "Prénom")
-    input_email = InputBox(250, 150, 200, 40, "Email")
-    input_password = InputBox(250, 200, 200, 40, "Mot de passe")
+    input_nom = InputBox(160, 50, 200, 40, "Nom")
+    input_prenom = InputBox(160, 100, 200, 40, "Prénom")
+    input_email = InputBox(160, 150, 200, 40, "Email")
+    input_password = InputBox(160, 200, 200, 40, "Mot de passe")
 
     # Champs d'entrée pour la connexion
-    input_login_email = InputBox(250, 50, 200, 40, "Email")
-    input_login_password = InputBox(250, 100, 200, 40, "Mot de passe")
+    input_login_email = InputBox(160, 60, 200, 40, "Email")
+    input_login_password = InputBox(160, 110, 200, 40, "Mot de passe")
 
     # État de l'application
     signup_mode = False  # Commence par la page de connexion
     message = ""  # Pour afficher les messages d'erreur ou de succès
 
     # Création des boutons
-    signup_button = Button(150, 250, 200, 50, "S'inscrire")
-    login_button = Button(370, 250, 200, 50, "Se connecter")
-    toggle_password_button = Button(460, 200, 40, 40, "👁️")  # Bouton pour afficher/cacher le mot de passe
+    signup_button = Button(20, 250, 140, 50, "S'inscrire")
+    login_button = Button(200, 250, 170, 50, "Se connecter")
+    toggle_password_button = Button(460, 200, 40, 40, "*")  # Bouton pour afficher/cacher le mot de passe
 
     while running:
         for event in pygame.event.get():
@@ -167,20 +167,20 @@ def main():
         # Afficher le formulaire
         if signup_mode:
             draw_text("Mode Inscription", font, DARK_GRAY, screen, 20, 20)
-            draw_text("Nom:", font, BLACK, screen, 50, 50)
+            draw_text("Nom:", font, BLACK, screen, 20, 60)
             input_nom.draw(screen)
-            draw_text("Prénom:", font, BLACK, screen, 50, 100)
+            draw_text("Prénom:", font, BLACK, screen, 20, 110)
             input_prenom.draw(screen)
-            draw_text("Email:", font, BLACK, screen, 50, 150)
+            draw_text("Email:", font, BLACK, screen, 20, 160)
             input_email.draw(screen)
-            draw_text("Mot de passe:", font, BLACK, screen, 50, 200)
+            draw_text("Mot de passe:", font, BLACK, screen, 20, 210)
             input_password.draw(screen)
             toggle_password_button.rect.topleft = (input_password.rect.x + input_password.rect.width + 10, input_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
         else:
             draw_text("Mode Connexion", font, DARK_GRAY, screen, 20, 20)
-            draw_text("Email:", font, BLACK, screen, 50, 50)
+            draw_text("Email:", font, BLACK, screen, 20, 70)
             input_login_email.draw(screen)
-            draw_text("Mot de passe:", font, BLACK, screen, 50, 100)
+            draw_text("Mot de passe:", font, BLACK, screen, 20, 120)
             input_login_password.draw(screen)
             toggle_password_button.rect.topleft = (input_login_password.rect.x + input_login_password.rect.width + 10, input_login_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
 
@@ -190,7 +190,7 @@ def main():
         toggle_password_button.draw(screen)
 
         # Afficher le message d'information
-        draw_text(message, font, RED, screen, 20, 300)
+        draw_text(message, font, RED, screen, 3, 350)
 
         pygame.display.flip()
 
