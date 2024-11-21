@@ -28,6 +28,24 @@ def draw_text(text, font, color, surface, x, y):
     textrect.topleft = (x, y)
     surface.blit(textobj, textrect)
 
+
+# Classe pour les liens
+class Link:
+    def __init__(self, x, y, text):
+        self.x = x
+        self.y = y
+        self.text = text
+        self.font = pygame.font.Font(None, 28)
+
+    def draw(self, surface):
+        draw_text(self.text, self.font, BLUE, surface, self.x, self.y)
+
+    def is_hovered(self, pos):
+        text_width = self.font.size(self.text)[0]
+        text_height = self.font.size(self.text)[1]
+        return self.x <= pos[0] <= self.x + text_width and self.y <= pos[1] <= self.y + text_height
+    
+
 # Classe pour les boutons
 class Button:
     def __init__(self, x, y, width, height, text):
@@ -101,6 +119,13 @@ def main():
     signup_mode = False  # Commence par la page de connexion
     message = ""  # Pour afficher les messages d'erreur ou de succès
 
+    # Liens pour changer de page
+    signup_link = Link(160, 320, "S'inscrire")  # Lien pour passer en mode inscription
+    login_link = Link(160, 320, "Se connecter")  # Lien pour passer en mode connexion
+
+    # Création des boutons
+    validate_button = Button(20, 250, 140, 50, "Valider")
+    
     # Création des boutons
     signup_button = Button(20, 250, 140, 50, "S'inscrire")
     login_button = Button(200, 250, 170, 50, "Se connecter")
@@ -124,10 +149,10 @@ def main():
             # Gérer les clics de souris pour les boutons
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = event.pos
-                if signup_button.is_hovered(pos):
+                if signup_link.is_hovered(pos) and not signup_mode:
                     signup_mode = True  # Passer à l'inscription
                     message = ""  # Réinitialiser le message
-                elif login_button.is_hovered(pos):
+                elif login_link.is_hovered(pos) and signup_mode:
                     signup_mode = False  # Passer à la connexion
                     message = ""  # Réinitialiser le message
                 elif toggle_password_button.is_hovered(pos):
@@ -137,13 +162,13 @@ def main():
                         input_login_password.toggle_password_visibility()  # Basculer la visibilité du mot de passe de connexion
 
                 # Validation des entrées uniquement après le clic sur le bouton "Se connecter"
-                if login_button.is_hovered(pos) and not signup_mode:
+                if validate_button.is_hovered(pos) and not signup_mode:
                     if not input_login_email.text or not input_login_password.text:
                         message = "Veuillez saisir votre email et mot de passe."
                     else:
                         user = login(input_login_email.text, input_login_password.text)
                         if user:
-                          #  message = f"Bienvenue, {user[1]} {user[2]}!"
+                            #  message = f"Bienvenue, {user[1]} {user[2]}!"
                             running = False  # Fermer la fenêtre d'authentification
                             return user  # Indique que l'authentification a réussi
                         else:
@@ -152,7 +177,7 @@ def main():
                         input_login_password.text = ""
 
                 # Validation des entrées uniquement après le clic sur le bouton "S'inscrire"
-                if signup_button.is_hovered(pos) and signup_mode:
+                if validate_button.is_hovered(pos) and signup_mode:
                     if not input_nom.text or not input_prenom.text or not input_email.text or not input_password.text:
                         message = "Veuillez saisir tous les champs requis."
                     else:
@@ -176,6 +201,10 @@ def main():
             draw_text("Mot de passe:", font, BLACK, screen, 20, 210)
             input_password.draw(screen)
             toggle_password_button.rect.topleft = (input_password.rect.x + input_password.rect.width + 10, input_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
+
+            # Afficher le lien pour se connecter
+            login_link.draw(screen)
+
         else:
             draw_text("Mode Connexion", font, DARK_GRAY, screen, 20, 20)
             draw_text("Email:", font, BLACK, screen, 20, 70)
@@ -184,9 +213,11 @@ def main():
             input_login_password.draw(screen)
             toggle_password_button.rect.topleft = (input_login_password.rect.x + input_login_password.rect.width + 10, input_login_password.rect.y)  # Positionner le bouton à droite du champ de mot de passe
 
+            # Afficher le lien pour s'inscrire
+            signup_link.draw(screen)
+
         # Dessiner les boutons
-        signup_button.draw(screen)
-        login_button.draw(screen)
+        validate_button.draw(screen)
         toggle_password_button.draw(screen)
 
         # Afficher le message d'information
