@@ -90,30 +90,42 @@ class Jeu:
    
 # Fonction afficher_message_victoire permet de definir la façon d'afficher le message 
     def afficher_message_victoire(self):
-        # Afficher la boîte de dialogue
-        if not self.dialog_active:
-            self.dialog_active = True  # La boîte de dialogue devient active
-            self.temps_debut_victoire = pygame.time.get_ticks()
+     print("Message de victoire affiché")
 
-        if self.dialog_active:
-            # Créer la boîte modale
-            pygame.draw.rect(self.fenetre, (255, 255, 255), self.dialog_rect)  # Fond de la boîte
-            pygame.draw.rect(self.fenetre, (0, 0, 0), self.x_button_rect)  # Bouton "X" en noir
-            pygame.draw.line(self.fenetre, (255, 255, 255), (self.x_button_rect.left, self.x_button_rect.top), 
-                             (self.x_button_rect.right, self.x_button_rect.bottom), 2)  # Ligne du bouton "X"
-            pygame.draw.line(self.fenetre, (255, 255, 255), (self.x_button_rect.right, self.x_button_rect.top), 
-                             (self.x_button_rect.left, self.x_button_rect.bottom), 2)  # Ligne du bouton "X"
-            
-            # Texte du message de victoire
-            message = self.font.render("Vous avez gagné !", True, (0, 0, 0))
-            message_rect = message.get_rect(center=self.dialog_rect.center)
-            self.fenetre.blit(message, message_rect)
+    # Si la boîte de dialogue n'est pas déjà active
+     if not self.dialog_active:
+        self.dialog_active = True
+        self.temps_debut_victoire = pygame.time.get_ticks()  # Temps de début pour la victoire
+        print("Message de victoire affiché11")
 
-            pygame.display.flip()  # Rafraîchir l'écran
+    # Vérification si le message de victoire doit être affiché
+     if self.dialog_active:
+        print("Message de victoire affiché22")
+
+        # Créer la boîte modale
+        pygame.draw.rect(self.fenetre, (255, 255, 255), self.dialog_rect)  # Fond de la boîte
+        pygame.draw.rect(self.fenetre, (0, 0, 0), self.x_button_rect)  # Bouton "X" en noir
+        pygame.draw.line(self.fenetre, (255, 255, 255), (self.x_button_rect.left, self.x_button_rect.top), 
+                         (self.x_button_rect.right, self.x_button_rect.bottom), 2)  # Ligne du bouton "X"
+        pygame.draw.line(self.fenetre, (255, 255, 255), (self.x_button_rect.right, self.x_button_rect.top), 
+                         (self.x_button_rect.left, self.x_button_rect.bottom), 2)  # Ligne du bouton "X"
+
+        # Texte du message de victoire
+        message = self.font.render("Vous avez gagné !", True, (0, 0, 0))
+        message_rect = message.get_rect(center=self.dialog_rect.center)
+        self.fenetre.blit(message, message_rect)
+
+        pygame.display.flip()  # Rafraîchir l'écran
+
+        # Vérifier si le temps d'affichage du message est écoulé (par exemple, 3 secondes)
+        if pygame.time.get_ticks() - self.temps_debut_victoire > 3000:  # 3 secondes
+            self.dialog_active = False  # Fermer le message après 3 secondes
+            pygame.display.update()  # Mettre à jour l'affichage
+
+
 
 # La fonction qui gére le bouton x pour fermer le message affiché
     def handle_events(self):
-     print("pygame.event.get()",pygame.event.get())
      for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             print(f"Click detected at {event.pos}")  # Affiche la position du clic
@@ -130,25 +142,14 @@ class Jeu:
 
 
 
-    def afficherJeu(self):
-        self.bandeau.afficherBandeau(self.fenetre, self.score, self.score_maximal)
-        self.grille.afficherGrille(self.fenetre)
-        for tuile in self.tuile:
-            tuile.afficherTuile(self.fenetre, self.grille, self.bandeau.hauteurBandeau)
-
-        
-
-        # Gérer les événements de la fenêtre de message
-        print("elf.dialog_active",self.dialog_active)
-        if self.dialog_active:
-            self.handle_events()
+    
 
     def dessiner(self):
         self.fenetre.fill((205, 192, 180))
 
         # Dessiner le bandeau
         self.bandeau.afficherBandeau(self.fenetre, self.score, self.score_maximal)
-
+        
 
         for tile in self.tuile.values():
             tile.draw(self.fenetre)
@@ -156,6 +157,7 @@ class Jeu:
         self.grille.draw_grid(self.Ecran)
         
         self.Ecran.mettreAJour()
+        
 
 
     """
@@ -204,11 +206,18 @@ class Jeu:
             self.tuile[f"{tuile.ligne}{tuile.col}"] = tuile
         self.dessiner()
         
+     
+        
+        
 #La fonction gagnat 
-    def gagnat(self):
-        print("score dans gagnant ",self.score)
-        if self.score == 8 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
-            self.afficher_message_victoire()
+    def gagnant(self):
+     print("score dans gagnant ", self.score)
+     if self.score == 2048 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
+        self.afficher_message_victoire()
+        
+        # Gérer les événements après l'affichage du message de victoire
+        if self.dialog_active:
+            self.handle_events()  # Appel de handle_events ici
 
 
     
@@ -332,6 +341,8 @@ class Jeu:
         
         # Mise à jour du score global après le mouvement
         self.score += delta_score
+        self.gagnant()    
+
         if self.score > self.score_maximal:
           self.score_maximal = self.score
 
