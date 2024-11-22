@@ -120,11 +120,11 @@ def main():
     message = ""  # Pour afficher les messages d'erreur ou de succès
 
     # Liens pour changer de page
-    signup_link = Link(160, 320, "S'inscrire")  # Lien pour passer en mode inscription
-    login_link = Link(160, 320, "Se connecter")  # Lien pour passer en mode connexion
+    signup_link = Link(170, 320, "S'inscrire")  # Lien pour passer en mode inscription
+    login_link = Link(170, 320, "Se connecter")  # Lien pour passer en mode connexion
 
     # Création des boutons
-    validate_button = Button(20, 250, 140, 50, "Valider")
+    validate_button = Button(160, 250, 140, 50, "Valider")
     
     # Création des boutons
     signup_button = Button(20, 250, 140, 50, "S'inscrire")
