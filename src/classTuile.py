@@ -12,8 +12,8 @@ class Tuile:
     pygame.font.init()
 
     FONT = pygame.font.SysFont("comicsans", 30, bold=True)
-    FONT_COLOR = (0, 0, 0)
-    COLORS = [
+    COULEUR_TEXT = (0, 0, 0)
+    COULEURS = [
         (237, 229, 218),
         (238, 225, 201),
         (243, 178, 122),
@@ -32,21 +32,24 @@ class Tuile:
     """
     Fonction __init__ : Constructeur de la classe Tuile
     Paramètres :
-    - value : Valeur de la tuile
-    - ligne : Ligne de la tuile
+    - valeur : Valeur de la tuile
+    - ligne : Ligne de la tuile 
     - col : Colonne de la tuile
-    - grille : Instance de la classe Grille
+    - rectLargeur : Largeur du rectangle de la grille
+    - rectHauteur : Hauteur du rectangle de la grille
+    - x : Position en x
+    - y : Position en y
 
     Description : Cette fonction initialise les attributs de la classe Tuile
     """
-    def __init__ (self, value, ligne, col, grille):
-        self.value = value
+    def __init__ (self, valeur, ligne, col, grille):
+        self.valeur = valeur
         self.ligne = ligne
         self.col = col
-        self.RECT_WIDTH = grille.rectLargeur
-        self.RECT_HEIGHT = grille.rectHauteur
-        self.x = col * self.RECT_WIDTH
-        self.y = ligne * self.RECT_HEIGHT
+        self.rectLargeur = grille.rectLargeur
+        self.rectHauteur = grille.rectHauteur
+        self.x = col * self.rectLargeur
+        self.y = ligne * self.rectHauteur
 
 
     """
@@ -56,63 +59,64 @@ class Tuile:
     Description : Cette fonction retourne une chaîne de caractères
     """
     def __str__(self):
-        return f"Tuile: {self.value} at ({self.ligne}, {self.col})"
+        return f"Tuile: {self.valeur} at ({self.ligne}, {self.col})"
 
     """
-    Fonction get_color : Retourne la couleur de la tuile
+    Fonction obtenirCouleur : Retourne la couleur de la tuile
     Paramètres : Aucun
 
     Description : Cette fonction retourne la couleur de la tuile
     """
-    def get_color(self):
-        color_index = int(math.log2(self.value)) -1
-        color = self.COLORS[color_index]
-        return color
+    def obtenirCouleur(self):
+        couleurIndex = int(math.log2(self.valeur)) -1
+        couleur = self.COULEURS[couleurIndex]
+        return couleur
 
 
     """
-    Fonction draw : Dessine la tuile
+    Fonction dessiner : Dessine la tuile
     Paramètres :
-    - window : Instance de la classe Ecran
+    - fenetre : Instance de la classe Ecran
 
     Description : Cette fonction dessine la tuile
     """
-    def draw(self, window, offsetY=50):
-        color = self.get_color()
-        pygame.draw.rect(window, color, (self.x, self.y + offsetY, self.RECT_WIDTH, self.RECT_HEIGHT))
+    def dessiner(self, fenetre, offsetY=50):
+        couleur = self.obtenirCouleur()
+        pygame.draw.rect(fenetre, couleur, 
+            (self.x, self.y + offsetY, self.rectLargeur, self.rectHauteur))
 
-        text = self.FONT.render(str(self.value), 1, self.FONT_COLOR)
-        window.blit(
+        text = self.FONT.render(str(self.valeur), 1, self.COULEUR_TEXT)
+        fenetre.blit(
             text,
             (
-                self.x + (self.RECT_WIDTH / 2 - text.get_width() / 2), 
-                self.y + offsetY + (self.RECT_HEIGHT / 2 - text.get_height() / 2)
+                self.x + (self.rectLargeur / 2 - text.get_width() / 2), 
+                self.y + offsetY + (self.rectHauteur / 2 - text.get_height()/2)
             ),
         )
         
     """
-    Fonction set_pos : Définit la position de la tuile
+    Fonction prendrePos : Définit la position de la tuile
     Paramètres :
-    - ceil : Arrondir à l'entier supérieur
+    - arrondir : Arrondir à l'entier supérieur
     
     Description : Cette fonction définit la position de la tuile
     """
-    def set_pos(self, ceil=False):
-        if ceil: 
-            self.ligne = math.ceil(self.y / self.RECT_HEIGHT)
-            self.col = math.ceil(self.x / self.RECT_WIDTH)
+    def prendrePos(self, arrondir=False):
+        if arrondir: 
+            self.ligne = math.ceil(self.y / self.rectHauteur)
+            self.col = math.ceil(self.x / self.rectLargeur)
         else:
-            self.ligne = math.floor(self.y / self.RECT_HEIGHT)
-            self.col = math.floor(self.x / self.RECT_WIDTH)
+            self.ligne = math.floor(self.y / self.rectHauteur)
+            self.col = math.floor(self.x / self.rectLargeur)
 
     """
-    Fonction move : Déplace la tuile
+    Fonction mouvement : Déplace la tuile
     Paramètres :
     - delta : Déplacement
 
     Description : Cette fonction déplace la tuile
     """
-    def move(self, delta):
+    def mouvement(self, delta):
         self.x += delta[0]
         self.y += delta[1]
 

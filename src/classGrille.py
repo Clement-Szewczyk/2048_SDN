@@ -15,7 +15,7 @@ class Grille:
     def __init__(self, ligne, col, ecran):
         self.ligne = ligne
         self.col = col
-        self.rectHauteur = None
+        self.rectHauteur = None 
         self.rectLargeur = None
         self.largeur = 400
         self.hauteur = 400

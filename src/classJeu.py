@@ -152,7 +152,7 @@ class Jeu:
         
 
         for tile in self.tuile.values():
-            tile.draw(self.fenetre)
+            tile.dessiner(self.fenetre)
 
         self.grille.draw_grid(self.Ecran)
         
@@ -212,7 +212,7 @@ class Jeu:
 #La fonction gagnat 
     def gagnant(self):
      print("score dans gagnant ", self.score)
-     if self.score == 2048 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
+     if self.score == 32 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
         self.afficher_message_victoire()
         
         # Gérer les événements après l'affichage du message de victoire
@@ -315,26 +315,26 @@ class Jeu:
                     continue
                 next_tile = get_next_tile(tile) 
                 if not next_tile:
-                    tile.move(delta)
+                    tile.mouvement(delta)
         
                 elif (
-                    tile.value == next_tile.value
+                    tile.valeur == next_tile.valeur
                     and next_tile not in blocks
                     and tile not in blocks):
                     if merge_check(tile, next_tile):
-                        tile.move(delta)
+                        tile.mouvement(delta)
                     else:
                         print("FUSION")
-                        next_tile.value *= 2
-                        delta_score += next_tile.value
+                        next_tile.valeur *= 2
+                        delta_score += next_tile.valeur
                         sorted_tiles.pop(i)
                         blocks.add(next_tile)
                 elif move_check(tile, next_tile):
-                    tile.move(delta)
+                    tile.mouvement(delta)
                 else:
                     continue
                 
-                tile.set_pos(ceil)
+                tile.prendrePos(ceil)
                 updated = True
             
             self.MajTuile(sorted_tiles)
