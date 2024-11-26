@@ -2,7 +2,7 @@ import pygame
 from classGrille import Grille
 from classTuile import Tuile
 from classBandeau import Bandeau
-from backend import afficher_score,inserer_score,update_score,existe_utilisateur
+from backend import User
 import random
 
 class Jeu:
@@ -16,6 +16,7 @@ class Jeu:
     Description : Cette fonction initialise les attributs de la classe Jeu
     """
     def __init__(self, Ecran,id_user, bandeau):
+        self.user = User()  # Crée une instance de la classe User
         self.Ecran = Ecran
         self.fenetre = Ecran.fenetre
         self.largeur = Ecran.largeur
@@ -25,7 +26,7 @@ class Jeu:
         self.movVel = 20
         self.id = id_user
         self.score = 0
-        self.score_maximal = afficher_score(id_user)
+        self.score_maximal = self.user.afficher_score(id_user)
         self.font = pygame.font.Font(None, 50)  # Police pour le message de victoire
         self.victoire_affichee = False  # Variable pour vérifier si la victoire a déjà été affichée
         self.temps_debut_victoire = None  # Pour garder la trace du début du temps d'affichage
@@ -212,7 +213,7 @@ class Jeu:
 #La fonction gagnat 
     def gagnant(self):
      print("score dans gagnant ", self.score)
-     if self.score == 32 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
+     if self.score == 4 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
         self.afficher_message_victoire()
         
         # Gérer les événements après l'affichage du message de victoire
@@ -250,6 +251,7 @@ class Jeu:
     Description : Cette fonction gère le mouvement des tuiles
     """
     def mouvement(self, clock, direction):
+        self.user =User ()
         updated = True
         blocks = set()
         delta_score = 0  # Score gagné dans ce mouvement
@@ -347,10 +349,10 @@ class Jeu:
           self.score_maximal = self.score
 
         # Mise à jour dans la base de données
-        if existe_utilisateur(self.id):
-         update_score(self.id, self.score)
+        if  self.user.existe_utilisateur(self.id):
+          self.user.update_score(self.id, self.score)
         else:
-          inserer_score(self.id, self.score)
+           self.user.inserer_score(self.id, self.score)
         return self.endMove()
 
         
