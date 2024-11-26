@@ -8,6 +8,7 @@ from classBandeau import Bandeau
 import frontend  # Importer le module frontend
 
 def main():
+    
     FPS = 60
     # Initialisation de Pygame
     pygame.init()

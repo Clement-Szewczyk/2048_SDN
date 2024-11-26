@@ -1,7 +1,7 @@
 # frontend.py
 
 import pygame
-from backend import signup, login
+from backend import  User
 
 # Initialisation de Pygame
 pygame.init()
@@ -102,6 +102,7 @@ class InputBox:
 
 # Boucle principale
 def main():
+    user = User()
     running = True
     font = pygame.font.Font(None, 28)
 
@@ -166,7 +167,7 @@ def main():
                     if not input_login_email.text or not input_login_password.text:
                         message = "Veuillez saisir votre email et mot de passe."
                     else:
-                        user = login(input_login_email.text, input_login_password.text)
+                        user = user.login(input_login_email.text, input_login_password.text)
                         if user:
                             #  message = f"Bienvenue, {user[1]} {user[2]}!"
                             running = False  # Fermer la fenêtre d'authentification
@@ -181,7 +182,7 @@ def main():
                     if not input_nom.text or not input_prenom.text or not input_email.text or not input_password.text:
                         message = "Veuillez saisir tous les champs requis."
                     else:
-                        if signup(input_nom.text, input_prenom.text, input_email.text, input_password.text):
+                        if user.signup(input_nom.text, input_prenom.text, input_email.text, input_password.text):
                             message = "Inscription réussie!"
                         else:
                             message = "L'adresse email est déjà utilisée."
