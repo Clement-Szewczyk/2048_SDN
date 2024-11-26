@@ -46,10 +46,10 @@ class Tuile:
         self.valeur = valeur
         self.ligne = ligne
         self.col = col
-        self.rectLargeur = grille.rectLargeur
-        self.rectHauteur = grille.rectHauteur
-        self.x = col * self.rectLargeur
-        self.y = ligne * self.rectHauteur
+        self.tuileLargeur = grille.tuileLargeur
+        self.tuileHauteur = grille.tuileHauteur
+        self.x = col * self.tuileLargeur
+        self.y = ligne * self.tuileHauteur
 
 
     """
@@ -83,14 +83,14 @@ class Tuile:
     def dessiner(self, fenetre, offsetY=50):
         couleur = self.obtenirCouleur()
         pygame.draw.rect(fenetre, couleur, 
-            (self.x, self.y + offsetY, self.rectLargeur, self.rectHauteur))
+            (self.x, self.y + offsetY, self.tuileLargeur, self.tuileHauteur))
 
         text = self.FONT.render(str(self.valeur), 1, self.COULEUR_TEXT)
         fenetre.blit(
             text,
             (
-                self.x + (self.rectLargeur / 2 - text.get_width() / 2), 
-                self.y + offsetY + (self.rectHauteur / 2 - text.get_height()/2)
+                self.x + (self.tuileLargeur / 2 - text.get_width() / 2), 
+                self.y + offsetY + (self.tuileHauteur / 2 - text.get_height()/2)
             ),
         )
         
@@ -103,11 +103,11 @@ class Tuile:
     """
     def prendrePos(self, arrondir=False):
         if arrondir: 
-            self.ligne = math.ceil(self.y / self.rectHauteur)
-            self.col = math.ceil(self.x / self.rectLargeur)
+            self.ligne = math.ceil(self.y / self.tuileHauteur)
+            self.col = math.ceil(self.x / self.tuileLargeur)
         else:
-            self.ligne = math.floor(self.y / self.rectHauteur)
-            self.col = math.floor(self.x / self.rectLargeur)
+            self.ligne = math.floor(self.y / self.tuileHauteur)
+            self.col = math.floor(self.x / self.tuileLargeur)
 
     """
     Fonction mouvement : Déplace la tuile
