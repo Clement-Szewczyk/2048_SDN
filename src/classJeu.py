@@ -129,7 +129,7 @@ class Jeu:
     def handle_events(self):
      for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
-            print(f"Click detected at {event.pos}")  # Affiche la position du clic
+            print(f"Click detecté at {event.pos}")  # Affiche la position du clic
             if self.x_button_rect.collidepoint(event.pos):
                 print("Closing victory dialog")  # Débogage
                 self.dialog_active = False  # Fermer la boîte de dialogue
@@ -153,7 +153,7 @@ class Jeu:
         
 
         for tile in self.tuile.values():
-            tile.draw(self.fenetre)
+            tile.dessiner(self.fenetre)
 
         self.grille.draw_grid(self.Ecran)
         
@@ -172,8 +172,8 @@ class Jeu:
         ligne = None
         col = None
         while True: 
-            ligne = random.randrange(0, self.grille.ligne)
-            col = random.randrange(0, self.grille.col)
+            ligne = random.randrange(0, self.grille.nbligne)
+            col = random.randrange(0, self.grille.nbcol)
 
             if f"{ligne}{col}" not in tuiles:
                 break
@@ -265,18 +265,18 @@ class Jeu:
             get_next_tile = lambda tile: self.tuile.get(f"{tile.ligne}{tile.col - 1}")
             merge_check = lambda tile, next_tile: tile.x > next_tile.x + self.movVel
             move_check = (
-                lambda tile, next_tile: tile.x > next_tile.x + self.grille.rectLargeur + self.movVel
+                lambda tile, next_tile: tile.x > next_tile.x + self.grille.tuileLargeur + self.movVel
             )
             ceil = True
         elif direction == "right":
             sort_func = lambda x: x.col
             reverse = True
             delta = (self.movVel, 0)
-            boundary_check = lambda tile: tile.col == self.grille.col - 1
+            boundary_check = lambda tile: tile.col == self.grille.nbcol - 1
             get_next_tile = lambda tile: self.tuile.get(f"{tile.ligne}{tile.col + 1}")
             merge_check = lambda tile, next_tile: tile.x < next_tile.x - self.movVel
             move_check = (
-                lambda tile, next_tile: tile.x + self.grille.rectLargeur + self.movVel < next_tile.x 
+                lambda tile, next_tile: tile.x + self.grille.tuileLargeur + self.movVel < next_tile.x 
             )
             ceil = False
         elif direction == "up":
@@ -287,18 +287,18 @@ class Jeu:
             get_next_tile = lambda tile: self.tuile.get(f"{tile.ligne - 1}{tile.col}")
             merge_check = lambda tile, next_tile: tile.y > next_tile.y + self.movVel
             move_check = (
-                lambda tile, next_tile: tile.y > next_tile.y + self.grille.rectHauteur + self.movVel
+                lambda tile, next_tile: tile.y > next_tile.y + self.grille.tuileHauteur + self.movVel
             )
             ceil = True
         elif direction == "down":
             sort_func = lambda x: x.ligne
             reverse = True
             delta = (0, +self.movVel)
-            boundary_check = lambda tile: tile.ligne == self.grille.ligne - 1
+            boundary_check = lambda tile: tile.ligne == self.grille.nbligne - 1
             get_next_tile = lambda tile: self.tuile.get(f"{tile.ligne + 1}{tile.col}")
             merge_check = lambda tile, next_tile: tile.y < next_tile.y - self.movVel
             move_check = (
-                lambda tile, next_tile: tile.y + self.grille.rectHauteur + self.movVel < next_tile.y  
+                lambda tile, next_tile: tile.y + self.grille.tuileHauteur + self.movVel < next_tile.y  
             )
             ceil = False
 
@@ -317,26 +317,26 @@ class Jeu:
                     continue
                 next_tile = get_next_tile(tile) 
                 if not next_tile:
-                    tile.move(delta)
+                    tile.mouvement(delta)
         
                 elif (
-                    tile.value == next_tile.value
+                    tile.valeur == next_tile.valeur
                     and next_tile not in blocks
                     and tile not in blocks):
                     if merge_check(tile, next_tile):
-                        tile.move(delta)
+                        tile.mouvement(delta)
                     else:
                         print("FUSION")
-                        next_tile.value *= 2
-                        delta_score += next_tile.value
+                        next_tile.valeur *= 2
+                        delta_score += next_tile.valeur
                         sorted_tiles.pop(i)
                         blocks.add(next_tile)
                 elif move_check(tile, next_tile):
-                    tile.move(delta)
+                    tile.mouvement(delta)
                 else:
                     continue
                 
-                tile.set_pos(ceil)
+                tile.prendrePos(ceil)
                 updated = True
             
             self.MajTuile(sorted_tiles)
