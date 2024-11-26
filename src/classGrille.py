@@ -32,6 +32,7 @@ class Grille:
     Fonction draw_grid : Dessine la grille
     Paramètres :
     - ecran : Instance de la classe Ecran
+    - decalageY : Décalage en y
 
     Description : Cette fonction dessine la grille
     """
