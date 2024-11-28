@@ -34,6 +34,9 @@ class User:
             return False
 
     def login(self, adresseMail, motDePasse):
+        print("adresseMail",adresseMail)
+        print("motDePasse",motDePasse)
+
         """Vérifie les informations d'identification de l'utilisateur."""
         self.cursor.execute("SELECT * FROM Utilisateur WHERE adresseMail=%s", (adresseMail,))
         user = self.cursor.fetchone()
@@ -43,6 +46,54 @@ class User:
             return user[0]  # Retourner l'ID de l'utilisateur 
         print("Nom d'utilisateur ou mot de passe incorrect.")  # Afficher l'erreur
         return None  # Échec de l'authentification
+    
+
+    def Email_existe(self, adresseMail):
+     """
+     Vérifie si une adresse email existe dans la base de données.
+     Retourne l'ID de l'utilisateur si l'email existe, sinon None.
+      """
+     # Exécuter la requête SQL pour vérifier l'adresse email
+     self.cursor.execute("SELECT id FROM Utilisateur WHERE adresseMail=%s", (adresseMail,))
+     user = self.cursor.fetchone()
+
+     if user:  # Si un utilisateur est trouvé
+        print(f"L'adresse email {adresseMail} existe dans la base de données.")
+        return user[0]  # Retourner l'ID de l'utilisateur
+     else:  # Aucun utilisateur trouvé
+        print(f"Aucun utilisateur trouvé pour l'adresse email {adresseMail}.")
+        return None
+    
+
+    def modifier_mot_de_passe(self, adresseMail, nouveau_mot_de_passe):
+     """
+     Modifie le mot de passe de l'utilisateur correspondant à l'adresse email donnée.
+     """
+      # Vérifier si l'email existe
+     user_id = self.Email_existe(adresseMail)
+     print("user_iddddd",user_id)
+     hashed_password = bcrypt.hashpw(nouveau_mot_de_passe.encode('utf-8'), bcrypt.gensalt())
+
+     if user_id:  # Si l'utilisateur existe
+        try:
+            # S'assurer que l'email est une chaîne et qu'il est correctement passé à la requête
+            email_saisi = str(adresseMail)  # Cela garantit que l'email est une chaîne
+            self.cursor.execute(
+                "UPDATE Utilisateur SET motDePasse=%s WHERE adresseMail=%s",
+                (hashed_password, email_saisi)  # Passer l'email comme chaîne
+            )
+            self.db.commit()
+            print(f"Le mot de passe a été modifié pour l'email {email_saisi}.")
+            return True
+        except Exception as e:
+            print(f"Erreur lors de la modification du mot de passe : {e}")
+            return False
+     else:
+        print(f"Aucun utilisateur trouvé pour l'adresse email {adresseMail}.")
+        return False
+
+
+
 
     def existe_utilisateur(self, utilisateur_id):
         """Vérifie si un utilisateur existe dans la table profil."""
