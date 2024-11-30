@@ -36,7 +36,7 @@ class Grille:
 
     Description : Cette fonction dessine la grille
     """
-    def draw_grid(self, ecran, decalageY=50):        
+    def dessinerGrille(self, ecran, decalageY=50):        
         for ligne in range(1, self.nbligne):
             y = ligne * self.tuileHauteur + decalageY
             pygame.draw.line(ecran.fenetre, self.contourCouleur, (0, y), 

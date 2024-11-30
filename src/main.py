@@ -15,6 +15,7 @@ def main():
     
     # Créer une instance de l'écran
     ecran = Ecran(400, 450, "2048 SDN")
+
     # Créer une instance du bandeau
     bandeau = Bandeau(ecran.largeur)  
     # Appel de la fonction main du fichier frontend pour l'authentification
@@ -24,7 +25,7 @@ def main():
     if user:  # Si l'authentification a réussi
         jeu = Jeu(ecran,user, bandeau)
         clock = pygame.time.Clock()  
-        jeu.grille = Grille(4, 4, ecran)
+        jeu.grille = Grille(4, 4)
         jeu.dessiner()
         jeu.tuile = jeu.genererTuile()
     
