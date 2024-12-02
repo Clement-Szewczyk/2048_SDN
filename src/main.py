@@ -50,6 +50,13 @@ def main():
                         jeu.mouvement(clock, "up")
                     if event.key == pygame.K_DOWN:
                         jeu.mouvement(clock, "down")
+
+                if event.type == pygame.MOUSEBUTTONDOWN:  # Si un clic souris est effectué
+                    if bandeau.verifierClick(event.pos):  # Vérifier si le clic est sur le bouton "Redémarrer"
+                        jeu.grille = Grille(4, 4, ecran)  # Réinitialiser la grille
+                        jeu.score = 0  # Réinitialiser le score
+                        jeu.tuile = jeu.genererTuile()  # Régénérer la tuile
+                        jeu.dessiner()  # Redessiner le jeu
                     
              # Dessiner le bandeau
             bandeau.afficherBandeau(ecran.fenetre, jeu.score, jeu.score_maximal)
