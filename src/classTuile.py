@@ -80,17 +80,17 @@ class Tuile:
 
     Description : Cette fonction dessine la tuile
     """
-    def dessiner(self, fenetre, offsetY=50):
+    def dessiner(self, fenetre, decalageY=50):
         couleur = self.obtenirCouleur()
         pygame.draw.rect(fenetre, couleur, 
-            (self.x, self.y + offsetY, self.tuileLargeur, self.tuileHauteur))
+            (self.x, self.y + decalageY, self.tuileLargeur, self.tuileHauteur))
 
         text = self.FONT.render(str(self.valeur), 1, self.COULEUR_TEXT)
         fenetre.blit(
             text,
             (
                 self.x + (self.tuileLargeur / 2 - text.get_width() / 2), 
-                self.y + offsetY + (self.tuileHauteur / 2 -text.get_height()/2)
+                self.y + decalageY + (self.tuileHauteur / 2 -text.get_height()/2)
             ),
         )
         

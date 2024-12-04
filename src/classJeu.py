@@ -11,11 +11,11 @@ class Jeu:
     Fonction __init__ : Constructeur de la classe Jeu
     Paramètres :
     - Ecran : Instance de la classe Ecran
-    - id_user : Identifiant de l'utilisateur
+    - idUtilisateur : Identifiant de l'utilisateur
 
     Description : Cette fonction initialise les attributs de la classe Jeu
     """
-    def __init__(self, Ecran,id_user, bandeau):
+    def __init__(self, Ecran,idUtilisateur, bandeau):
         self.user = User()  # Crée une instance de la classe User
         self.Ecran = Ecran
         self.fenetre = Ecran.fenetre
@@ -24,9 +24,9 @@ class Jeu:
         self.bandeau = bandeau 
         self.tuile = {  }
         self.movVel = 20
-        self.id = id_user
+        self.id = idUtilisateur
         self.score = 0
-        self.score_maximal = self.user.afficher_score(id_user)
+        self.score_maximal = self.user.afficher_score(idUtilisateur)
         # Police pour le message de victoire
         self.font = pygame.font.Font(None, 50) 
         # Variable pour vérifier si la victoire a déjà été affichée
@@ -221,8 +221,8 @@ class Jeu:
         ligne = None
         col = None
         while True: 
-            ligne = random.randrange(0, self.grille.nbligne)
-            col = random.randrange(0, self.grille.nbcol)
+            ligne = random.randrange(0, self.grille.nbLigne)
+            col = random.randrange(0, self.grille.nbCol)
 
             if f"{ligne}{col}" not in tuiles:
                 break
@@ -311,7 +311,7 @@ class Jeu:
             funcTri = lambda x: x.col
             inverse = True
             delta = (self.movVel, 0)
-            checkLimite = lambda tuile: tuile.col == self.grille.nbcol - 1
+            checkLimite = lambda tuile: tuile.col == self.grille.nbCol - 1
             prendProchTuile = lambda tuile: self.tuile.get(
                 f"{tuile.ligne}{tuile.col + 1}")
             checkFusion = (lambda tuile, 
@@ -341,7 +341,7 @@ class Jeu:
             funcTri = lambda x: x.ligne
             inverse = True
             delta = (0, +self.movVel)
-            checkLimite = lambda tuile: tuile.ligne == self.grille.nbligne - 1
+            checkLimite = lambda tuile: tuile.ligne == self.grille.nbLigne - 1
             prendProchTuile = lambda tuile: self.tuile.get(
                 f"{tuile.ligne + 1}{tuile.col}")
             checkFusion = (lambda tuile, prochaineTuile: tuile.y < 

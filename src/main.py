@@ -20,7 +20,7 @@ def main():
     bandeau = Bandeau(ecran.largeur)  
     # Appel de la fonction main du fichier frontend pour l'authentification
     user = frontend.main()  # Vérifie si l'authentification a réussi
-    #user = True
+    user = True
 
     if user:  # Si l'authentification a réussi
         jeu = Jeu(ecran,user, bandeau)
