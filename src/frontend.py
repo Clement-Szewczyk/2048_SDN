@@ -115,21 +115,24 @@ def main():
     # Champs d'entrée pour la connexion
     input_login_email = InputBox(160, 60, 200, 40, "Email")
     input_login_password = InputBox(160, 110, 200, 40, "Mot de passe")
+    # Champs d'entrée pour la modification de mot de passe 
+    input_login_email_pass = InputBox(160, 60, 200, 40, "Email")
+    input_login_password_pass = InputBox(160, 110, 200, 40, "Mot de passe")
 
     # État de l'application
     signup_mode = False  # Commence par la page de connexion
     message = ""  # Pour afficher les messages d'erreur ou de succès
 
+    forgot_password_mode = False
+    message = ""
+
     # Liens pour changer de page
-    signup_link = Link(170, 320, "S'inscrire")  # Lien pour passer en mode inscription
+    signup_link = Link(50, 320, "S'inscrire")  # Lien pour passer en mode inscription
     login_link = Link(170, 320, "Se connecter")  # Lien pour passer en mode connexion
+    Password_link = Link(170, 320, "Mot de passe oublier ?")
 
     # Création des boutons
     validate_button = Button(160, 250, 140, 50, "Valider")
-    
-    # Création des boutons
-    signup_button = Button(20, 250, 140, 50, "S'inscrire")
-    login_button = Button(200, 250, 170, 50, "Se connecter")
     toggle_password_button = Button(460, 200, 40, 40, "*")  # Bouton pour afficher/cacher le mot de passe
 
     while running:
@@ -143,6 +146,9 @@ def main():
                 input_prenom.handle_event(event)
                 input_email.handle_event(event)
                 input_password.handle_event(event)
+            elif forgot_password_mode:
+                input_login_email_pass.handle_event(event)
+                input_login_password_pass.handle_event(event)
             else:
                 input_login_email.handle_event(event)
                 input_login_password.handle_event(event)
@@ -156,9 +162,17 @@ def main():
                 elif login_link.is_hovered(pos) and signup_mode:
                     signup_mode = False  # Passer à la connexion
                     message = ""  # Réinitialiser le message
+                elif Password_link.is_hovered(pos) and not forgot_password_mode:
+                    forgot_password_mode= True
+                    message= ""
+                elif login_link.is_hovered(pos) and forgot_password_mode:
+                    forgot_password_mode = False  # Passer à la connexion
+                    message = ""
                 elif toggle_password_button.is_hovered(pos):
                     if signup_mode:
                         input_password.toggle_password_visibility()  # Basculer la visibilité du mot de passe d'inscription
+                    elif forgot_password_mode:
+                        input_login_password_pass.toggle_password_visibility()  
                     else:
                         input_login_password.toggle_password_visibility()  # Basculer la visibilité du mot de passe de connexion
 
@@ -169,7 +183,6 @@ def main():
                     else:
                         user = user.login(input_login_email.text, input_login_password.text)
                         if user:
-                            #  message = f"Bienvenue, {user[1]} {user[2]}!"
                             running = False  # Fermer la fenêtre d'authentification
                             return user  # Indique que l'authentification a réussi
                         else:
@@ -186,6 +199,17 @@ def main():
                             message = "Inscription réussie!"
                         else:
                             message = "L'adresse email est déjà utilisée."
+
+                # Validation des entrées uniquement après le clic sur le bouton "mot de passe oublier"
+                if validate_button.is_hovered(pos) and forgot_password_mode:
+                    if  not input_login_email_pass.text or not input_login_password_pass.text:
+                        message = "Veuillez saisir tous les champs requis."
+                    else:
+                        if user.Email_existe(input_login_email_pass.text):
+                            user.modifier_mot_de_passe(input_login_email_pass.text,input_login_password_pass.text)
+                            message = "Modification réussite!"
+                        else:
+                            message = "Erreur dans l'adresse email."
 
         # Dessiner l'écran avec un fond blanc
         screen.fill(WHITE)
@@ -205,7 +229,15 @@ def main():
 
             # Afficher le lien pour se connecter
             login_link.draw(screen)
-
+            
+        elif forgot_password_mode:
+            draw_text("Réinitialiser Connexion", font, DARK_GRAY, screen, 20, 20)
+            draw_text("Email:", font, BLACK, screen, 20, 70)
+            input_login_email_pass.draw(screen)
+            draw_text("Mot de passe:", font, BLACK, screen, 20, 120)
+            input_login_password_pass.draw(screen)
+            toggle_password_button.rect.topleft = (input_login_password_pass.rect.x + input_login_password_pass.rect.width + 10, input_login_password_pass.rect.y)  # Positionner le bouton à droite du champ de mot de passe
+            login_link.draw(screen)
         else:
             draw_text("Mode Connexion", font, DARK_GRAY, screen, 20, 20)
             draw_text("Email:", font, BLACK, screen, 20, 70)
@@ -216,6 +248,7 @@ def main():
 
             # Afficher le lien pour s'inscrire
             signup_link.draw(screen)
+            Password_link.draw(screen)
 
         # Dessiner les boutons
         validate_button.draw(screen)
