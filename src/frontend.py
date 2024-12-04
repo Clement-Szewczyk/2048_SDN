@@ -129,7 +129,7 @@ def main():
     # Liens pour changer de page
     signup_link = Link(50, 320, "S'inscrire")  # Lien pour passer en mode inscription
     login_link = Link(170, 320, "Se connecter")  # Lien pour passer en mode connexion
-    Password_link = Link(170, 320, "Mot de passe oublier ?")
+    Password_link = Link(170, 320, "Mot de passe oublié ?")
 
     # Création des boutons
     validate_button = Button(160, 250, 140, 50, "Valider")

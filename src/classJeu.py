@@ -66,7 +66,36 @@ class Jeu:
                                     self.bandeau.hauteurBandeau)
             #self.grille.afficherGrille(self.fenetre)
 
-            
+
+    """
+    Fonction ajouterTuile
+        Elle permet de créer une tuile
+    Paramètres:
+    - valeur: valeur de la tuile
+    """
+    def ajouterTuile(self):
+        
+        valeur = 2 if random.random() < 0.9 else 4
+        tuile = Tuile(valeur)
+        tuile.creerTuile(self.grille)
+        self.tuile.append(tuile)
+        #tuile.afficherTuile(self.fenetre, self.grille) 
+
+
+    """
+    def ajouterTuilePos(self, x, y, valeur):
+        tuile = Tuile(valeur)
+        tuile.x = x
+        tuile.y = y
+        tuile.creerTuilePos(self.grille, x, y)
+        self.tuile.append(tuile)
+        #tuile.afficherTuile(self.fenetre, self.grille)
+    """ 
+
+    def ajouterBandeau(self, hauteur_bandeau):
+        self.bandeau = Bandeau(self.largeur, hauteur_bandeau)
+
+        print("score max ", self.score_maximal)    
 
     """
     Fonction dessiner : Dessine tous le jeu 
@@ -90,33 +119,7 @@ class Jeu:
         self.Ecran.mettreAJour()
         
 
-    """
-    Fonction ajouterTuile
-        Elle permet de créer une tuile
-    Paramètres:
-    - valeur: valeur de la tuile
-    """
-    def ajouterTuile(self):
-        
-        valeur = 2 if random.random() < 0.9 else 4
-        tuile = Tuile(valeur)
-        tuile.creerTuile(self.grille)
-        self.tuile.append(tuile)
-        #tuile.afficherTuile(self.fenetre, self.grille)
-
-    def ajouterTuilePos(self, x, y, valeur):
-        tuile = Tuile(valeur)
-        tuile.x = x
-        tuile.y = y
-        tuile.creerTuilePos(self.grille, x, y)
-        self.tuile.append(tuile)
-        #tuile.afficherTuile(self.fenetre, self.grille)
     
-    def ajouterBandeau(self, hauteur_bandeau):
-        self.bandeau = Bandeau(self.largeur, hauteur_bandeau)
-
-        print("score max ", self.score_maximal)
-
 
 
    
@@ -269,13 +272,14 @@ class Jeu:
             return "Game Over"
         
         ligne, col = self.positionAleatoire(self.tuile)
-        self.tuile[f"{ligne}{col}"] = Tuile(random.choice([2, 4]), ligne, col, self.grille)
+        self.tuile[f"{ligne}{col}"] = Tuile(random.choice([2, 4]), 
+                                            ligne, col, self.grille)
         return "Continue"
 
            
 
     """
-    Fonction mouvement : Gère le mouvement des tuiles
+    Fonction mouvement : Gère le mouvement des tusiles
     Paramètres :
     - horloge : Horloge
     - direction : Direction du mouvement

@@ -90,7 +90,7 @@ class Tuile:
             text,
             (
                 self.x + (self.tuileLargeur / 2 - text.get_width() / 2), 
-                self.y + offsetY + (self.tuileHauteur / 2 - text.get_height()/2)
+                self.y + offsetY + (self.tuileHauteur / 2 -text.get_height()/2)
             ),
         )
         
