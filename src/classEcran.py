@@ -35,7 +35,7 @@ class Ecran:
     Description : Cette fonction affiche la grille
     """
     def afficherGrille(grille, ecran):
-        grille.draw_grid(ecran)
+        grille.dessinerGrille(ecran)
 
 
     
