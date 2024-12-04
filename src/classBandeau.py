@@ -32,6 +32,6 @@ class Bandeau:
         texte_bouton = self.font.render("Redémarrer", True, BLANC)
         fenetre.blit(texte_bouton, (self.bouton_redemarrer_rect.x + 10, self.bouton_redemarrer_rect.y + 5))
 
-    def verifierlick(self, position_souris):
+    def verifierClick(self, position_souris):
         # Vérifier si le clic est sur le bouton de redémarrage
         return self.bouton_redemarrer_rect.collidepoint(position_souris)
