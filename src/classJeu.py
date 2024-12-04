@@ -27,12 +27,21 @@ class Jeu:
         self.id = id_user
         self.score = 0
         self.score_maximal = self.user.afficher_score(id_user)
-        self.font = pygame.font.Font(None, 50)  # Police pour le message de victoire
-        self.victoire_affichee = False  # Variable pour vérifier si la victoire a déjà été affichée
-        self.temps_debut_victoire = None  # Pour garder la trace du début du temps d'affichage
-        self.dialog_active = False  # Indicateur pour vérifier si le message est actif
-        self.dialog_rect = pygame.Rect(self.largeur // 4, self.largeur // 4, self.largeur // 2, 200)  # Position et taille de la boîte
-        self.x_button_rect = pygame.Rect(self.dialog_rect.right - 40, self.dialog_rect.top + 10, 30, 30)  # Bouton "X"
+        # Police pour le message de victoire
+        self.font = pygame.font.Font(None, 50) 
+        # Variable pour vérifier si la victoire a déjà été affichée
+        self.victoire_affichee = False  
+        # Pour garder la trace du début du temps d'affichage
+        self.temps_debut_victoire = None  
+        # Indicateur pour vérifier si le message est actif
+        self.dialog_active = False  
+        # Position et taille de la boîte
+        self.dialog_rect = pygame.Rect(self.largeur // 4, 
+                                       self.largeur // 4, 
+                                       self.largeur // 2, 200)  
+        # Bouton "X"s
+        self.x_boutton_rect = pygame.Rect(self.dialog_rect.right - 40, 
+                                         self.dialog_rect.top + 10, 30, 30)  
 
    
 
@@ -49,8 +58,37 @@ class Jeu:
     """
     def ajouterGrille(self, nbColonneLargeur, nbColonneHauteur, marge, hauteur):
             self.grille = Grille()
-            self.grille.creerGrille(nbColonneLargeur, nbColonneHauteur, self.largeur, hauteur, marge, self.bandeau.hauteurBandeau)
+            self.grille.creerGrille(nbColonneLargeur, 
+                                    nbColonneHauteur, 
+                                    self.largeur, 
+                                    hauteur, 
+                                    marge, 
+                                    self.bandeau.hauteurBandeau)
             #self.grille.afficherGrille(self.fenetre)
+
+            
+
+    """
+    Fonction dessiner : Dessine tous le jeu 
+    Paramètres : Aucun
+
+    Description : Cette fonction dessine tous le jeu
+
+    """
+    def dessiner(self):
+        self.fenetre.fill((205, 192, 180))
+
+        # Dessiner le bandeau
+        self.bandeau.afficherBandeau(self.fenetre, self.score, self.score_maximal)
+        
+
+        for tuile in self.tuile.values():
+            tuile.dessiner(self.fenetre)
+
+        self.grille.dessinerGrille(self.Ecran)
+        
+        self.Ecran.mettreAJour()
+        
 
     """
     Fonction ajouterTuile
@@ -103,11 +141,11 @@ class Jeu:
 
             # Créer la boîte modale
             pygame.draw.rect(self.fenetre, (255, 255, 255), self.dialog_rect)  # Fond de la boîte
-            pygame.draw.rect(self.fenetre, (0, 0, 0), self.x_button_rect)  # Bouton "X" en noir
-            pygame.draw.line(self.fenetre, (255, 255, 255), (self.x_button_rect.left, self.x_button_rect.top), 
-                            (self.x_button_rect.right, self.x_button_rect.bottom), 2)  # Ligne du bouton "X"
-            pygame.draw.line(self.fenetre, (255, 255, 255), (self.x_button_rect.right, self.x_button_rect.top), 
-                            (self.x_button_rect.left, self.x_button_rect.bottom), 2)  # Ligne du bouton "X"
+            pygame.draw.rect(self.fenetre, (0, 0, 0), self.x_boutton_rect)  # Bouton "X" en noir
+            pygame.draw.line(self.fenetre, (255, 255, 255), (self.x_boutton_rect.left, self.x_boutton_rect.top), 
+                            (self.x_boutton_rect.right, self.x_boutton_rect.bottom), 2)  # Ligne du bouton "X"
+            pygame.draw.line(self.fenetre, (255, 255, 255), (self.x_boutton_rect.right, self.x_boutton_rect.top), 
+                            (self.x_boutton_rect.left, self.x_boutton_rect.bottom), 2)  # Ligne du bouton "X"
 
             # Texte du message de victoire
             message = self.font.render("Vous avez gagné !", True, (0, 0, 0))
@@ -135,41 +173,38 @@ class Jeu:
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(f"Click detecté at {event.pos}")  # Affiche la position du clic
-                if self.x_button_rect.collidepoint(event.pos):
+                if self.x_boutton_rect.collidepoint(event.pos):
                     print("Closing victory dialog")  # Débogage
                     self.dialog_active = False  # Fermer la boîte de dialogue
                     self.temps_debut_victoire = None  # Réinitialiser le temps d'affichage de la victoire
                     self.victoire_affichee = True  # Marquer que la victoire a été affichée
                     pygame.display.update()  # Mettre à jour l'affichage pour que les changements soient visibles
                 else:
-                    print(f"Click not on button, rect: {self.x_button_rect}")
+                    print(f"Click not on button, rect: {self.x_boutton_rect}")
+
+          
+    """
+    Function gagnant : Vérifie si le joueur a gagné
+    Paramètres : Aucun
+
+    Description : Cette fonction vérifie si le joueur a gagné
+    """
+    def gagnant(self):
+     print("score dans gagnant ", self.score)
+     if self.score == 4 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
+        print("Victoire !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        self.afficher_message_victoire()
+        
+        # Gérer les événements après l'affichage du message de victoire
+        if self.dialog_active:
+            self.eventSouris()  # Appel de eventSouris ici
 
 
 
 
 
     
-    """
-    Fonction dessiner : Dessine tous le jeu 
-    Paramètres : Aucun
-
-    Description : Cette fonction dessine tous le jeu
-
-    """
-    def dessiner(self):
-        self.fenetre.fill((205, 192, 180))
-
-        # Dessiner le bandeau
-        self.bandeau.afficherBandeau(self.fenetre, self.score, self.score_maximal)
-        
-
-        for tuile in self.tuile.values():
-            tuile.dessiner(self.fenetre)
-
-        self.grille.dessinerGrille(self.Ecran)
-        
-        self.Ecran.mettreAJour()
-        
+    
 
 
     """
@@ -218,26 +253,7 @@ class Jeu:
             self.tuile[f"{tuile.ligne}{tuile.col}"] = tuile
         self.dessiner()
         
-     
-        
-        
-    """
-    Function gagnant : Vérifie si le joueur a gagné
-    Paramètres : Aucun
-
-    Description : Cette fonction vérifie si le joueur a gagné
-    """
-    def gagnant(self):
-     print("score dans gagnant ", self.score)
-     if self.score == 4 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
-        self.afficher_message_victoire()
-        
-        # Gérer les événements après l'affichage du message de victoire
-        if self.dialog_active:
-            self.eventSouris()  # Appel de eventSouris ici
-
-
-    
+       
 
     
 
@@ -278,10 +294,13 @@ class Jeu:
             inverse = False
             delta = (-self.movVel, 0)
             checkLimite = lambda tuile: tuile.col == 0
-            prendProchTuile = lambda tuile: self.tuile.get(f"{tuile.ligne}{tuile.col - 1}")
-            checkFusion = lambda tuile, prochaineTuile: tuile.x > prochaineTuile.x + self.movVel
+            prendProchTuile = lambda tuile: self.tuile.get(
+                f"{tuile.ligne}{tuile.col - 1}")
+            checkFusion = (lambda tuile, 
+             prochaineTuile: tuile.x > prochaineTuile.x + self.movVel)
             checkMouvement = (
-                lambda tuile, prochaineTuile: tuile.x > prochaineTuile.x + self.grille.tuileLargeur + self.movVel
+                lambda tuile, prochaineTuile: tuile.x >( 
+                    prochaineTuile.x + self.grille.tuileLargeur + self.movVel)
             )
             arrondir = True
         elif direction == "right":
@@ -289,10 +308,15 @@ class Jeu:
             inverse = True
             delta = (self.movVel, 0)
             checkLimite = lambda tuile: tuile.col == self.grille.nbcol - 1
-            prendProchTuile = lambda tuile: self.tuile.get(f"{tuile.ligne}{tuile.col + 1}")
-            checkFusion = lambda tuile, prochaineTuile: tuile.x < prochaineTuile.x - self.movVel
+            prendProchTuile = lambda tuile: self.tuile.get(
+                f"{tuile.ligne}{tuile.col + 1}")
+            checkFusion = (lambda tuile, 
+                           prochaineTuile: tuile.x < 
+                           prochaineTuile.x - self.movVel)
             checkMouvement = (
-                lambda tuile, prochaineTuile: tuile.x + self.grille.tuileLargeur + self.movVel < prochaineTuile.x 
+                lambda tuile, prochaineTuile: 
+                (tuile.x + self.grille.tuileLargeur + self.movVel 
+                 < prochaineTuile.x)
             )
             arrondir = False
         elif direction == "up":
@@ -300,10 +324,13 @@ class Jeu:
             inverse = False
             delta = (0, -self.movVel)
             checkLimite = lambda tuile: tuile.ligne == 0
-            prendProchTuile = lambda tuile: self.tuile.get(f"{tuile.ligne - 1}{tuile.col}")
-            checkFusion = lambda tuile, prochaineTuile: tuile.y > prochaineTuile.y + self.movVel
+            prendProchTuile = lambda tuile: self.tuile.get(
+                f"{tuile.ligne - 1}{tuile.col}")
+            checkFusion = (lambda tuile, prochaineTuile: tuile.y > 
+                           (prochaineTuile.y + self.movVel))
             checkMouvement = (
-                lambda tuile, prochaineTuile: tuile.y > prochaineTuile.y + self.grille.tuileHauteur + self.movVel
+                lambda tuile, prochaineTuile: tuile.y > 
+                (prochaineTuile.y + self.grille.tuileHauteur + self.movVel)
             )
             arrondir = True
         elif direction == "down":
@@ -311,10 +338,14 @@ class Jeu:
             inverse = True
             delta = (0, +self.movVel)
             checkLimite = lambda tuile: tuile.ligne == self.grille.nbligne - 1
-            prendProchTuile = lambda tuile: self.tuile.get(f"{tuile.ligne + 1}{tuile.col}")
-            checkFusion = lambda tuile, prochaineTuile: tuile.y < prochaineTuile.y - self.movVel
+            prendProchTuile = lambda tuile: self.tuile.get(
+                f"{tuile.ligne + 1}{tuile.col}")
+            checkFusion = (lambda tuile, prochaineTuile: tuile.y < 
+                           prochaineTuile.y - self.movVel)
             checkMouvement = (
-                lambda tuile, prochaineTuile: tuile.y + self.grille.tuileHauteur + self.movVel < prochaineTuile.y  
+                lambda tuile, prochaineTuile: 
+                (tuile.y + self.grille.tuileHauteur + self.movVel 
+                 < prochaineTuile.y )
             )
             arrondir = False
 
@@ -324,7 +355,9 @@ class Jeu:
             horloge.tick(60)
             miseAJour = False
 
-            tuileTriee = sorted(self.tuile.values(), key=funcTri, reverse=inverse)
+            tuileTriee = sorted(self.tuile.values(),
+                                key=funcTri,
+                                reverse=inverse)
            
 
 

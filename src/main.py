@@ -37,12 +37,14 @@ def main():
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    ecran.eteindre()  # Éteindre l'écran si la fenêtre est fermée
+                    # Éteindre l'écran si la fenêtre est fermée
+                    ecran.eteindre()  
                     return
               
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        ecran.eteindre()  # Éteindre l'écran si la touche Échap est pressée
+                        # Éteindre l'écran si la touche Échap est pressées
+                        ecran.eteindre()  
                         return
                     if event.key == pygame.K_LEFT:
                         jeu.mouvement(clock, "left")
@@ -52,10 +54,12 @@ def main():
                         jeu.mouvement(clock, "up")
                     if event.key == pygame.K_DOWN:
                         jeu.mouvement(clock, "down")
-
-                if event.type == pygame.MOUSEBUTTONDOWN:  # Si un clic souris est effectué
-                    if bandeau.verifierClick(event.pos):  # Vérifier si le clic est sur le bouton "Redémarrer"
-                        jeu.grille = Grille(4, 4, ecran)  # Réinitialiser la grille
+                        
+                # Si un clic souris est effectué
+                if event.type == pygame.MOUSEBUTTONDOWN:  
+                     # Vérifier si le clic est sur le bouton "Redémarrer"
+                    if bandeau.verifierClick(event.pos): 
+                        jeu.grille = Grille(4, 4)  # Réinitialiser la grille
                         jeu.score = 0  # Réinitialiser le score
                         jeu.tuile = jeu.genererTuile()  # Régénérer la tuile
                         jeu.dessiner()  # Redessiner le jeu
