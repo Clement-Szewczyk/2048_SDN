@@ -161,9 +161,13 @@ class Jeu:
     """
     def gagnant(self):
      print("score dans gagnant ", self.score)
-     if self.score == 2048 and not self.victoireAffichee:  # Afficher le message de victoire une seule fois
-        self.afficherMessageVictoire
-        pygame.display.update()
+
+     # Vérifiez si une tuile a la valeur 2048
+     for tuile in self.tuile.values():
+        if tuile.valeur == 2048 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
+            self.afficher_message_victoire()
+            pygame.display.update()
+            break
 
     
     """
