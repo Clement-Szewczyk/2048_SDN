@@ -4,6 +4,7 @@ from classTuile import Tuile
 from classBandeau import Bandeau
 from backend import User
 import random
+import sys
 
 class Jeu:
 
@@ -31,17 +32,9 @@ class Jeu:
         self.font = pygame.font.Font(None, 50) 
         # Variable pour vérifier si la victoire a déjà été affichée
         self.victoire_affichee = False  
-        # Pour garder la trace du début du temps d'affichage
-        self.temps_debut_victoire = None  
         # Indicateur pour vérifier si le message est actif
         self.dialog_active = False  
-        # Position et taille de la boîte
-        self.dialog_rect = pygame.Rect(self.largeur // 4, 
-                                       self.largeur // 4, 
-                                       self.largeur // 2, 200)  
-        # Bouton "X"s
-        self.x_boutton_rect = pygame.Rect(self.dialog_rect.right - 40, 
-                                         self.dialog_rect.top + 10, 30, 30)  
+         
 
    
 
@@ -130,60 +123,38 @@ class Jeu:
     Description : Cette fonction affiche le message de victoire    
     """
     def afficher_message_victoire(self):
-        print("Message de victoire affiché")
+     
+     # Dessiner une superposition semi-transparente
+     overlay = pygame.Surface((self.largeur, self.largeur))  # Créer une surface de la taille de l'écran
+     overlay.set_alpha(180)  # Définir la transparence (0-255)
+     overlay.fill((0, 0, 0))  # Remplir avec du noir
+     self.fenetre.blit(overlay, (0, 0))  # Dessiner la superposition sur l'écran
 
-        # Si la boîte de dialogue n'est pas déjà active
-        if not self.dialog_active:
-            self.dialog_active = True
-            self.temps_debut_victoire = pygame.time.get_ticks()  # Temps de début pour la victoire
-            print("Message de victoire affiché11")
+     # Dessiner le texte de victoire
+     message = self.font.render("Vous avez gagné !", True, (255, 255, 255))  # Texte en blanc
+     rect_message = message.get_rect(center=(self.largeur // 2, self.largeur // 2))  # Centrer le texte
+     self.fenetre.blit(message, rect_message)
 
-        # Vérification si le message de victoire doit être affiché
-        if self.dialog_active:
-            print("Message de victoire affiché22")
+     # Dessiner un bouton pour continuer ou fermer
+     bouton_rect = pygame.Rect(self.largeur // 2 - 75, self.largeur // 2 + 50, 150, 50)
+     pygame.draw.rect(self.fenetre, (255, 255, 255), bouton_rect)
+     texte_bouton = self.font.render("Continuer", True, (0, 0, 0))
+     rect_texte_bouton = texte_bouton.get_rect(center=bouton_rect.center)
+     self.fenetre.blit(texte_bouton, rect_texte_bouton) 
+     self.victoire_affichee = True
+     pygame.display.update()  # Mettre à jour l'affichage
 
-            # Créer la boîte modale
-            pygame.draw.rect(self.fenetre, (255, 255, 255), self.dialog_rect)  # Fond de la boîte
-            pygame.draw.rect(self.fenetre, (0, 0, 0), self.x_boutton_rect)  # Bouton "X" en noir
-            pygame.draw.line(self.fenetre, (255, 255, 255), (self.x_boutton_rect.left, self.x_boutton_rect.top), 
-                            (self.x_boutton_rect.right, self.x_boutton_rect.bottom), 2)  # Ligne du bouton "X"
-            pygame.draw.line(self.fenetre, (255, 255, 255), (self.x_boutton_rect.right, self.x_boutton_rect.top), 
-                            (self.x_boutton_rect.left, self.x_boutton_rect.bottom), 2)  # Ligne du bouton "X"
-
-            # Texte du message de victoire
-            message = self.font.render("Vous avez gagné !", True, (0, 0, 0))
-            message_rect = message.get_rect(center=self.dialog_rect.center)
-            self.fenetre.blit(message, message_rect)
-
-            pygame.display.flip()  # Rafraîchir l'écran
-
-            # Vérifier si le temps d'affichage du message est écoulé (par exemple, 3 secondes)
-            if pygame.time.get_ticks() - self.temps_debut_victoire > 3000:  # 3 secondes
-                self.dialog_active = False  # Fermer le message après 3 secondes
-                pygame.display.update()  # Mettre à jour l'affichage
-
-
-
-    # La fonction qui gére le bouton x pour fermer le message affiché
-
-    """
-    Fonction eventSouris : Gère les événements
-    Paramètres : Aucun
-
-    Description : Cette fonction gère les événements
-    """
-    def eventSouris(self):
+     #  Gérer les événements pour le bouton
+     while True:
         for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                print(f"Click detecté at {event.pos}")  # Affiche la position du clic
-                if self.x_boutton_rect.collidepoint(event.pos):
-                    print("Closing victory dialog")  # Débogage
-                    self.dialog_active = False  # Fermer la boîte de dialogue
-                    self.temps_debut_victoire = None  # Réinitialiser le temps d'affichage de la victoire
-                    self.victoire_affichee = True  # Marquer que la victoire a été affichée
-                    pygame.display.update()  # Mettre à jour l'affichage pour que les changements soient visibles
-                else:
-                    print(f"Click not on button, rect: {self.x_boutton_rect}")
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+            if event.type == pygame.MOUSEBUTTONDOWN and bouton_rect.collidepoint(event.pos):
+                self.dialog_active = False  # Réinitialiser l'état
+                return
+
+
 
           
     """
@@ -194,13 +165,11 @@ class Jeu:
     """
     def gagnant(self):
      print("score dans gagnant ", self.score)
-     if self.score == 4 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
-        print("Victoire !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+     if self.score == 2048 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
         self.afficher_message_victoire()
-        
-        # Gérer les événements après l'affichage du message de victoire
-        if self.dialog_active:
-            self.eventSouris()  # Appel de eventSouris ici
+        pygame.display.update()
+
+       
 
 
 

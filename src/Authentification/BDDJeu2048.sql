@@ -49,7 +49,6 @@ DROP TABLE IF EXISTS `profil`;
 CREATE TABLE `profil` (
   `id` int NOT NULL AUTO_INCREMENT,
   `utilisateurId` int DEFAULT NULL,
-  `dateCreation` date NOT NULL,
   `meilleurScore` int DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `utilisateurId` (`utilisateurId`),
