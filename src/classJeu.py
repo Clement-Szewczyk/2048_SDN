@@ -27,13 +27,13 @@ class Jeu:
         self.movVel = 20
         self.id = idUtilisateur
         self.score = 0
-        self.score_maximal = self.user.afficher_score(idUtilisateur)
+        self.scoreMaximal = self.user.afficherScore(idUtilisateur)
         # Police pour le message de victoire
         self.font = pygame.font.Font(None, 50) 
         # Variable pour vérifier si la victoire a déjà été affichée
-        self.victoire_affichee = False  
+        self.victoireAffichee = False  
         # Indicateur pour vérifier si le message est actif
-        self.dialog_active = False  
+        self.dialogActive = False  
          
 
    
@@ -85,10 +85,10 @@ class Jeu:
         #tuile.afficherTuile(self.fenetre, self.grille)
     """ 
 
-    def ajouterBandeau(self, hauteur_bandeau):
-        self.bandeau = Bandeau(self.largeur, hauteur_bandeau)
+    def ajouterBandeau(self, hauteurBandeau):
+        self.bandeau = Bandeau(self.largeur, hauteurBandeau)
 
-        print("score max ", self.score_maximal)    
+        print("score max ", self.scoreMaximal)    
 
     """
     Fonction dessiner : Dessine tous le jeu 
@@ -101,7 +101,7 @@ class Jeu:
         self.fenetre.fill((205, 192, 180))
 
         # Dessiner le bandeau
-        self.bandeau.afficherBandeau(self.fenetre, self.score, self.score_maximal)
+        self.bandeau.afficherBandeau(self.fenetre, self.score, self.scoreMaximal)
         
 
         for tuile in self.tuile.values():
@@ -111,10 +111,6 @@ class Jeu:
         
         self.Ecran.mettreAJour()
         
-
-    
-
-
    
     """
     Fonction afficher_message_victoire : Affiche le message de victoire
@@ -122,7 +118,7 @@ class Jeu:
 
     Description : Cette fonction affiche le message de victoire    
     """
-    def afficher_message_victoire(self):
+    def afficherMessageVictoire(self):
      
      # Dessiner une superposition semi-transparente
      overlay = pygame.Surface((self.largeur, self.largeur))  # Créer une surface de la taille de l'écran
@@ -132,16 +128,16 @@ class Jeu:
 
      # Dessiner le texte de victoire
      message = self.font.render("Vous avez gagné !", True, (255, 255, 255))  # Texte en blanc
-     rect_message = message.get_rect(center=(self.largeur // 2, self.largeur // 2))  # Centrer le texte
-     self.fenetre.blit(message, rect_message)
+     rectMessage = message.get_rect(center=(self.largeur // 2, self.largeur // 2))  # Centrer le texte
+     self.fenetre.blit(message, rectMessage)
 
      # Dessiner un bouton pour continuer ou fermer
-     bouton_rect = pygame.Rect(self.largeur // 2 - 75, self.largeur // 2 + 50, 150, 50)
-     pygame.draw.rect(self.fenetre, (255, 255, 255), bouton_rect)
-     texte_bouton = self.font.render("Continuer", True, (0, 0, 0))
-     rect_texte_bouton = texte_bouton.get_rect(center=bouton_rect.center)
-     self.fenetre.blit(texte_bouton, rect_texte_bouton) 
-     self.victoire_affichee = True
+     boutonRect = pygame.Rect(self.largeur // 2 - 75, self.largeur // 2 + 50, 150, 50)
+     pygame.draw.rect(self.fenetre, (255, 255, 255), boutonRect)
+     texteBouton = self.font.render("Continuer", True, (0, 0, 0))
+     rectTexteBouton = texteBouton.get_rect(center=boutonRect.center)
+     self.fenetre.blit(texteBouton, rectTexteBouton) 
+     self.victoireAffichee = True
      pygame.display.update()  # Mettre à jour l'affichage
 
      #  Gérer les événements pour le bouton
@@ -150,8 +146,8 @@ class Jeu:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
-            if event.type == pygame.MOUSEBUTTONDOWN and bouton_rect.collidepoint(event.pos):
-                self.dialog_active = False  # Réinitialiser l'état
+            if event.type == pygame.MOUSEBUTTONDOWN and boutonRect.collidepoint(event.pos):
+                self.dialogActive = False  # Réinitialiser l'état
                 return
 
 
@@ -165,6 +161,7 @@ class Jeu:
     """
     def gagnant(self):
      print("score dans gagnant ", self.score)
+
      # Vérifiez si une tuile a la valeur 2048
      for tuile in self.tuile.values():
         if tuile.valeur == 2048 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
@@ -172,16 +169,7 @@ class Jeu:
             pygame.display.update()
             break
 
-       
-
-
-
-
-
     
-    
-
-
     """
     Fonction positionAleatoire : Génère une position aléatoire pour une tuile
     Paramètres :
@@ -262,7 +250,7 @@ class Jeu:
         self.user =User ()
         miseAJour = True
         blocks = set()
-        delta_score = 0  # Score gagné dans ce mouvement
+        deltaScore = 0  # Score gagné dans ce mouvement
 
 
         if direction == "left":
@@ -353,7 +341,7 @@ class Jeu:
                     else:
                         print("FUSION")
                         prochaineTuile.valeur *= 2
-                        delta_score += prochaineTuile.valeur
+                        deltaScore += prochaineTuile.valeur
                         tuileTriee.pop(i)
                         blocks.add(prochaineTuile)
                 elif checkMouvement(tuile, prochaineTuile):
@@ -367,17 +355,17 @@ class Jeu:
             self.majTuile(tuileTriee)
         
         # Mise à jour du score global après le mouvement
-        self.score += delta_score
+        self.score += deltaScore
         self.gagnant()    
 
-        if self.score > self.score_maximal:
-          self.score_maximal = self.score
+        if self.score > self.scoreMaximal:
+          self.scoreMaximal = self.score
 
         # Mise à jour dans la base de données
-        if  self.user.existe_utilisateur(self.id):
-          self.user.update_score(self.id, self.score)
+        if  self.user.existeUtilisateur(self.id):
+          self.user.updateScore(self.id, self.score)
         else:
-           self.user.inserer_score(self.id, self.score)
+           self.user.insererScore(self.id, self.score)
         return self.finMouvement()
 
         
