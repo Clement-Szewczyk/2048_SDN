@@ -6,6 +6,14 @@ BLANC = (255, 255, 255)
 GRIS = (187, 173, 160)
 BLEU = (70, 130, 180)
 
+
+"""
+        Initialisation du bandeau avec la largeur de la fenêtre et la hauteur du bandeau.
+        Le bouton de redémarrage est aussi défini ici.
+
+        :param largeurFenetre: Largeur de la fenêtre de jeu
+        :param hauteurBandeau: Hauteur du bandeau en haut de l'écran
+        """
 class Bandeau:
     def __init__(self, largeurFenetre, hauteurBandeau=50):
         self.largeurFenetre = largeurFenetre
@@ -16,8 +24,15 @@ class Bandeau:
         self.boutonRedemarrerRect = pygame.Rect(
             self.largeurFenetre - 150, 10, 140, 30)
 
+
+    """
+        Affiche le bandeau avec le score actuel, le score maximal et le bouton de redémarrage.
+        
+        :param fenetre: Fenêtre sur laquelle afficher le bandeau
+        :param scoreActuel: Le score actuel du jeu
+        :param scoreMaximal: Le score maximal atteint jusqu'à présent
+        """
     def afficherBandeau(self, fenetre, scoreActuel, scoreMaximal):
-        # Dessiner le bandeau
         pygame.draw.rect(fenetre, GRIS, 
                          (0, 0, self.largeurFenetre, self.hauteurBandeau))
 
@@ -37,6 +52,11 @@ class Bandeau:
         fenetre.blit(texteBouton, (self.boutonRedemarrerRect.x + 10,
                                     self.boutonRedemarrerRect.y + 5))
 
+        """
+        Vérifie si un clic de souris a eu lieu sur le bouton de redémarrage.
+
+        :param positionSouris: Position du clic de souris
+        :return: True si le clic est dans la zone du bouton, sinon False
+        """
     def verifierClick(self, positionSouris):
-        # Vérifier si le clic est sur le bouton de redémarrage
         return self.boutonRedemarrerRect.collidepoint(positionSouris)
