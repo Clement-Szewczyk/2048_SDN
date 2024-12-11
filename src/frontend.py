@@ -1,5 +1,6 @@
 # frontend.py
 
+import re
 import pygame
 from backend import  User
 
@@ -28,6 +29,15 @@ def draw_text(text, font, color, surface, x, y):
     textrect.topleft = (x, y)
     surface.blit(textobj, textrect)
 
+# Fonction pour valider l'email
+def validate_email(email):
+    # Vérifie si l'email est valide avec une expression régulière
+    email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    return re.match(email_regex, email) is not None
+
+# Fonction de validation du mot de passe (minimum 5 caractères)
+def validate_password(password):
+    return len(password) >= 5
 
 # Classe pour les liens
 class Link:
@@ -194,6 +204,11 @@ def main():
                 if validate_button.is_hovered(pos) and signup_mode:
                     if not input_nom.text or not input_prenom.text or not input_email.text or not input_password.text:
                         message = "Veuillez saisir tous les champs requis."
+                    elif not validate_email(input_email.text):
+                        message = "L'email n'est pas valide."
+                    elif not validate_password(input_password.text):
+                            message = "Mot de passe trop court (5 caractères min)"
+                                       
                     else:
                         if user.signup(input_nom.text, input_prenom.text, input_email.text, input_password.text):
                             message = "Inscription réussie!"

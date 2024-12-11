@@ -63,6 +63,7 @@ def main():
                         jeu.score = 0  # Réinitialiser le score
                         jeu.tuile = jeu.genererTuile()  # Régénérer la tuile
                         jeu.dessiner()  # Redessiner le jeu
+                        jeu.victoire_affichee = False
                     
              # Dessiner le bandeau
             bandeau.afficherBandeau(ecran.fenetre, jeu.score, jeu.score_maximal)
