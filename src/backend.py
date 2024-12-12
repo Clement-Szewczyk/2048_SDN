@@ -17,15 +17,16 @@ class User:
         )
         self.cursor = self.db.cursor()
 
-    def signup(self, nom, prenom, adresseMail, motDePasse):
+    def inscription(self, nom, prenom, adresseMail, motDePasse):
         """Inscrit un nouvel utilisateur dans la base de données."""
         
-        hashedPasseword = bcrypt.hashpw(motDePasse.encode('utf-8'), bcrypt.gensalt())
+        mddpHashe = bcrypt.hashpw(motDePasse.encode('utf-8'), bcrypt.gensalt())
         print(f"Essayez d'ajouter : {nom}, {prenom}, {adresseMail}")  # Debugging
         try:
             self.cursor.execute("INSERT INTO Utilisateur (nom, prenom, adresseMail, motDePasse) VALUES (%s, %s, %s, %s)",
                                 (nom, prenom, adresseMail, 
-                                hashedPasseword))
+                                mddpHashe
+                    ))
             self.db.commit()
             print("Inscription réussie.")  # Debugging
             return True
@@ -36,7 +37,7 @@ class User:
             print(f"Erreur lors de l'inscription : {e}")  # Gestion des erreurs
             return False
 
-    def login(self, adresseMail, motDePasse):
+    def seConnecter(self, adresseMail, motDePasse):
         print("adresseMail",adresseMail)
         print("motDePasse",motDePasse)
 
@@ -76,7 +77,7 @@ class User:
      userId = self.Email_existe(adresseMail)
      print("user_iddddd",userId)
      
-     hashedPasseword = bcrypt.hashpw(nouveauMotDePasse.encode('utf-8'), bcrypt.gensalt())
+     mddpHashe = bcrypt.hashpw(nouveauMotDePasse.encode('utf-8'), bcrypt.gensalt())
 
      if userId:  # Si l'utilisateur existe
         try:
@@ -85,7 +86,8 @@ class User:
             self.cursor.execute(
                 "UPDATE Utilisateur SET motDePasse=%s WHERE adresseMail=%s",
                 (
-                    hashedPasseword, emailSaisi)  # Passer l'email comme chaîne
+                    mddpHashe
+        , emailSaisi)  # Passer l'email comme chaîne
             )
             self.db.commit()
             print(f"Le mot de passe a été modifié pour l'email {emailSaisi}.")
@@ -130,7 +132,7 @@ class User:
             print(f"Aucun score trouvé pour l'utilisateur ID {utilisateurId}.")
             return 0  # Retourne None si aucun score n'est trouvé
 
-    def updateScore(self, utilisateurId, nouveauScore):
+    def mettreAJourScore(self, utilisateurId, nouveauScore):
         """Met à jour le meilleur score d'un utilisateur donné si le nouveau score est supérieur."""
         try:
             # Vérifier le meilleur score actuel
@@ -155,9 +157,9 @@ class User:
         except Exception as e:
             print(f"Erreur lors de la mise à jour du score : {e}")
 
-    def close(self):
+    def fermerConnexionBdd(self):
         """Ferme la connexion à la base de données."""
-        self.cursor.close()
-        self.db.close()
+        self.cursor.fermerConnexionBdd()
+        self.db.fermerConnexionBdd()
 
 

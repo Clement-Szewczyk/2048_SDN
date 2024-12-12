@@ -23,8 +23,6 @@ class Ecran:
         pygame.display.set_caption(self.titre)
 
     
-
-    
     """
     Fonction afficherGrille
         Elle permet d'afficher la grille
@@ -37,8 +35,6 @@ class Ecran:
     def afficherGrille(grille, ecran):
         grille.dessinerGrille(ecran)
 
-
-    
 
     """
     Fonction mettreAJour

@@ -12,14 +12,14 @@ pygame.display.set_caption("Authentification")
 
 # Définir les couleurs modernes
 BLANC = (255, 255, 255)
-LIGHT_GRAY = (245, 245, 245)
-DARK_GRAY = (80, 80, 80)
-BLUE = (93, 139, 193)
-LIGHT_BLUE = (100, 149, 237)
-HOVER_BLUE = (135, 206, 250)
+GRIS_CLAIR = (245, 245, 245)
+GRIS_FONCE = (80, 80, 80)
+BLEU = (93, 139, 193)
+BLEU_CLAIR = (100, 149, 237)
+SURVOL_BLEU = (135, 206, 250)
 ROUGE = (220, 20, 60)
 NOIR = (0, 0, 0)
-SHADOW = (192, 192, 192)
+OMBRE = (192, 192, 192)
 
 """
 Fonction dessinerTexte : Affiche un texte sur une surface
@@ -34,10 +34,10 @@ Description : Cette fonction crée un objet texte avec la police et la couleur d
 le positionne et l'affiche sur la surface spécifiée.
 """
 def dessinerTexte(texte, police, couleur, surface, x, y):
-    textobj = police.render(texte, True, couleur)
-    textrect = textobj.get_rect()
-    textrect.topleft = (x, y)
-    surface.blit(textobj, textrect)
+    textObj = police.render(texte, True, couleur)
+    textRect = textObj.get_rect()
+    textRect.topleft = (x, y)
+    surface.blit(textObj, textRect)
 
 """
     Fonction validerEmail : Vérifie la validité d'une adresse email
@@ -95,17 +95,17 @@ class Link:
         Description : Cette méthode dessine le texte du lien à ses coordonnées sur la surface donnée.
     """
     def draw(self, surface):
-        dessinerTexte(self.text, self.font, BLUE, surface, self.x, self.y)
+        dessinerTexte(self.text, self.font, BLEU, surface, self.x, self.y)
 
     """
-        Méthode isHovered : Vérifie si le lien est survolé par la souris
+        Méthode estSurvole : Vérifie si le lien est survolé par la souris
         Paramètres :
         - pos : Position actuelle de la souris (tuple x, y)
 
         Description : Cette méthode retourne True si la position de la souris est à
         l'intérieur des dimensions du texte du lien, sinon False.
     """
-    def isHovered(self, pos):
+    def estSurvole(self, pos):
         textWidth = self.font.size(self.text)[0]
         textHeight = self.font.size(self.text)[1]
         return self.x <= pos[0] <= self.x + textWidth and self.y <= pos[1] <= self.y + textHeight
@@ -147,21 +147,21 @@ class Button:
         ajuste sa couleur si le bouton est actif (survolé).
     """
     def draw(self, surface):
-        color = HOVER_BLUE if self.active else BLUE
+        color = SURVOL_BLEU if self.active else BLEU
         shadow_offset = 5  # Ajoute une ombre
-        pygame.draw.rect(surface, SHADOW, (self.rect.x + shadow_offset, self.rect.y + shadow_offset, self.rect.width, self.rect.height), border_radius=15)
+        pygame.draw.rect(surface, OMBRE, (self.rect.x + shadow_offset, self.rect.y + shadow_offset, self.rect.width, self.rect.height), border_radius=15)
         pygame.draw.rect(surface, color, self.rect, border_radius=15)
         dessinerTexte(self.text, self.font, BLANC, surface, self.rect.x + 20, self.rect.y + 10)
 
     """
-        Méthode isHovered : Vérifie si le bouton est survolé par la souris
+        Méthode estSurvole : Vérifie si le bouton est survolé par la souris
         Paramètres :
         - pos : Position actuelle de la souris (tuple x, y)
 
         Description : Cette méthode retourne True si la position de la souris
         est à l'intérieur du rectangle du bouton, sinon False.
     """
-    def isHovered(self, pos):
+    def estSurvole(self, pos):
         return self.rect.collidepoint(pos)
 
 
@@ -177,7 +177,7 @@ class Button:
 class InputBox:
     def __init__(self, x, y, width, height, placeholder):
         self.rect = pygame.Rect(x, y, width, height)
-        self.color = LIGHT_GRAY
+        self.color = GRIS_CLAIR
         self.text = ''
         self.placeholder = placeholder
         self.font = pygame.font.Font(None, 28)
@@ -189,13 +189,13 @@ class InputBox:
         Gère les événements liés à la boîte (clic et saisie).
         :param event: Événement Pygame à traiter.
         """
-    def handleEvent(self, event):
+    def gererEvenement(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos):
                 self.active = True
             else:
                 self.active = False
-            self.color = LIGHT_BLUE if self.active else LIGHT_GRAY
+            self.color = BLEU_CLAIR if self.active else GRIS_CLAIR
 
         if event.type == pygame.KEYDOWN and self.active:
             if event.key == pygame.K_BACKSPACE:
@@ -208,7 +208,7 @@ class InputBox:
         Bascule la visibilité du mot de passe.
         Si le mot de passe est masqué, il devient visible, et inversement.
         """
-    def togglePasswordVisibility(self):
+    def basculeVisibiliteMdp(self):
         self.show_password = not self.show_password
 
     """
@@ -216,24 +216,24 @@ class InputBox:
         :param screen: Surface Pygame sur laquelle dessiner.
         """
     def draw(self, surface):
-        pygame.draw.rect(surface, SHADOW, (self.rect.x + 3, self.rect.y + 3, self.rect.width, self.rect.height), border_radius=10)
+        pygame.draw.rect(surface, OMBRE, (self.rect.x + 3, self.rect.y + 3, self.rect.width, self.rect.height), border_radius=10)
         pygame.draw.rect(surface, self.color, self.rect, border_radius=10)
 
         # Affichage du texte
-        displayText = self.text if self.show_password else '*' * len(self.text) if self.placeholder == "Mot de passe" else self.text
-        dessinerTexte(displayText if self.text or self.placeholder == "Mot de passe" else self.placeholder, self.font, NOIR if self.text else DARK_GRAY, surface, self.rect.x + 10, self.rect.y + 10)
+        afficherTexte = self.text if self.show_password else '*' * len(self.text) if self.placeholder == "Mot de passe" else self.text
+        dessinerTexte(afficherTexte if self.text or self.placeholder == "Mot de passe" else self.placeholder, self.font, NOIR if self.text else GRIS_FONCE, surface, self.rect.x + 10, self.rect.y + 10)
 
 # Boucle principale
 def main():
     user = User()
-    running = True
+    actif = True
     font = pygame.font.Font(None, 28)
 
     # Champs d'entrée pour l'inscription
     inputNom = InputBox(160, 50, 200, 40, "Nom")
     inputPrenom = InputBox(160, 100, 200, 40, "Prénom")
     inputEmail = InputBox(160, 150, 200, 40, "Email")
-    inputPassword = InputBox(160, 200, 200, 40, "Mot de passe")
+    inputMdp = InputBox(160, 200, 200, 40, "Mot de passe")
 
     # Champs d'entrée pour la connexion
     inputLoginEmail = InputBox(160, 60, 200, 40, "Email")
@@ -243,70 +243,70 @@ def main():
     inputLoginPasswordPass = InputBox(160, 110, 200, 40, "Mot de passe")
 
     # État de l'application
-    signupMode = False  # Commence par la page de connexion
+    modeInscription = False  # Commence par la page de connexion
     message = ""  # Pour afficher les messages d'erreur ou de succès
 
-    forgotPasswordMode = False
+    modeMdpOublie = False
     message = ""
 
     # Liens pour changer de page
-    signupLink = Link(50, 320, "S'inscrire")  # Lien pour passer en mode inscription
-    loginLink = Link(170, 320, "Se connecter")  # Lien pour passer en mode connexion
-    passwordLink = Link(170, 320, "Mot de passe oublié ?")
+    lienInscription = Link(50, 320, "S'inscrire")  # Lien pour passer en mode inscription
+    lienConnexion = Link(170, 320, "Se connecter")  # Lien pour passer en mode connexion
+    lienMdp = Link(170, 320, "Mot de passe oublié ?")
 
     # Création des boutons
-    validateButton = Button(160, 250, 140, 50, "Valider")
-    togglePasswordButton = Button(460, 200, 40, 40, "*")  # Bouton pour afficher/cacher le mot de passe
+    boutonValider = Button(160, 250, 140, 50, "Valider")
+    basculerBoutonMdp = Button(460, 200, 40, 40, "*")  # Bouton pour afficher/cacher le mot de passe
 
-    while running:
+    while actif:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                actif = False
 
             # Gérer les événements des champs d'entrée
-            if signupMode:
-                inputNom.handleEvent(event)
-                inputPrenom.handleEvent(event)
-                inputEmail.handleEvent(event)
-                inputPassword.handleEvent(event)
-            elif forgotPasswordMode:
-                inputLoginEmailPass.handleEvent(event)
-                inputLoginPasswordPass.handleEvent(event)
+            if modeInscription:
+                inputNom.gererEvenement(event)
+                inputPrenom.gererEvenement(event)
+                inputEmail.gererEvenement(event)
+                inputMdp.gererEvenement(event)
+            elif modeMdpOublie:
+                inputLoginEmailPass.gererEvenement(event)
+                inputLoginPasswordPass.gererEvenement(event)
             else:
-                inputLoginEmail.handleEvent(event)
-                inputLoginPassword.handleEvent(event)
+                inputLoginEmail.gererEvenement(event)
+                inputLoginPassword.gererEvenement(event)
 
             # Gérer les clics de souris pour les boutons
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = event.pos
-                if signupLink.isHovered(pos) and not signupMode:
-                    signupMode = True  # Passer à l'inscription
+                if lienInscription.estSurvole(pos) and not modeInscription:
+                    modeInscription = True  # Passer à l'inscription
                     message = ""  # Réinitialiser le message
-                elif loginLink.isHovered(pos) and signupMode:
-                    signupMode = False  # Passer à la connexion
+                elif lienConnexion.estSurvole(pos) and modeInscription:
+                    modeInscription = False  # Passer à la connexion
                     message = ""  # Réinitialiser le message
-                elif passwordLink.isHovered(pos) and not forgotPasswordMode:
-                    forgotPasswordMode= True
+                elif lienMdp.estSurvole(pos) and not modeMdpOublie:
+                    modeMdpOublie= True
                     message= ""
-                elif loginLink.isHovered(pos) and forgotPasswordMode:
-                    forgot_password_mode = False  # Passer à la connexion
+                elif lienConnexion.estSurvole(pos) and modeMdpOublie:
+                    modeMdpOublie = False  # Passer à la connexion
                     message = ""
-                elif togglePasswordButton.isHovered(pos):
-                    if signupMode:
-                        inputPassword.togglePasswordVisibility()  # Basculer la visibilité du mot de passe d'inscription
-                    elif forgot_password_mode:
-                        inputLoginPasswordPass.togglePasswordVisibility()  
+                elif basculerBoutonMdp.estSurvole(pos):
+                    if modeInscription:
+                        inputMdp.basculeVisibiliteMdp()  # Basculer la visibilité du mot de passe d'inscription
+                    elif modeMdpOublie:
+                        inputLoginPasswordPass.basculeVisibiliteMdp()  
                     else:
-                        inputLoginPassword.togglePasswordVisibility()  # Basculer la visibilité du mot de passe de connexion
+                        inputLoginPassword.basculeVisibiliteMdp()  # Basculer la visibilité du mot de passe de connexion
 
                 # Validation des entrées uniquement après le clic sur le bouton "Se connecter"
-                if validateButton.isHovered(pos) and not signupMode:
+                if boutonValider.estSurvole(pos) and not modeInscription:
                     if not inputLoginEmail.text or not inputLoginPassword.text:
                         message = "Veuillez saisir votre email et mot de passe."
                     else:
-                        user = user.login(inputLoginEmail.text, inputLoginPassword.text)
+                        user = user.seConnecter(inputLoginEmail.text, inputLoginPassword.text)
                         if user:
-                            running = False  # Fermer la fenêtre d'authentification
+                            actif = False  # Fermer la fenêtre d'authentification
                             return user  # Indique que l'authentification a réussi
                         else:
                             message = "Nom d'utilisateur ou mot de passe incorrect."
@@ -314,27 +314,27 @@ def main():
                         inputLoginPassword.text = ""
 
                 # Validation des entrées uniquement après le clic sur le bouton "S'inscrire"
-                if validateButton.isHovered(pos) and signupMode:
-                    if not inputNom.text or not inputPrenom.text or not inputEmail.text or not inputPassword.text:
+                if boutonValider.estSurvole(pos) and modeInscription:
+                    if not inputNom.text or not inputPrenom.text or not inputEmail.text or not inputMdp.text:
                         message = "Veuillez saisir tous les champs requis."
                     elif not validerEmail(inputEmail.text):
                         message = "L'email n'est pas valide."
-                    elif not validerMdp(inputPassword.text):
+                    elif not validerMdp(inputMdp.text):
                             message = "Mot de passe trop court (5 caractères min)"
                                        
                     else:
-                        if user.signup(inputNom.text, inputPrenom.text, inputEmail.text, inputPassword.text):
+                        if user.inscription(inputNom.text, inputPrenom.text, inputEmail.text, inputMdp.text):
                             message = "Inscription réussie!"
                         else:
                             message = "L'adresse email est déjà utilisée."
 
                 # Validation des entrées uniquement après le clic sur le bouton "mot de passe oublier"
-                if validateButton.isHovered(pos) and forgotPasswordMode:
+                if boutonValider.estSurvole(pos) and modeMdpOublie:
                     if  not inputLoginEmailPass.text or not inputLoginPasswordPass.text:
                         message = "Veuillez saisir tous les champs requis."
                     else:
-                        if user.Email_existe(inputLoginEmailPass.text):
-                            user.modifier_mot_de_passe(inputLoginEmailPass.text,inputLoginPasswordPass.text)
+                        if user.emailExiste(inputLoginEmailPass.text):
+                            user.modifierMotDePasse(inputLoginEmailPass.text,inputLoginPasswordPass.text)
                             message = "Modification réussite!"
                         else:
                             message = "Erreur dans l'adresse email."
@@ -343,8 +343,8 @@ def main():
         ecran.fill(BLANC)
 
         # Afficher le formulaire
-        if signupMode:
-            dessinerTexte("Mode Inscription", font, DARK_GRAY, ecran, 20, 20)
+        if modeInscription:
+            dessinerTexte("Mode Inscription", font, GRIS_FONCE, ecran, 20, 20)
             dessinerTexte("Nom:", font, NOIR, ecran, 20, 60)
             inputNom.draw(ecran)
             dessinerTexte("Prénom:", font, NOIR, ecran, 20, 110)
@@ -352,35 +352,35 @@ def main():
             dessinerTexte("Email:", font, NOIR, ecran, 20, 160)
             inputEmail.draw(ecran)
             dessinerTexte("Mot de passe:", font, NOIR, ecran, 20, 210)
-            inputPassword.draw(ecran)
-            togglePasswordButton.rect.topleft = (inputPassword.rect.x + inputPassword.rect.width + 10, inputPassword.rect.y)  # Positionner le bouton à droite du champ de mot de passe
+            inputMdp.draw(ecran)
+            basculerBoutonMdp.rect.topleft = (inputMdp.rect.x + inputMdp.rect.width + 10, inputMdp.rect.y)  # Positionner le bouton à droite du champ de mot de passe
 
             # Afficher le lien pour se connecter
-            loginLink.draw(ecran)
+            lienConnexion.draw(ecran)
             
-        elif forgotPasswordMode:
-            dessinerTexte("Réinitialiser Connexion", font, DARK_GRAY, ecran, 20, 20)
+        elif modeMdpOublie:
+            dessinerTexte("Réinitialiser Connexion", font, GRIS_FONCE, ecran, 20, 20)
             dessinerTexte("Email:", font, NOIR, ecran, 20, 70)
             inputLoginEmailPass.draw(ecran)
             dessinerTexte("Mot de passe:", font, NOIR, ecran, 20, 120)
             inputLoginPasswordPass.draw(ecran)
-            togglePasswordButton.rect.topleft = (inputLoginPasswordPass.rect.x + inputLoginPasswordPass.rect.width + 10, inputLoginPasswordPass.rect.y)  # Positionner le bouton à droite du champ de mot de passe
-            loginLink.draw(ecran)
+            basculerBoutonMdp.rect.topleft = (inputLoginPasswordPass.rect.x + inputLoginPasswordPass.rect.width + 10, inputLoginPasswordPass.rect.y)  # Positionner le bouton à droite du champ de mot de passe
+            lienConnexion.draw(ecran)
         else:
-            dessinerTexte("Mode Connexion", font, DARK_GRAY, ecran, 20, 20)
+            dessinerTexte("Mode Connexion", font, GRIS_FONCE, ecran, 20, 20)
             dessinerTexte("Email:", font, NOIR, ecran, 20, 70)
             inputLoginEmail.draw(ecran)
             dessinerTexte("Mot de passe:", font, NOIR, ecran, 20, 120)
             inputLoginPassword.draw(ecran)
-            togglePasswordButton.rect.topleft = (inputLoginPassword.rect.x + inputLoginPassword.rect.width + 10, inputLoginPassword.rect.y)  # Positionner le bouton à droite du champ de mot de passe
+            basculerBoutonMdp.rect.topleft = (inputLoginPassword.rect.x + inputLoginPassword.rect.width + 10, inputLoginPassword.rect.y)  # Positionner le bouton à droite du champ de mot de passe
 
             # Afficher le lien pour s'inscrire
-            signupLink.draw(ecran)
-            passwordLink.draw(ecran)
+            lienInscription.draw(ecran)
+            lienMdp.draw(ecran)
 
         # Dessiner les boutons
-        validateButton.draw(ecran)
-        togglePasswordButton.draw(ecran)
+        boutonValider.draw(ecran)
+        basculerBoutonMdp.draw(ecran)
 
         # Afficher le message d'information
         dessinerTexte(message, font, ROUGE, ecran, 3, 350)

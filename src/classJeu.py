@@ -7,7 +7,6 @@ import random
 import sys
 
 class Jeu:
-
     """
     Fonction __init__ : Constructeur de la classe Jeu
     Paramètres :
@@ -35,10 +34,6 @@ class Jeu:
         # Indicateur pour vérifier si le message est actif
         self.dialogActive = False  
          
-
-   
-
-
     
     """
     Fonction ajouterGrille 
@@ -67,23 +62,12 @@ class Jeu:
     - valeur: valeur de la tuile
     """
     def ajouterTuile(self):
-        
         valeur = 2 if random.random() < 0.9 else 4
         tuile = Tuile(valeur)
         tuile.creerTuile(self.grille)
         self.tuile.append(tuile)
         #tuile.afficherTuile(self.fenetre, self.grille) 
 
-
-    """
-    def ajouterTuilePos(self, x, y, valeur):
-        tuile = Tuile(valeur)
-        tuile.x = x
-        tuile.y = y
-        tuile.creerTuilePos(self.grille, x, y)
-        self.tuile.append(tuile)
-        #tuile.afficherTuile(self.fenetre, self.grille)
-    """ 
 
     def ajouterBandeau(self, hauteurBandeau):
         self.bandeau = Bandeau(self.largeur, hauteurBandeau)
@@ -95,7 +79,6 @@ class Jeu:
     Paramètres : Aucun
 
     Description : Cette fonction dessine tous le jeu
-
     """
     def dessiner(self):
         self.fenetre.fill((205, 192, 180))
@@ -363,7 +346,7 @@ class Jeu:
 
         # Mise à jour dans la base de données
         if  self.user.existeUtilisateur(self.id):
-          self.user.updateScore(self.id, self.score)
+          self.user.mettreAJourScore(self.id, self.score)
         else:
            self.user.insererScore(self.id, self.score)
         return self.finMouvement()

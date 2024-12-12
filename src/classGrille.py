@@ -2,7 +2,6 @@ import pygame
 import time
 
 class Grille:
-
     """
     Fonction __init__ : Constructeur de la classe Grille
     Paramètres :
