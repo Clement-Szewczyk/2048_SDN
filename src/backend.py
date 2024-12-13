@@ -59,11 +59,11 @@ class User:
       """
      # Exécuter la requête SQL pour vérifier l'adresse email
      self.cursor.execute("SELECT id FROM Utilisateur WHERE adresseMail=%s", (adresseMail,))
-     user = self.cursor.fetchone()
+     utilisateur = self.cursor.fetchone()
 
-     if user:  # Si un utilisateur est trouvé
+     if utilisateur:  # Si un utilisateur est trouvé
         print(f"L'adresse email {adresseMail} existe dans la base de données.")
-        return user[0]  # Retourner l'ID de l'utilisateur
+        return utilisateur[0]  # Retourner l'ID de l'utilisateur
      else:  # Aucun utilisateur trouvé
         print(f"Aucun utilisateur trouvé pour l'adresse email {adresseMail}.")
         return None
@@ -74,12 +74,12 @@ class User:
      Modifie le mot de passe de l'utilisateur correspondant à l'adresse email donnée.
      """
       # Vérifier si l'email existe
-     userId = self.Email_existe(adresseMail)
-     print("user_iddddd",userId)
+     utilisateurId = self.Email_existe(adresseMail)
+     print("user_iddddd",utilisateurId)
      
      mddpHashe = bcrypt.hashpw(nouveauMotDePasse.encode('utf-8'), bcrypt.gensalt())
 
-     if userId:  # Si l'utilisateur existe
+     if utilisateurId:  # Si l'utilisateur existe
         try:
             # S'assurer que l'email est une chaîne et qu'il est correctement passé à la requête
             emailSaisi = str(adresseMail)  # Cela garantit que l'email est une chaîne
