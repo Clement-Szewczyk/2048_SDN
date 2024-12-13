@@ -44,11 +44,14 @@ class User:
         """Vérifie les informations d'identification de l'utilisateur."""
         self.cursor.execute("SELECT * FROM Utilisateur WHERE adresseMail=%s", (adresseMail,))
         user = self.cursor.fetchone()
-
-        if user and bcrypt.checkpw(motDePasse.encode('utf-8'), user[4].encode('utf-8')):  # Vérifier le mot de passe
-            print(f"Connexion réussie pour : {user[1]} {user[2]}, Email : {user[3]}")  # Afficher l'information
+        # Vérifier le mot de passe
+        if user and bcrypt.checkpw(motDePasse.encode('utf-8'),
+                                    user[4].encode('utf-8')):  
+            print(f"Connexion réussie pour : {user[1]} 
+                  {user[2]}, Email : {user[3]}")  # Afficher l'information
             return user[0]  # Retourner l'ID de l'utilisateur 
-        print("Nom d'utilisateur ou mot de passe incorrect.")  # Afficher l'erreur
+        # Afficher l'erreur
+        print("Nom d'utilisateur ou mot de passe incorrect.")  
         return None  # Échec de l'authentification
     
 
@@ -71,13 +74,15 @@ class User:
 
     def modifierMotDePasse(self, adresseMail, nouveauMotDePasse):
      """
-     Modifie le mot de passe de l'utilisateur correspondant à l'adresse email donnée.
+     Modifie le mot de passe de l'utilisateur correspondant à l'adresse 
+     email donnée.
      """
       # Vérifier si l'email existe
      utilisateurId = self.Email_existe(adresseMail)
      print("user_iddddd",utilisateurId)
      
-     mddpHashe = bcrypt.hashpw(nouveauMotDePasse.encode('utf-8'), bcrypt.gensalt())
+     mddpHashe = bcrypt.hashpw(nouveauMotDePasse.encode('utf-8'), 
+                               bcrypt.gensalt())
 
      if utilisateurId:  # Si l'utilisateur existe
         try:

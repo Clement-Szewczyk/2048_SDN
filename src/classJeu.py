@@ -111,11 +111,13 @@ class Jeu:
 
      # Dessiner le texte de victoire
      message = self.font.render("Vous avez gagné !", True, (255, 255, 255))  # Texte en blanc
-     rectMessage = message.get_rect(center=(self.largeur // 2, self.largeur // 2))  # Centrer le texte
+     rectMessage = message.get_rect(center=(self.largeur // 2, 
+                                            self.largeur // 2))  # Centrer le texte
      self.fenetre.blit(message, rectMessage)
 
      # Dessiner un bouton pour continuer ou fermer
-     boutonRect = pygame.Rect(self.largeur // 2 - 75, self.largeur // 2 + 50, 150, 50)
+     boutonRect = pygame.Rect(self.largeur // 2 - 75, 
+                              self.largeur // 2 + 50, 150, 50)
      pygame.draw.rect(self.fenetre, (255, 255, 255), boutonRect)
      texteBouton = self.font.render("Continuer", True, (0, 0, 0))
      rectTexteBouton = texteBouton.get_rect(center=boutonRect.center)
@@ -129,7 +131,8 @@ class Jeu:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
-            if event.type == pygame.MOUSEBUTTONDOWN and boutonRect.collidepoint(event.pos):
+            if (event.type == pygame.MOUSEBUTTONDOWN 
+                and boutonRect.collidepoint(event.pos)):
                 self.dialogActive = False  # Réinitialiser l'état
                 return
 
