@@ -47,8 +47,7 @@ class User:
         # Vérifier le mot de passe
         if user and bcrypt.checkpw(motDePasse.encode('utf-8'),
                                     user[4].encode('utf-8')):  
-            print(f"Connexion réussie pour : {user[1]} 
-                  {user[2]}, Email : {user[3]}")  # Afficher l'information
+            print(f"Connexion réussie pour : {user[1]} {user[2]}, Email : {user[3]}")  # Afficher l'information
             return user[0]  # Retourner l'ID de l'utilisateur 
         # Afficher l'erreur
         print("Nom d'utilisateur ou mot de passe incorrect.")  

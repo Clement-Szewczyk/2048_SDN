@@ -201,8 +201,66 @@ class Jeu:
         for tuile in tuilleTrie:
             self.tuile[f"{tuile.ligne}{tuile.col}"] = tuile
         self.dessiner()
-        
-       
+    
+   
+    def messagePerdant(self):
+        # Dessiner une superposition semi-transparente
+        overlay = pygame.Surface((self.largeur, self.largeur))  # Créer une surface de la taille de l'écran
+        overlay.set_alpha(180)  # Définir la transparence (0-255)
+        overlay.fill((0, 0, 0))  # Remplir avec du noir
+        self.fenetre.blit(overlay, (0, 0))  # Dessiner la superposition sur l'écran
+
+        # Dessiner le texte de victoire
+        message = self.font.render("Vous avez Perdu !", True, (255, 255, 255))  # Texte en blanc
+        rectMessage = message.get_rect(center=(self.largeur // 2, 
+                                                self.largeur // 2))  # Centrer le texte
+        self.fenetre.blit(message, rectMessage)
+
+        # Dessiner un bouton pour continuer ou fermer
+        texteBouton = self.font.render("Recommencer", True, (0, 0, 0))
+        texteLargeur, texteHauteur = self.font.size("Recommencer")
+
+        boutonRect = pygame.Rect(self.largeur // 2 - texteLargeur // 2, 
+                                self.largeur // 2 + 50, texteLargeur, texteHauteur)
+        pygame.draw.rect(self.fenetre, (255, 255, 255), boutonRect)
+        self.fenetre.blit(texteBouton, (self.largeur // 2 - texteLargeur // 2, 
+                                        self.largeur // 2 + 50)) 
+        self.victoireAffichee = True
+        pygame.display.update()  # Mettre à jour l'affichage
+
+        #  Gérer les événements pour le bouton
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    return
+                if (event.type == pygame.MOUSEBUTTONDOWN 
+                    and boutonRect.collidepoint(event.pos)):
+                        self.grille = Grille(4, 4)  # Réinitialiser la grille
+                        self.score = 0  # Réinitialiser le score
+                        self.tuile = self.genererTuile()  # Régénérer la tuile
+                        self.dessiner()  # Redessiner le self
+                        self.victoireAffichee = False   
+                        return
+
+    
+    def perdant(self):
+        #cette fonction va regarder si des déplacement (fusion son possible)
+
+        for tuile in self.tuile.values():
+            if tuile.col > 0:
+                if self.tuile.get(f"{tuile.ligne}{tuile.col - 1}").valeur == tuile.valeur:
+                    return
+            if tuile.col < 3:
+                if self.tuile.get(f"{tuile.ligne}{tuile.col + 1}").valeur == tuile.valeur:
+                    return
+            if tuile.ligne > 0:
+                if self.tuile.get(f"{tuile.ligne - 1}{tuile.col}").valeur == tuile.valeur:
+                    return
+            if tuile.ligne < 3:
+                if self.tuile.get(f"{tuile.ligne + 1}{tuile.col}").valeur == tuile.valeur:
+                    return
+        self.messagePerdant()
 
     
 
@@ -214,7 +272,7 @@ class Jeu:
     """
     def finMouvement(self):
         if (len(self.tuile) == 16):
-            print("Game Over")
+            self.perdant()
             return "Game Over"
         
         ligne, col = self.positionAleatoire(self.tuile)
