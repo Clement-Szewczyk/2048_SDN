@@ -221,7 +221,8 @@ class Jeu:
         texteLargeur, texteHauteur = self.font.size("Recommencer")
 
         boutonRect = pygame.Rect(self.largeur // 2 - texteLargeur // 2, 
-                                self.largeur // 2 + 50, texteLargeur, texteHauteur)
+                                self.largeur // 2 + 50, texteLargeur, 
+                                texteHauteur)
         pygame.draw.rect(self.fenetre, (255, 255, 255), boutonRect)
         self.fenetre.blit(texteBouton, (self.largeur // 2 - texteLargeur // 2, 
                                         self.largeur // 2 + 50)) 
@@ -249,16 +250,20 @@ class Jeu:
 
         for tuile in self.tuile.values():
             if tuile.col > 0:
-                if self.tuile.get(f"{tuile.ligne}{tuile.col - 1}").valeur == tuile.valeur:
+                if (self.tuile.get(f"{tuile.ligne}{tuile.col - 1}").valeur ==
+                tuile.valeur):
                     return
             if tuile.col < 3:
-                if self.tuile.get(f"{tuile.ligne}{tuile.col + 1}").valeur == tuile.valeur:
+                if (self.tuile.get(f"{tuile.ligne}{tuile.col + 1}").valeur == 
+                tuile.valeur):
                     return
             if tuile.ligne > 0:
-                if self.tuile.get(f"{tuile.ligne - 1}{tuile.col}").valeur == tuile.valeur:
+                if (self.tuile.get(f"{tuile.ligne - 1}{tuile.col}").valeur == 
+                tuile.valeur):
                     return
             if tuile.ligne < 3:
-                if self.tuile.get(f"{tuile.ligne + 1}{tuile.col}").valeur == tuile.valeur:
+                if (self.tuile.get(f"{tuile.ligne + 1}{tuile.col}").valeur == 
+                tuile.valeur):
                     return
         self.messagePerdant()
 
