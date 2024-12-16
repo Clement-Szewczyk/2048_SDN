@@ -5,7 +5,7 @@ class User:
     """Gère les opérations liées à l'utilisateur dans la base de données."""
 
     def __init__(self, host="localhost", user="root", 
-                 password="", database="jeu2048", port=3306):
+                 password="root", database="jeu2048", port=3305):
         """Initialise la connexion à la base de données et prépare le curseur."""
         # Connexion à la base de données MySQL
         self.db = mysql.connector.connect(
