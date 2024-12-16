@@ -2,7 +2,7 @@ import pygame
 from classGrille import Grille
 from classTuile import Tuile
 from classBandeau import Bandeau
-from backend import User
+from Authentification import User
 import random
 import sys
 
@@ -150,7 +150,7 @@ class Jeu:
 
      # Vérifiez si une tuile a la valeur 2048
      for tuile in self.tuile.values():
-        if tuile.valeur == 4 and not self.victoireAffichee:  # Afficher le message de victoire une seule fois
+        if tuile.valeur == 2048 and not self.victoireAffichee:  # Afficher le message de victoire une seule fois
             self.afficherMessageVictoire()
             pygame.display.update()
             break
