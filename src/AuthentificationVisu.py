@@ -1,38 +1,40 @@
 # frontend.py
 import re
 import pygame
-from backend import  User
+from Authentification import  User
+class Application:
+      # Initialisation de Pygame
+        pygame.init()
+        ecran = pygame.display.set_mode((400, 450))
+        pygame.display.set_caption("Authentification")
+        
+        # Définition des couleurs
+        BLANC = (255, 255, 255)
+        GRIS_CLAIR = (245, 245, 245)
+        GRIS_FONCE = (80, 80, 80)
+        BLEU = (93, 139, 193)
+        BLEU_CLAIR = (100, 149, 237)
+        SURVOL_BLEU = (135, 206, 250)
+        ROUGE = (220, 20, 60)
+        NOIR = (0, 0, 0)
+        OMBRE = (192, 192, 192)
+     
+ 
+    
 
-# Initialisation de Pygame
-pygame.init()
-
-# Configuration de l'écran
-ecran = pygame.display.set_mode((400, 450))
-pygame.display.set_caption("Authentification")
-
-# Définir les couleurs modernes
-BLANC = (255, 255, 255)
-GRIS_CLAIR = (245, 245, 245)
-GRIS_FONCE = (80, 80, 80)
-BLEU = (93, 139, 193)
-BLEU_CLAIR = (100, 149, 237)
-SURVOL_BLEU = (135, 206, 250)
-ROUGE = (220, 20, 60)
-NOIR = (0, 0, 0)
-OMBRE = (192, 192, 192)
 
 """
-Fonction dessinerTexte : Affiche un texte sur une surface
-Paramètres :
-- texte : Texte à afficher
-- police : Objet pygame.font.Font représentant la police à utiliser
-- couleur : Couleur du texte, format RGB
-- surface : Surface pygame où le texte sera dessiné
-- x, y : Coordonnées du coin supérieur gauche où positionner le texte
+ Fonction dessinerTexte : Affiche un texte sur une surface
+ Paramètres :
+ - texte : Texte à afficher
+ - police : Objet pygame.font.Font représentant la police à utiliser
+ - couleur : Couleur du texte, format RGB
+ - surface : Surface pygame où le texte sera dessiné
+ - x, y : Coordonnées du coin supérieur gauche où positionner le texte
 
-Description : Cette fonction crée un objet texte avec la police et la couleur données, puis
-le positionne et l'affiche sur la surface spécifiée.
-"""
+ Description : Cette fonction crée un objet texte avec la police et la couleur données, puis
+ le positionne et l'affiche sur la surface spécifiée.
+ """
 def dessinerTexte(texte, police, couleur, surface, x, y):
     textObj = police.render(texte, True, couleur)
     textRect = textObj.get_rect()
@@ -41,12 +43,12 @@ def dessinerTexte(texte, police, couleur, surface, x, y):
 
 """
     Fonction validerEmail : Vérifie la validité d'une adresse email
-    Paramètres :
+   Paramètres :
     - email : Adresse email à valider
 
     Description : Cette fonction utilise une expression régulière pour vérifier si l'adresse email
     fournie respecte le format standard.
-"""
+ """
 def validerEmail(email):
     # Vérifie si l'email est valide avec une expression régulière
     emailRegex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
@@ -63,14 +65,14 @@ def validerMdp(motDePasse):
     return len(motDePasse) >= 5
 
 """
-    Classe Link : Représente un lien cliquable
+    Classe Lien : Représente un lien cliquable
     Attributs :
     - x : Position horizontale du lien
     - y : Position verticale du lien
     - text : Texte affiché pour le lien
     - font : Police utilisée pour afficher le texte
 """
-class Link:
+class Lien:
     """
         Méthode __init__ : Initialise un lien
         Paramètres :
@@ -78,7 +80,7 @@ class Link:
         - y : Position verticale
         - text : Texte du lien
 
-        Description : Cette méthode initialise un objet Link avec ses coordonnées,
+        Description : Cette méthode initialise un objet Lien avec ses coordonnées,
         son texte et une police par défaut.
     """
     def __init__(self, x, y, text):
@@ -88,14 +90,14 @@ class Link:
         self.font = pygame.font.Font(None, 28)
 
     """
-        Méthode draw : Affiche le lien sur une surface
+        Méthode dessiner : Affiche le lien sur une surface
         Paramètres :
         - surface : Surface pygame où afficher le lien
 
         Description : Cette méthode dessine le texte du lien à ses coordonnées sur la surface donnée.
     """
-    def draw(self, surface):
-        dessinerTexte(self.text, self.font, BLEU, surface, self.x, self.y)
+    def dessiner(self, surface):
+        dessinerTexte(self.text, self.font,Application.BLEU, surface, self.x, self.y)
 
     """
         Méthode estSurvole : Vérifie si le lien est survolé par la souris
@@ -120,7 +122,7 @@ class Link:
     - font : Police utilisée pour afficher le texte
     - active : Indique si le bouton est actuellement survolé
 """
-class Button:
+class Bouton:
     """
         Méthode __init__ : Initialise un bouton
         Paramètres :
@@ -148,13 +150,13 @@ class Button:
         ajuste sa couleur si le bouton est actif (survolé).
     """
     def dessiner(self, surface):
-        couleur = SURVOL_BLEU if self.active else BLEU
+        couleur = Application.SURVOL_BLEU if self.active else Application.BLEU
         ombre = 5  # Ajoute une ombre
-        pygame.draw.rect(surface, OMBRE, (self.rect.x + ombre, 
+        pygame.draw.rect(surface, Application.OMBRE, (self.rect.x + ombre, 
                                           self.rect.y + ombre, self.rect.width,
                                           self.rect.height), border_radius=15)
         pygame.draw.rect(surface, couleur, self.rect, border_radius=15)
-        dessinerTexte(self.text, self.font, BLANC, surface, self.rect.x + 20, 
+        dessinerTexte(self.text, self.font, Application.BLANC, surface, self.rect.x + 20, 
                       self.rect.y + 10)
 
     """
@@ -178,10 +180,10 @@ class Button:
         :param height: Hauteur de la boîte.
         :param placeholder: Texte indicatif à afficher quand aucune donnée n'est saisie.
         """
-class InputBox:
+class ZoneSaisie:
     def __init__(self, x, y, width, height, placeholder):
         self.rect = pygame.Rect(x, y, width, height)
-        self.couleur = GRIS_CLAIR
+        self.couleur = Application.GRIS_CLAIR
         self.text = ''
         self.placeholder = placeholder
         self.font = pygame.font.Font(None, 28)
@@ -199,7 +201,7 @@ class InputBox:
                 self.active = True
             else:
                 self.active = False
-            self.couleur = BLEU_CLAIR if self.active else GRIS_CLAIR
+            self.couleur = Application.BLEU_CLAIR if self.active else Application.GRIS_CLAIR
 
         if event.type == pygame.KEYDOWN and self.active:
             if event.key == pygame.K_BACKSPACE:
@@ -220,33 +222,33 @@ class InputBox:
         :param screen: Surface Pygame sur laquelle dessiner.
         """
     def dessiner(self, surface):
-        pygame.draw.rect(surface, OMBRE, (self.rect.x + 3, self.rect.y + 3, 
+        pygame.draw.rect(surface, Application.OMBRE, (self.rect.x + 3, self.rect.y + 3, 
                                           self.rect.width,
                                           self.rect.height), border_radius=10)
         pygame.draw.rect(surface, self.couleur, self.rect, border_radius=10)
 
         # Affichage du texte
         afficherTexte = self.text if self.mdpVisible else '*' * len(self.text) if self.placeholder == "Mot de passe" else self.text
-        dessinerTexte(afficherTexte if self.text or self.placeholder == "Mot de passe" else self.placeholder, self.font, NOIR if self.text else GRIS_FONCE, surface, self.rect.x + 10, self.rect.y + 10)
+        dessinerTexte(afficherTexte if self.text or self.placeholder == "Mot de passe" else self.placeholder, self.font, Application.NOIR if self.text else Application.GRIS_FONCE, surface, self.rect.x + 10, self.rect.y + 10)
 
-# Boucle principale
+ # Boucle principale
 def main():
     utilisateur = User()
     actif = True
     font = pygame.font.Font(None, 28)
 
     # Champs d'entrée pour l'inscription
-    champNom = InputBox(160, 50, 200, 40, "Nom")
-    champPrenom = InputBox(160, 100, 200, 40, "Prénom")
-    champEmail = InputBox(160, 150, 200, 40, "Email")
-    champMDP = InputBox(160, 200, 200, 40, "Mot de passe")
+    champNom = ZoneSaisie(160, 50, 200, 40, "Nom")
+    champPrenom = ZoneSaisie(160, 100, 200, 40, "Prénom")
+    champEmail = ZoneSaisie(160, 150, 200, 40, "Email")
+    champMDP = ZoneSaisie(160, 200, 200, 40, "Mot de passe")
 
     # Champs d'entrée pour la connexion
-    champConnectEmail = InputBox(160, 60, 200, 40, "Email")
-    champConnectMdp = InputBox(160, 110, 200, 40, "Mot de passe")
+    champConnectEmail = ZoneSaisie(160, 60, 200, 40, "Email")
+    champConnectMdp = ZoneSaisie(160, 110, 200, 40, "Mot de passe")
     # Champs d'entrée pour la modification de mot de passe 
-    champConnectEmailPass = InputBox(160, 60, 200, 40, "Email")
-    champConnectMdpPass = InputBox(160, 110, 200, 40, "Mot de passe")
+    champConnectEmailPass = ZoneSaisie(160, 60, 200, 40, "Email")
+    champConnectMdpPass = ZoneSaisie(160, 110, 200, 40, "Mot de passe")
 
     # État de l'application
     modeInscription = False  # Commence par la page de connexion
@@ -256,13 +258,13 @@ def main():
     message = ""
 
     # Liens pour changer de page
-    lienInscription = Link(50, 320, "S'inscrire")  # Lien pour passer en mode inscription
-    lienConnexion = Link(170, 320, "Se connecter")  # Lien pour passer en mode connexion
-    lienMdp = Link(170, 320, "Mot de passe oublié ?")
+    lienInscription = Lien(50, 320, "S'inscrire")  # Lien pour passer en mode inscription
+    lienConnexion = Lien(170, 320, "Se connecter")  # Lien pour passer en mode connexion
+    lienMdp = Lien(170, 320, "Mot de passe oublié ?")
 
     # Création des boutons
-    boutonValider = Button(160, 250, 140, 50, "Valider")
-    basculerBoutonMdp = Button(460, 200, 40, 40, "*")  # Bouton pour afficher/cacher le mot de passe
+    boutonValider = Bouton(160, 250, 140, 50, "Valider")
+    basculerBoutonMdp = Bouton(460, 200, 40, 40, "*")  # Bouton pour afficher/cacher le mot de passe
 
     while actif:
         for event in pygame.event.get():
@@ -354,53 +356,53 @@ def main():
                             message = "Erreur dans l'adresse email."
 
         # Dessiner l'écran avec un fond blanc
-        ecran.fill(BLANC)
+        Application.ecran.fill(Application.BLANC)
 
         # Afficher le formulaire
         if modeInscription:
-            dessinerTexte("Mode Inscription", font, GRIS_FONCE, ecran, 20, 20)
-            dessinerTexte("Nom:", font, NOIR, ecran, 20, 60)
-            champNom.dessiner(ecran)
-            dessinerTexte("Prénom:", font, NOIR, ecran, 20, 110)
-            champPrenom.dessiner(ecran)
-            dessinerTexte("Email:", font, NOIR, ecran, 20, 160)
-            champEmail.dessiner(ecran)
-            dessinerTexte("Mot de passe:", font, NOIR, ecran, 20, 210)
-            champMDP.dessiner(ecran)
+            dessinerTexte("Mode Inscription", font, Application.GRIS_FONCE, Application.ecran, 20, 20)
+            dessinerTexte("Nom:", font, Application.NOIR, Application.ecran, 20, 60)
+            champNom.dessiner(Application.ecran)
+            dessinerTexte("Prénom:", font, Application.NOIR, Application.ecran, 20, 110)
+            champPrenom.dessiner(Application.ecran)
+            dessinerTexte("Email:", font, Application.NOIR, Application.ecran, 20, 160)
+            champEmail.dessiner(Application.ecran)
+            dessinerTexte("Mot de passe:", font, Application.NOIR, Application.ecran, 20, 210)
+            champMDP.dessiner(Application.ecran)
             basculerBoutonMdp.rect.topleft = (champMDP.rect.x + champMDP.rect.width + 10, 
                                               champMDP.rect.y)  # Positionner le bouton à droite du champ de mot de passe
 
             # Afficher le lien pour se connecter
-            lienConnexion.draw(ecran)
+            lienConnexion.dessiner(Application.ecran)
             
         elif modeMdpOublie:
-            dessinerTexte("Réinitialiser Connexion", font, GRIS_FONCE, ecran, 20, 20)
-            dessinerTexte("Email:", font, NOIR, ecran, 20, 70)
-            champConnectEmailPass.dessiner(ecran)
-            dessinerTexte("Mot de passe:", font, NOIR, ecran, 20, 120)
-            champConnectMdpPass.dessiner(ecran)
+            dessinerTexte("Réinitialiser Connexion", font, Application.GRIS_FONCE, Application.ecran, 20, 20)
+            dessinerTexte("Email:", font, Application.NOIR, Application.ecran, 20, 70)
+            champConnectEmailPass.dessiner(Application.ecran)
+            dessinerTexte("Mot de passe:", font, Application.NOIR, Application.ecran, 20, 120)
+            champConnectMdpPass.dessiner(Application.ecran)
             basculerBoutonMdp.rect.topleft = (champConnectMdpPass.rect.x + champConnectMdpPass.rect.width + 10, 
                                               champConnectMdpPass.rect.y)  # Positionner le bouton à droite du champ de mot de passe
-            lienConnexion.draw(ecran)
+            lienConnexion.dessiner(Application.ecran)
         else:
-            dessinerTexte("Mode Connexion", font, GRIS_FONCE, ecran, 20, 20)
-            dessinerTexte("Email:", font, NOIR, ecran, 20, 70)
-            champConnectEmail.dessiner(ecran)
-            dessinerTexte("Mot de passe:", font, NOIR, ecran, 20, 120)
-            champConnectMdp.dessiner(ecran)
+            dessinerTexte("Mode Connexion", font, Application.GRIS_FONCE, Application.ecran, 20, 20)
+            dessinerTexte("Email:", font,Application.NOIR, Application.ecran, 20, 70)
+            champConnectEmail.dessiner(Application.ecran)
+            dessinerTexte("Mot de passe:", font, Application.NOIR, Application.ecran, 20, 120)
+            champConnectMdp.dessiner(Application.ecran)
             basculerBoutonMdp.rect.topleft = (champConnectMdp.rect.x + champConnectMdp.rect.width + 10, 
                                               champConnectMdp.rect.y)  # Positionner le bouton à droite du champ de mot de passe
 
             # Afficher le lien pour s'inscrire
-            lienInscription.draw(ecran)
-            lienMdp.draw(ecran)
+            lienInscription.dessiner(Application.ecran)
+            lienMdp.dessiner(Application.ecran)
 
         # Dessiner les boutons
-        boutonValider.dessiner(ecran)
-        basculerBoutonMdp.dessiner(ecran)
+        boutonValider.dessiner(Application.ecran)
+        basculerBoutonMdp.dessiner(Application.ecran)
 
         # Afficher le message d'information
-        dessinerTexte(message, font, ROUGE, ecran, 3, 350)
+        dessinerTexte(message, font, Application.ROUGE, Application.ecran, 3, 350)
 
         pygame.display.flip()
 

@@ -3,7 +3,7 @@ from classEcran import Ecran
 from classGrille import Grille
 from classJeu import Jeu
 from classBandeau import Bandeau
-import frontend  # Importer le module frontend
+import AuthentificationVisu  # Importer le module frontend
 
 def main():
     
@@ -17,7 +17,7 @@ def main():
     # Créer une instance du bandeau
     bandeau = Bandeau(ecran.largeur)  
     # Appel de la fonction main du fichier frontend pour l'authentification
-    user = frontend.main()  # Vérifie si l'authentification a réussi
+    user = AuthentificationVisu.main()  # Vérifie si l'authentification a réussi
     #user = True
 
     if user:  # Si l'authentification a réussi
