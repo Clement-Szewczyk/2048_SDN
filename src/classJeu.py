@@ -150,8 +150,8 @@ class Jeu:
 
      # Vérifiez si une tuile a la valeur 2048
      for tuile in self.tuile.values():
-        if tuile.valeur == 2048 and not self.victoire_affichee:  # Afficher le message de victoire une seule fois
-            self.afficher_message_victoire()
+        if tuile.valeur == 4 and not self.victoireAffichee:  # Afficher le message de victoire une seule fois
+            self.afficherMessageVictoire()
             pygame.display.update()
             break
 
