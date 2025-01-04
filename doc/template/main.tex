@@ -33,6 +33,16 @@
 \usepackage[toc,page]{appendix}
 \usepackage{pdfpages}
 
+\usepackage{listings}
+\lstset{
+  backgroundcolor=\color{lightgray}, % Fond gris clair
+  basicstyle=\ttfamily, % Police monospace
+  breaklines=true       % Permet de couper les lignes longues
+}
+\usepackage{framed}
+\newcommand{\passthrough}[1]{#1}
+
+
 % Définir une couleur de surlignage jaune pour \mark
 \sethlcolor{yellow}
 
@@ -56,6 +66,7 @@
 \title{Template}
 \newcommand{\myauthor}{$author$}
 \newcommand{\mydate}{$date$} % Spécifiez la date ici
+
 
 
 \begin{document}

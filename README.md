@@ -1,10 +1,9 @@
 ---
-title : 2048 en python
-author : Stievenard Emma, Mezouar Chahinez et Szewczyk Clément"
-date : Semestre 1
+title : 2048 en python (Projet Conception Logiciel)
+author : Stievenard Emma, Mezouar Chahinez et Szewczyk Clément
+date : 13/09/2024 - 07/01/2025
 
 ---
-
 
 
 <!-- TOC -->
