@@ -70,7 +70,7 @@ git clone <https://github.com/Clement-Szewczyk/2048_SDN>
 cd 2048_SDN
 ```
 
-- Avoir un gestionnaire de base de données (pouvant utiliser des Base de données MYSQL)
+- Avoir un gestionnaire de base de données (pouvant utiliser des bases de données MYSQL)
 
 Vous devez importer la base de données du jeu. Pour cela, vous pouvez utiliser le fichier `2048.sql` situé dans le dossier `BDD`. 
 
