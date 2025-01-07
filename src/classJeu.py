@@ -72,7 +72,7 @@ class Jeu:
     def ajouterBandeau(self, hauteurBandeau):
         self.bandeau = Bandeau(self.largeur, hauteurBandeau)
 
-        print("score max ", self.scoreMaximal)    
+           
 
     """
     Fonction dessiner : Dessine tous le jeu 
@@ -146,7 +146,7 @@ class Jeu:
     Description : Cette fonction vérifie si le joueur a gagné
     """
     def gagnant(self):
-     print("score dans gagnant ", self.score)
+     
 
      # Vérifiez si une tuile a la valeur 2048
      for tuile in self.tuile.values():
@@ -266,6 +266,7 @@ class Jeu:
                 tuile.valeur):
                     return
         self.messagePerdant()
+        #print("Vous avez perdu")
 
     
 
@@ -388,7 +389,7 @@ class Jeu:
                     if checkFusion(tuile, prochaineTuile):
                         tuile.mouvement(delta)
                     else:
-                        print("FUSION")
+                        
                         prochaineTuile.valeur *= 2
                         deltaScore += prochaineTuile.valeur
                         tuileTriee.pop(i)

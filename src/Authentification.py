@@ -5,7 +5,7 @@ class User:
     """Gère les opérations liées à l'utilisateur dans la base de données."""
 
     def __init__(self, host="localhost", user="root", 
-                 password="root", database="jeu2048", port=3305):
+                 password="", database="jeu2048", port=3306):
         """Initialise la connexion à la base de données et prépare le curseur."""
         # Connexion à la base de données MySQL
         self.db = mysql.connector.connect(
@@ -38,8 +38,7 @@ class User:
             return False
 
     def seConnecter(self, adresseMail, motDePasse):
-        print("adresseMail",adresseMail)
-        print("motDePasse",motDePasse)
+        
 
         """Vérifie les informations d'identification de l'utilisateur."""
         self.cursor.execute("SELECT * FROM Utilisateur WHERE adresseMail=%s", (adresseMail,))
@@ -47,7 +46,7 @@ class User:
         # Vérifier le mot de passe
         if user and bcrypt.checkpw(motDePasse.encode('utf-8'),
                                     user[4].encode('utf-8')):  
-            print(f"Connexion réussie pour : {user[1]} {user[2]}, Email : {user[3]}")  # Afficher l'information
+            
             return user[0]  # Retourner l'ID de l'utilisateur 
         # Afficher l'erreur
         print("Nom d'utilisateur ou mot de passe incorrect.")  
@@ -77,7 +76,7 @@ class User:
      email donnée.
      """
       # Vérifier si l'email existe
-     utilisateurId = self.Email_existe(adresseMail)
+     utilisateurId = self.emailExiste(adresseMail)
      print("user_iddddd",utilisateurId)
      
      mddpHashe = bcrypt.hashpw(nouveauMotDePasse.encode('utf-8'), 
