@@ -142,12 +142,12 @@ Lors de l'initialisation du jeu, une grille vide est créée avec un nombre fixe
 
 ## Gestion des événements clavier
 
-Dans le fichier `main.py`, qui le fichier de base pour lancer le jeu, nous avons une boucle principale qui gère les événements clavier. En fonction de ce que l'on fait, on appelle les fonctions de la classe `Jeu` pour déplacer les tuiles, redémarrer une partie ou quitter le jeu.
+Dans le fichier `main.py`, qui est le fichier de base pour lancer le jeu, nous avons une boucle principale qui gère les événements clavier. En fonction de ce que l'on fait, on appelle les fonctions de la classe `Jeu` pour déplacer les tuiles, redémarrer une partie ou quitter le jeu.
 
 
 ## Logique des mouvements et des fusions
 
-La logique des mouvements et des fusions est gérée par la classe `Jeu`. Lorsque le joueur appuie sur une touche directionnelle, on va d'abord trié les tuiles en fonction de la direction du mouvement (par exemple : si on appuie sur droite, les tuiles seront trié de droite à gauche). Ensuite, on va déplacer les tuiles en fonction de la direction du mouvement. Si deux tuiles de même valeur se rencontrent, elles fusionnent pour former une nouvelle tuile avec une valeur doublée. Le score du joueur est mis à jour en fonction des valeurs des tuiles fusionnées.
+La logique des mouvements et des fusions est gérée par la classe `Jeu`. Lorsque le joueur appuie sur une touche directionnelle, on va d'abord trier les tuiles en fonction de la direction du mouvement (par exemple : si on appuie sur droite, les tuiles seront triées de droite à gauche). Ensuite, on va déplacer les tuiles en fonction de la direction du mouvement. Si deux tuiles de même valeur se rencontrent, elles fusionnent pour former une nouvelle tuile avec une valeur doublée. Le score du joueur est mis à jour en fonction des valeurs des tuiles fusionnées.
 
 ## Conditions de fin de partie (victoire/défaite)
 Les conditions de fin de partie sont vérifiées après chaque mouvement. La classe `Jeu` vérifie si une tuile avec la valeur 2048 est présente sur la grille, ce qui signifie que le joueur a gagné. Si la grille est pleine et qu'aucun mouvement ou fusion n'est possible, le jeu se termine par une défaite. Des messages de victoire ou de défaite sont affichés à l'écran.
