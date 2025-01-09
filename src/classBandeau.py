@@ -25,14 +25,15 @@ class Bandeau:
             self.largeurFenetre - 150, 10, 140, 30)
 
 
-    """
+    
+    def afficherBandeau(self, fenetre, scoreActuel, scoreMaximal):
+        """
         Affiche le bandeau avec le score actuel, le score maximal et le bouton de redémarrage.
         
         :param fenetre: Fenêtre sur laquelle afficher le bandeau
         :param scoreActuel: Le score actuel du jeu
         :param scoreMaximal: Le score maximal atteint jusqu'à présent
         """
-    def afficherBandeau(self, fenetre, scoreActuel, scoreMaximal):
         pygame.draw.rect(fenetre, GRIS, 
                          (0, 0, self.largeurFenetre, self.hauteurBandeau))
 
@@ -52,11 +53,12 @@ class Bandeau:
         fenetre.blit(texteBouton, (self.boutonRedemarrerRect.x + 10,
                                     self.boutonRedemarrerRect.y + 5))
 
+        
+    def verifierClick(self, positionSouris):
         """
         Vérifie si un clic de souris a eu lieu sur le bouton de redémarrage.
 
         :param positionSouris: Position du clic de souris
         :return: True si le clic est dans la zone du bouton, sinon False
         """
-    def verifierClick(self, positionSouris):
         return self.boutonRedemarrerRect.collidepoint(positionSouris)

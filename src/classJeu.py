@@ -8,14 +8,21 @@ import sys
 
 class Jeu:
     """
-    Fonction __init__ : Constructeur de la classe Jeu
-    Paramètres :
-    - Ecran : Instance de la classe Ecran
-    - idUtilisateur : Identifiant de l'utilisateur
+    Classe représentant le logique du jeu 2048.
 
-    Description : Cette fonction initialise les attributs de la classe Jeu
+    Attributs:
+
     """
+    
     def __init__(self, Ecran,idUtilisateur, bandeau):
+        """
+        Fonction __init__ : Constructeur de la classe Jeu
+        Paramètres :
+        - Ecran : Instance de la classe Ecran
+        - idUtilisateur : Identifiant de l'utilisateur
+
+        Description : Cette fonction initialise les attributs de la classe Jeu
+        """
         self.user = User()  # Crée une instance de la classe User
         self.Ecran = Ecran
         self.fenetre = Ecran.fenetre
@@ -35,18 +42,19 @@ class Jeu:
         self.dialogActive = False  
          
     
-    """
-    Fonction ajouterGrille 
-        Elle permet de créer une grille de jeu
-    Paramètres:
-    - nbColonneLargeur: nombre de colonnes en largeur
-    - nbColonneHauteur: nombre de colonnes en hauteur
-    - marge: marge entre les cases de la grille
-    - hauteur: hauteur de la grille
-    """
+
     def ajouterGrille(self, nbColonneLargeur, nbColonneHauteur, marge, hauteur):
-            self.grille = Grille()
-            self.grille.creerGrille(nbColonneLargeur, 
+        """
+        Fonction ajouterGrille 
+            Elle permet de créer une grille de jeu
+        Paramètres:
+        - nbColonneLargeur: nombre de colonnes en largeur
+        - nbColonneHauteur: nombre de colonnes en hauteur
+        - marge: marge entre les cases de la grille
+        - hauteur: hauteur de la grille
+        """
+        self.grille = Grille()
+        self.grille.creerGrille(nbColonneLargeur, 
                                     nbColonneHauteur, 
                                     self.largeur, 
                                     hauteur, 
@@ -55,13 +63,14 @@ class Jeu:
             #self.grille.afficherGrille(self.fenetre)
 
 
-    """
-    Fonction ajouterTuile
-        Elle permet de créer une tuile
-    Paramètres:
-    - valeur: valeur de la tuile
-    """
+
     def ajouterTuile(self):
+        """
+        Fonction ajouterTuile
+            Elle permet de créer une tuile
+        Paramètres:
+        - valeur: valeur de la tuile
+        """
         valeur = 2 if random.random() < 0.9 else 4
         tuile = Tuile(valeur)
         tuile.creerTuile(self.grille)
@@ -70,17 +79,25 @@ class Jeu:
 
 
     def ajouterBandeau(self, hauteurBandeau):
+        """
+        Foncion ajouterBandeau
+            Elle permet de créer un bandeau
+        Paramètres:
+        - hauteurBandeau: hauteur du bandeau
+        - largeur: largeur de la fenêtre
+        """
         self.bandeau = Bandeau(self.largeur, hauteurBandeau)
 
            
 
-    """
-    Fonction dessiner : Dessine tous le jeu 
-    Paramètres : Aucun
-
-    Description : Cette fonction dessine tous le jeu
-    """
+ 
     def dessiner(self):
+        """
+        Fonction dessiner : Dessine tous le jeu 
+        Paramètres : Aucun
+
+        Description : Cette fonction dessine tous le jeu
+        """
         self.fenetre.fill((205, 192, 180))
 
         # Dessiner le bandeau
@@ -95,13 +112,15 @@ class Jeu:
         self.Ecran.mettreAJour()
         
    
-    """
+    
+    def afficherMessageVictoire(self):
+     
+     """
     Fonction afficher_message_victoire : Affiche le message de victoire
     Paramètres : Aucun
 
     Description : Cette fonction affiche le message de victoire    
     """
-    def afficherMessageVictoire(self):
      
      # Dessiner une superposition semi-transparente
      overlay = pygame.Surface((self.largeur, self.largeur))  # Créer une surface de la taille de l'écran
@@ -139,14 +158,14 @@ class Jeu:
 
 
           
-    """
+    
+    def gagnant(self):
+     """
     Function gagnant : Vérifie si le joueur a gagné
     Paramètres : Aucun
 
     Description : Cette fonction vérifie si le joueur a gagné
     """
-    def gagnant(self):
-     
 
      # Vérifiez si une tuile a la valeur 2048
      for tuile in self.tuile.values():
@@ -156,14 +175,15 @@ class Jeu:
             break
 
     
-    """
-    Fonction positionAleatoire : Génère une position aléatoire pour une tuile
-    Paramètres :
-    - tuiles : Dictionnaire des tuiles
-
-    Description : Cette fonction génère une position aléatoire pour une tuile
-    """ 
+    
     def positionAleatoire(self, tuiles):
+        """
+        Fonction positionAleatoire : Génère une position aléatoire pour une tuile
+        Paramètres :
+        - tuiles : Dictionnaire des tuiles
+
+        Description : Cette fonction génère une position aléatoire pour une tuile
+        """ 
         ligne = None
         col = None
         while True: 
@@ -175,28 +195,29 @@ class Jeu:
         return ligne, col
         
 
-    """
-    Fonction genererTuile : Génère une tuile
-    Paramètres : Aucun
-
-    Description : Cette fonction génère une tuile
-    """
+    
     def genererTuile(self):
-        
+        """
+        Fonction genererTuile : Génère une tuile
+        Paramètres : Aucun
+
+        Description : Cette fonction génère une tuile
+        """
         tuiles = {}
         for _ in range(2):
             ligne, col = self.positionAleatoire(tuiles)
             tuiles[f"{ligne}{col}"] = Tuile(2, ligne, col, self.grille)
         return tuiles
     
-    """
-    Fonction majTuile : Met à jour les tuiles
-    Paramètres :
-    - tuilleTrie : Liste des tuiles
-
-    Description : Cette fonction met à jour les tuiles
-    """
+    
     def majTuile(self, tuilleTrie):
+        """
+        Fonction majTuile : Met à jour les tuiles
+        Paramètres :
+        - tuilleTrie : Liste des tuiles
+
+        Description : Cette fonction met à jour les tuiles
+        """
         self.tuile.clear() 
         for tuile in tuilleTrie:
             self.tuile[f"{tuile.ligne}{tuile.col}"] = tuile
@@ -204,6 +225,11 @@ class Jeu:
     
    
     def messagePerdant(self):
+        """
+        Fonction messagePerdant : Affiche le message de défaite
+
+        Paramètres : Aucun
+        """
         # Dessiner une superposition semi-transparente
         overlay = pygame.Surface((self.largeur, self.largeur))  # Créer une surface de la taille de l'écran
         overlay.set_alpha(180)  # Définir la transparence (0-255)
@@ -246,7 +272,10 @@ class Jeu:
 
     
     def perdant(self):
-        #cette fonction va regarder si des déplacement (fusion son possible)
+        """
+        Fonction perdant : Vérifie s'il n'y a plus de mouvement possible
+        Paramètres : Aucun
+        """
 
         for tuile in self.tuile.values():
             if tuile.col > 0:
@@ -270,13 +299,14 @@ class Jeu:
 
     
 
-    """
-    Fonction finMouvement : Vérifie si le jeu est terminé
-    Paramètres : Aucun
-
-    Description : Cette fonction vérifie si le jeu est terminé
-    """
+    
     def finMouvement(self):
+        """
+        Fonction finMouvement : Vérifie si le jeu est terminé
+        Paramètres : Aucun
+
+        Description : Cette fonction vérifie si le jeu est terminé
+        """
         if (len(self.tuile) == 16):
             self.perdant()
             return "Game Over"
@@ -288,15 +318,16 @@ class Jeu:
 
            
 
-    """
-    Fonction mouvement : Gère le mouvement des tusiles
-    Paramètres :
-    - horloge : Horloge
-    - direction : Direction du mouvement
-
-    Description : Cette fonction gère le mouvement des tuiles
-    """
+   
     def mouvement(self, horloge, direction):
+        """
+        Fonction mouvement : Gère le mouvement des tusiles
+        Paramètres :
+        - horloge : Horloge
+        - direction : Direction du mouvement
+
+        Description : Cette fonction gère le mouvement des tuiles
+        """
         self.user =User ()
         miseAJour = True
         blocks = set()

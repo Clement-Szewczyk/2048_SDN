@@ -3,8 +3,9 @@ import time
 
 class Grille:
     """
-    Fonction __init__ : Constructeur de la classe Grille
-    Paramètres :
+    Classe représentant la grille du jeu 2048.
+
+    Attributs:
     - nbLigne : Nombre de lignes
     - nbCol : Nombre de colonnes
     - largeur : Largeur de la grille
@@ -13,10 +14,19 @@ class Grille:
     - contourEppaiseur : Épaisseur du contour
     - tuileHauteur : Hauteur de la tuile
     - tuileLargeur : Largeur de la tuile
-
-    Description : Cette fonction initialise les attributs de la classe Grille
+    
     """
+
+   
     def __init__(self, nbLigne, nbCol):
+        """
+        Fonction __init__ : Constructeur de la classe Grille
+        Paramètres :
+        - nbLigne : Nombre de lignes
+        - nbCol : Nombre de colonnes
+
+        Description : Cette fonction initialise les attributs de la classe Grille
+        """
         self.nbLigne = nbLigne
         self.nbCol = nbCol
         self.largeur = 400
@@ -27,15 +37,16 @@ class Grille:
         self.tuileLargeur = self.largeur / self.nbLigne
         
     
-    """
-    Fonction dessinerGrille : Dessine la grille
-    Paramètres :
-    - ecran : Instance de la classe Ecran
-    - decalageY : Décalage en y
+    
+    def dessinerGrille(self, ecran, decalageY=50): 
+        """
+        Fonction dessinerGrille : Dessine la grille
+        Paramètres :
+        - ecran : Instance de la classe Ecran
+        - decalageY : Décalage en y
 
-    Description : Cette fonction dessine la grille
-    """
-    def dessinerGrille(self, ecran, decalageY=50):        
+        Description : Cette fonction dessine la grille
+        """       
         for ligne in range(1, self.nbLigne):
             y = ligne * self.tuileHauteur + decalageY
             pygame.draw.line(ecran.fenetre, self.contourCouleur, (0, y), 

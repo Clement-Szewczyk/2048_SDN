@@ -23,45 +23,48 @@ class Application:
     
 
 
-"""
- Fonction dessinerTexte : Affiche un texte sur une surface
- Paramètres :
- - texte : Texte à afficher
- - police : Objet pygame.font.Font représentant la police à utiliser
- - couleur : Couleur du texte, format RGB
- - surface : Surface pygame où le texte sera dessiné
- - x, y : Coordonnées du coin supérieur gauche où positionner le texte
 
- Description : Cette fonction crée un objet texte avec la police et la couleur données, puis
- le positionne et l'affiche sur la surface spécifiée.
- """
 def dessinerTexte(texte, police, couleur, surface, x, y):
+    """
+    Fonction dessinerTexte : Affiche un texte sur une surface
+    Paramètres :
+    - texte : Texte à afficher
+    - police : Objet pygame.font.Font représentant la police à utiliser
+    - couleur : Couleur du texte, format RGB
+    - surface : Surface pygame où le texte sera dessiné
+    - x, y : Coordonnées du coin supérieur gauche où positionner le texte
+
+    Description : Cette fonction crée un objet texte avec la police et la couleur données, puis
+    le positionne et l'affiche sur la surface spécifiée.
+    """
     textObj = police.render(texte, True, couleur)
     textRect = textObj.get_rect()
     textRect.topleft = (x, y)
     surface.blit(textObj, textRect)
 
-"""
+
+def validerEmail(email):
+    """
     Fonction validerEmail : Vérifie la validité d'une adresse email
    Paramètres :
     - email : Adresse email à valider
 
     Description : Cette fonction utilise une expression régulière pour vérifier si l'adresse email
     fournie respecte le format standard.
- """
-def validerEmail(email):
+    """
     # Vérifie si l'email est valide avec une expression régulière
     emailRegex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
     return re.match(emailRegex, email) is not None
 
-"""
+
+def validerMdp(motDePasse):
+    """
     Fonction validerMdp : Vérifie si un mot de passe est valide
     Paramètres :
     - motDePasse : Mot de passe à valider
 
     Description : Cette fonction vérifie si le mot de passe contient au moins 5 caractères.
-"""
-def validerMdp(motDePasse):
+    """ 
     return len(motDePasse) >= 5
 
 """

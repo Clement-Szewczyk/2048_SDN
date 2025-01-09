@@ -95,6 +95,16 @@ Notre base de données est structurée autour de deux tables principales :
 
 Afin de garantir la sécurité des mots de passe des utilisateurs, nous utilisons la bibliothèque `bcrypt`. Cette dernière permet de hacher les mots de passe de manière sécurisée, rendant leur stockage et leur protection conformes aux bonnes pratiques en matière de cybersécurité.
 
+# Convention de Codage
+
+Pour garantir une cohérence dans le code source du projet, nous avons défini une convention de codage à respecter. Cette convention inclut les éléments suivants :
+
+- Utilisation de CamelCase pour les noms des variables, des fonctions
+- Respect de la règle des 80 caractères par ligne
+- Utilisation de commentaires pour expliquer le code
+- Utilisation de noms de variables explicites
+- Utilisation de noms de fichiers significatifs
+- Utilisation du français pour les noms de variables, de fonctions, classe et de commentaires
 
 # Description des classes
 
@@ -146,7 +156,6 @@ Les conditions de fin de partie sont vérifiées après chaque mouvement. La cla
 La mise à jour de l'affichage est gérée par la classe `Ecran`. Après chaque mouvement, l'écran est rafraîchi pour refléter les nouvelles positions des tuiles et les valeurs mises à jour. 
 
 
-# Améliorations possibles
 
 
 
